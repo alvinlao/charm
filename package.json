@@ -1,0 +1,9 @@
+{
+  "name": "charm",
+  "version": "0.0.1",
+  "description": "A Thinking Ape [F14] Hackathon!",
+  "dependencies": {
+    "express": "^4.10.4",
+    "socket.io": "^1.2.1"
+  }
+}
