@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+<head>
+	<title>Charm</title>
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+</head>
+
+<body>
+
+</body>
+
+<script>
+	$(function() {
+		var socket = io();
+		socket.emit('message', 'client connection');
+		console.log("Loaded")
+	})
+</script>
+</html>
