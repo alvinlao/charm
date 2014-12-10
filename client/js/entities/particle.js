@@ -7,7 +7,7 @@ function Particle(x, y, m, r) {
 	this.x = x;
 	this.y = y;
 	this.m = m;
-	this.r = r || CONSTANTS.MIN_FLOAT;
+	this.r = r || CONSTANTS.EPSILON;
 
 	this.V = Vector2D(0,0);	// velocity
 	this.F = [];            // :: [Vector2D]
@@ -20,7 +20,7 @@ Particle.prototype.getCentre = function() {
 Particle.prototype.distToCentre = function(other) {
   var x1 = this.getCentre(),
       x2 = other.getCentre();
-  return x1.subtract(x2).norm();
+  return x1.subtract(x2).length();
 
 }
 
@@ -45,8 +45,8 @@ Particle.prototype.collide = function(other) {
   var M = this.m + other.m,
       m = this.m * other.m,
       V = other.V.subtract(this.V),
-      X = other.getCentre().subtract(this.getCentre()),
-      k = (2 * m * V.dot(X))/(M * X.norm());
+      X = other.getCentre().subtract(this.getCentre()).direction(),
+      k = (2 * m * V.dot(X))/M;
   this.applyForce(X.scale(k));
   return this;
 }
