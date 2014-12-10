@@ -1,6 +1,6 @@
-var GameObject = require('../entities/particle')
+var GameObject = require('../entities/gameobject')
 var CONSTANTS = require('../constants')
-var Particle = require()
+var Particle = require('../entities/particle')
 var b2d = require('box2d');
 
 Tether.prototype = new GameObject();

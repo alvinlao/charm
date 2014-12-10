@@ -1,12 +1,12 @@
 var Particle = require('../entities/Particle');
 
-Player.prototype = new Particle();
+Player.prototype = Object.create(Particle);
 Player.prototype.constructor = Player;
 
-function Player(eid, player_id) {
+function Player(world, eid, player_id) {
 	this.player_id = player_id;
 
-	Particle.prototype.constructor.call(this, eid, 0, 0, 10);
+	Particle.prototype.constructor.call(this, world, eid, 0, 0, 10);
 }
 
 Player.prototype.control = function(state) {

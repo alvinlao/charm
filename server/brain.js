@@ -6,13 +6,18 @@ var Tether = require('../server/models/entities/tether')
 var b2d = require("box2d")
 
 function Brain() {
+}
+
+/* initial_bodies -- Map whose keys are ids and values are box2d world bodies
+ */
+Brain.prototype.init_world = function() {
     var worldAABB = new b2d.b2AABB(),
         gravity = new b2d.Vec2(0.0, 0.0),
         do_sleep = true;
     worldAABB.lowerBound.Set(CONSTANTS.LOWER_X, CONSTANTS.LOWER_Y);
     worldAABB.upperBound.Set(CONSTANTS.UPPER_X, CONSTANTS.UPPER_Y);
 
-    this.world = box2d.b2World(worldAABB, gravity, do_sleep);
+    this.world = new box2d.b2World(worldAABB, gravity, do_sleep);
     this.objects = {};
     this.actions = [];
 
@@ -22,15 +27,6 @@ function Brain() {
     // Map of inputs
     // client_id -> inputs
     this.inputs = {};
-    return this;
-}
-
-/* initial_bodies -- Map whose keys are ids and values are box2d world bodies
- */
-Brain.prototype.init_world = function(initial_bodies) {
-    for(id in initial_bodies) {
-        this.add_body(id, initial_bodies[id]);
-    }
     return this;
 }
 
@@ -74,13 +70,16 @@ Brain.prototype.loop = function() {
 Brain.prototype.start = function(team, server) {
     this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
 
-    var brain = this;
+    var brain = this.init_world();
+    console.log(this.world);
+    console.log(brain.world);
+    console.log("Hello!");
 
     // Create player objects
-    this.objects[1] = new Player(1,1);
+    this.objects[1] = new Player(this.world, 1,1);
     this.objects[1].x = 100;
     this.objects[1].y = 100;
-    this.objects[2] = new Player(2,2);
+    this.objects[2] = new Player(this.world, 2,2);
     this.objects[2].x = 600;
     this.objects[2].y = 100;
 

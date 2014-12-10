@@ -5,18 +5,19 @@ var b2d = require('box2d')
 Particle.prototype = new GameObject();
 Particle.prototype.constructor = Particle;
 
-function Particle(eid, x, y, m, r) {
+function Particle(world, eid, x, y, m, r) {
 	GameObject.prototype.constructor.call(this, eid);
-    var props = b2d.b2CircleDef();
+    var props = new b2d.b2CircleDef();
     props.radius = r || CONSTANTS.EPSILON;
     props.density = m /(Math.PI * props.radius^2);
     props.restitution = 1.0;
     props.friction = 0;
     var body_def = new b2d.b2BodyDef();
-    body_def.AddShape(props);
+    //body_def.AddShape(props);
     body_def.position.Set(x,y);
 
-    this.body = brain.add_body(eid, body_def);
+    this.body = world.CreateBody(eid, body_def);
+    return this;
 }
 
 Particle.prototype.get_position = function() {
