@@ -36,8 +36,12 @@ Particle.prototype.directionToCentre = function(other) {
     return other.getCentre().subtract(this.getCentre()).direction();
 }
 
+Particle.prototype.distanceTo = function(other) {
+    return this.distanceToCentre(other) - (this.r + other.r);
+}
+
 Particle.prototype.intersects = function(other) {
-    return this.distToCentre(other) <= this.r + other.r;
+    return this.distanceTo(other) <= CONSTANTS.EPSILON;
 }
 
 Particle.prototype.update = function () {
