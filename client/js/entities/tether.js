@@ -14,9 +14,19 @@ function Tether(particle1, particle2) {
 	ddy = dy/(NUM_NODES-1);
 
 	for (var i = 0; i < NUM_NODES; ++i) {
-	this.nodes.push(new ElasticParticle(x1 + ddx*i, y1 + ddy*i, K));
+		this.nodes.push(new ElasticParticle(particle1.x + ddx*i, particle1.y + ddy*i, K));
 	}
 }
 
 Tether.prototype.update = function() {
+	this.nodes[0].hookesLaw(this.nodes[i + 1]);
+
+	for (var i = 1; i < NUM_NODES - 1; ++i) {
+		this.nodes[i].hookesLaw(this.nodes[i - 1]);
+		this.nodes[i].hookesLaw(this.nodes[i + 1]);
+	}
+
+	this.nodes[NUM_NODES - 1].hookesLaw(this.nodes[NUM_NODES - 2]);
+
+	for (var i = 0; i < NUM_NODES; ++i) this.nodes[i].update();
 }
