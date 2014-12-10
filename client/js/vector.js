@@ -19,3 +19,7 @@ Vector2D.prototype.dot = function(other) {
 Vector2D.prototype.norm = function() {
   return Math.sqrt(this.dot(this));
 }
+Vector2D.prototype.direction = function() {
+  var l = this.length();
+  return Vector2D(this.x / l, this.y / l);
+}
