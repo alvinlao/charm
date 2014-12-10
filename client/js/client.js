@@ -5,7 +5,6 @@ var STATES = Object.freeze({
 
 var state = STATES.LOBBY;
 var socket;
-var player_id = -1;
 
 function hide_all() {
   $('#lobby').hide();

@@ -1,3 +1,5 @@
+var CONSTANTS = require('../server/constants')
+
 function Brain() {
     this.objects = {};
     this.actions = [];
@@ -17,7 +19,7 @@ Brain.prototype.loop = function() {
 }
 
 Brain.prototype.start = function(team) {
-    game_interval_id = setInterval(loop, CONSTANTS.LOOP_INTERVAL);
+    game_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
 }
 
 module.exports = Brain;

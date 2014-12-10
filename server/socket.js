@@ -1,6 +1,8 @@
 var server = require('../server/server')
 var game = require('../server/game')
-var brain = require('../server/brain')
+var Brain = require('../server/brain')
+
+var brain = new Brain();
 
 server.io.on('connection', function(socket) {
 	console.log('Client has connected: ' + socket.id);
