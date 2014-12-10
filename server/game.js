@@ -115,11 +115,7 @@ function broadcast_game_state(server) {
 		state.lobby_message = null;
 		server.io.emit('game_state_update', data);
 	} else if (state.state == STATES.IN_GAME) {
-		for (var i = 0; i < state.clients.length; ++i) {
-			var client = state.clients[i];
-			data.player_id = client.id;
-			client.socket.emit('game_state_update', data);
-		}
+		server.io.emit('game_state_update', data);
 	}
 }
 

@@ -14,6 +14,7 @@ server.io.on('connection', function(socket) {
 		// Game has enough people
 		socket.emit('game_full', 'Game is full');
 	} else {
+        socket.emit('player_info', socket.id);
 		game.broadcast_game_state(server);
 	}
 

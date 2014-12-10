@@ -43,6 +43,7 @@ function update_lobby(data) {
   $(".player_button").each(function ( index, value ) {
     $(this).attr('disabled','disabled');
     if (lobby_status[index]) {
+      $(this).css('background-color', get_player_color(index));
       if(index == player_id - 1) {
         this.innerHTML = "YOU";
       } else {
@@ -50,16 +51,30 @@ function update_lobby(data) {
       }
     } else {
       this.innerHTML = "JOIN";
+      $(this).css('background-color', get_player_color(-1));
       $(this).removeAttr('disabled');
     }
   });
+}
+
+function get_player_color(player) {
+  if (player === 0) {
+    return "#5F98E3"
+  } else if (player === 1) {
+    return "#BE5FE3"
+  } else if (player === 2) {
+    return "#9FE35F"
+  } else if (player === 3) {
+    return "#E3855F"
+  } else {
+    return "#D1D1D1"
+  }
 }
 
 function start_game() {
 }
 
 function update_game(data) {
-    player_id = data.player_id;
 }
 
 $(function() {
@@ -81,6 +96,10 @@ $(function() {
   $(".instant_join").click(function () {
     change_state(STATES.GAME);
   });
+
+  socket.on('player_info', function(id) {
+    server_player_id = id;
+  })
 
   if (state == STATES.LOBBY) {
       update_lobby(data)
