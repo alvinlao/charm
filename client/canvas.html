@@ -8,73 +8,9 @@
 </head>
 
 <body>
-
-<canvas id="game_canvas" width=800 height=600>
-</canvas>
-
-
+    <canvas id="game_canvas" width=800 height=600>
+    </canvas>
 </body>
 
-<script>
-
-var canvas;
-
-var player1;
-var player2;
-var tether;
-
-function draw_loop(){
-    /*
-    canvas.clear();
-    */
-}
-
-$(document).ready(function(){
-    canvas = oCanvas.create({ canvas: "#game_canvas", background: "#eee" });
-    tether = canvas.display.line({
-        start: { x: 50, y: 50 },
-        end: { x: 400, y: 50 },
-        stroke: "4px #0aa",
-        cap: "round"
-    }).add();
-    player1 = canvas.display.ellipse({x: 50, y: 50, radius:20, fill:"black"}).add();
-    player2 = canvas.display.ellipse({x: 400, y: 50, radius:20, fill:"black"}).add();
-
-    canvas.bind("keypress", function(key){
-        var speed = 6;
-        console.log(key.which);
-        switch(key.which){
-        case 38: // up
-            player1.y -= speed;
-            break;
-        case 40: // down
-            player1.y += speed;
-            break;
-        case 39: // right
-            player1.x += speed;
-            break;
-        case 37: // left
-            player1.x -= speed;
-            break;
-        case 87: // W
-            player2.y -= speed;
-            break;
-        case 83: // S
-            player2.y += speed;
-            break;
-        case 65: // A
-            player2.x += speed;
-            break;
-        case 68: // D
-            player2.x -= speed;
-            break;
-        }
-        tether.start = {x:player1.x, y:player1.y};
-        tether.end = {x:player2.x, y:player2.y};
-    });
-
-    canvas.setLoop(draw_loop).start();
-});
-</script>
-
-
+<script src="src/controls.js"></script>
+<script src="src/game.js"></script>
