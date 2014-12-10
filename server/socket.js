@@ -1,6 +1,8 @@
 var server = require('../server/server')
 var game = require('../server/game')
-var brain = require('../server/brain')
+var Brain = require('../server/brain')
+
+var brain = new Brain();
 
 server.io.on('connection', function(socket) {
 	console.log('Client has connected: ' + socket.id);
@@ -52,9 +54,13 @@ server.io.on('connection', function(socket) {
     });
 
 
-    socket.on('inputs', function(state){
-      if(state.inputs.length > 0){
-            console.log(state);
-      }
-    });
+  /* Example:
+   * {player_id: 12345,
+   *  inputs:["up"]}
+   */
+  socket.on('inputs', function(state){
+    console.log(state);
+    // player 54321 always moves down whenever our player moves
+    server.io.emit("all_inputs", {54321: ["down"]});
+  });
 })

@@ -3,9 +3,11 @@ var Particle = require('../entities/Particle');
 Player.prototype = new Particle();
 Player.prototype.constructor = Player;
 
-function Player(id, x, y, m) {
-	Particle.prototype.constructor.call(this, x, y, m);
-	this.id = id;
+function Player(eid) {
+	Particle.prototype.constructor.call(this, eid, 0, 0, 10);
+}
+
+Player.prototype.init_draw = function() {
 	this.drawable = canvas.display.ellipse({x: this.x, y: this.y, radius:20, fill:"black"}).add();
 }
 
@@ -36,8 +38,26 @@ Player.prototype.draw = function() {
 	this.drawable.moveTo(this.x, this.y);
 }
 
-Player.prototype.input = function(input) {
-  
+Player.prototype.destroy = function() {
+	this.drawable.remove();
+}
+
+Player.prototype.input = function(input_list) {
+    for(var i=0; i<input_list.length; i++){
+        var button = input_list[i];
+        if(button == "up") {
+            this.y -= 6;
+        }
+        if(button == "down") {
+            this.y += 6;
+        }
+        if(button == "left") {
+            this.x -= 6;
+        }
+        if(button == "right") {
+            this.x += 6;
+        }
+    }
 }
 
 module.exports = Player;

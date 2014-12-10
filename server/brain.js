@@ -1,3 +1,4 @@
+var CONSTANTS = require('../server/constants')
 var GameObject = require('../server/models/entities/gameobject')
 var Particle = require('../server/models/entities/particle')
 var ElasticParticle = require('../server/models/entities/elasticparticle')
@@ -23,9 +24,7 @@ Brain.prototype.loop = function() {
 }
 
 Brain.prototype.start = function(team) {
-    p = new Particle(10, 10, 1);
-    console.log(p)
-    game_interval_id = setInterval(loop, CONSTANTS.LOOP_INTERVAL);
+    game_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
 }
 
 module.exports = Brain;
