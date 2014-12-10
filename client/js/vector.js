@@ -26,3 +26,9 @@ Vector2D.prototype.direction = function() {
 Vector2D.prototype.negate = function() {
   return this.scale(-1);
 }
+
+ZeroVector.prototype = Object.create(Vector2D.prototype);
+ZeroVector.prototype.constructor = ZeroVector;
+function ZeroVector() {
+    return Vector2D(0,0);
+}

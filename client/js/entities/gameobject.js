@@ -1,5 +1,4 @@
 function GameObject(eid) {
-  this.dt = 1;
   this.eid = eid;
   this.init_draw();
 }

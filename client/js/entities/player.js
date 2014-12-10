@@ -40,6 +40,20 @@ Player.prototype.destroy = function() {
 	this.drawable.remove();
 }
 
-Player.prototype.input = function(input) {
-  
+Player.prototype.input = function(input_list) {
+    for(var i=0; i<input_list.length; i++){
+        var button = input_list[i];
+        if(button == "up") {
+            this.y -= 6;
+        }
+        if(button == "down") {
+            this.y += 6;
+        }
+        if(button == "left") {
+            this.x -= 6;
+        }
+        if(button == "right") {
+            this.x += 6;
+        }
+    }
 }

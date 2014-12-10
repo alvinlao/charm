@@ -10,11 +10,14 @@ function ElasticParticle(x, y, m, k) {
 	@other ElasticParticle
  */
 ElasticParticle.prototype.hookesLaw = function(other, equilibriumDistance) {
-  equilibriumDistance = equilibriumDistance || CONSTANTS.EPSILON;
-  if(this.distToCentre(other) != equilibriumDistance) {
-    var X_l = equilibriumDistance - this.distToCentre(other),
-        X_v = other.directionToCentre(),
-        F = X_v.scale(-this.k * X_l);
-    this.applyForce(F);
-  }
+	equilibriumDistance = equilibriumDistance || CONSTANTS.EPSILON;
+	if(this.distToCentre(other) != equilibriumDistance) {
+		var X_l = equilibriumDistance - this.distToCentre(other),
+		    X_v = other.directionToCentre(this),
+		    F = X_v.scale(-this.k * X_l);
+		this.applyForce(F);
+
+		// apply linear damping force
+		this.applyForce(this.V.scale(-CONSTANTS.DAMPING_COEFFICIENT));
+	}
 }

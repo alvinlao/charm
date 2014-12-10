@@ -1,18 +1,20 @@
 var server = require('../server/server')
 var game = require('../server/game')
-var brain = require('../server/brain')
+var Brain = require('../server/brain')
+
+var brain = new Brain();
 
 server.io.on('connection', function(socket) {
 	console.log('Client has connected: ' + socket.id);
 
 	// Game connect
-	if (!game.connect(socket)) {
+	if (!game.connect_player(socket)) {
 		console.log('Game full');
 
 		// Game has enough people
 		socket.emit('game_full', 'Game is full');
 	} else {
-		socket.emit('lobby_update', game.get_lobby_state());
+		game.broadcast_game_state(server);
 	}
 
 	socket.on('ready', function(player_id) {
@@ -22,13 +24,15 @@ server.io.on('connection', function(socket) {
 
 		// Broadcast lobby state
 		var lobby_state = game.get_lobby_state();
-		server.io.emit('lobby_update', lobby_state);
+		game.broadcast_game_state(server);
 
 		// Start game
 		if(game.is_ready()) {
 			console.log('Start game')
-			server.io.emit('game_start', null);
 			var teams = game.start();
+			game.broadcast_game_state(server);
+
+			console.log('Teams: ');
 			console.log(teams);
 			brain.start(teams, socket);
 		}
@@ -38,14 +42,25 @@ server.io.on('connection', function(socket) {
 		console.log('Client disconnect')
 
 		// Game disconnect
-		game.disconnect(socket);
-		server.io.emit('lobby_update', game.get_lobby_state());
+		game.disconnect_player(socket);
+		game.broadcast_game_state(server);
 	});
 
-  // **
-  // GAME EVENTS
-  // **
-  socket.on('player_state', function(state) {
+    // **
+    // GAME EVENTS
+    // **
+    socket.on('player_state', function(state) {
+        console.log(state);
+    });
+
+
+  /* Example:
+   * {player_id: 12345,
+   *  inputs:["up"]}
+   */
+  socket.on('inputs', function(state){
     console.log(state);
+    // player 54321 always moves down whenever our player moves
+    server.io.emit("all_inputs", {54321: ["down"]});
   });
 })

@@ -1,16 +1,25 @@
-var Brain = (function () {
-	var LOOP_PERIOD = 100;
-	var game_interval_id = -1;
+var CONSTANTS = require('../server/constants')
 
-	var loop = function () {
+function Brain() {
+    this.objects = {};
+    this.actions = [];
+}
 
-	}
+Brain.prototype.set_interval = function(loop, loopInterval){
+}
 
-	return {
-		start : function (team) {
-			game_interval_id = setInterval(loop, LOOP_PERIOD);
-		}
-	}
-})();
+Brain.prototype.process_inputs = function(inputs) {
+    var targetId = inputs.id;
+}
+
+Brain.prototype.loop = function() {
+    for(var objectId in this.objects) {
+        this.objects[objectId].update()
+    }
+}
+
+Brain.prototype.start = function(team) {
+    game_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
+}
 
 module.exports = Brain;
