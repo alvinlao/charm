@@ -1,10 +1,13 @@
 ElasticParticle.prototype = new Particle();
 ElasticParticle.prototype.constructor = ElasticParticle;
 
-function ElasticParticle(x, y) {
-	Particle.prototype.constructor.call(this, x, y);
+function ElasticParticle(x, y, m) {
+	Particle.prototype.constructor.call(this, x, y, m);
 }
 
-ElasticParticle.prototype.hookslaw = function(other_elastic_particle) {
+/*
+	@other ElasticParticle
+ */
+ElasticParticle.prototype.hookslaw = function(other) {
 	// TODO
 }
