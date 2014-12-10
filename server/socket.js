@@ -4,7 +4,7 @@ var game = require('../server/game')
 
 server.io.on('connection', function(socket) {
 	console.log('Client has connected: ' + socket.id);
-	
+
 	// Game connect
 	if (!game.connect(socket)) {
 		console.log('Game full');
@@ -32,7 +32,7 @@ server.io.on('connection', function(socket) {
 			console.log(teams);
 			brain.start(teams, socket);
 		}
-	})
+	});
 
 	socket.on('disconnect', function() {
 		console.log('Client disconnect')
@@ -41,4 +41,11 @@ server.io.on('connection', function(socket) {
 		game.disconnect(socket);
 		server.io.emit('lobby_update', game.get_lobby_state());
 	});
+
+  // **
+  // GAME EVENTS
+  // **
+  socket.on('player_state', function(state) {
+    console.log(state);
+  });
 })
