@@ -13,35 +13,40 @@ function Particle(x, y, m, r) {
 	this.F = [];            // :: [Vector2D]
 }
 
-Particle.prototype.getCentre = function() {
-  return Vector2D(this.x, this.y);
-}
-
-Particle.prototype.distToCentre = function(other) {
-  var x1 = this.getCentre(),
-      x2 = other.getCentre();
-  return x1.subtract(x2).length();
-}
-
-Particle.prototype.directionToCentre = function(other) {
-  return other.getCentre().subtract(this.getCentre()).direction();
-}
-
-Particle.prototype.intersects = function(other) {
-  return this.distToCentre(other) <= this.r + other.r;
+Particle.prototype.resetForces = function() {
+    this.F = [];
 }
 
 Particle.prototype.applyForce = function(newForce) {
-  this.F.push(newForce);
-  return this;
+    this.F.push(newForce);
+    return this;
+}
+
+Particle.prototype.getCentre = function() {
+    return Vector2D(this.x, this.y);
+}
+
+Particle.prototype.distToCentre = function(other) {
+    var x1 = this.getCentre(),
+        x2 = other.getCentre();
+    return x1.subtract(x2).length();
+}
+
+Particle.prototype.directionToCentre = function(other) {
+    return other.getCentre().subtract(this.getCentre()).direction();
+}
+
+Particle.prototype.intersects = function(other) {
+    return this.distToCentre(other) <= this.r + other.r;
 }
 
 Particle.prototype.update = function () {
-  this.V.add(this.F.scale(1/this.m));
-  this.F = [];
-  this.x = this.V.x * this.dt;
-  this.y = this.V.y * this.dt;
-  return this;
+    var F_net = this.F.reduce(function(a, b) { return a.add(b); }, ZeroVector());
+    this.resetForces();
+    this.V.add(this.F_net.scale(1/this.m) * CONSTANTS.TIMEDELTA);
+    this.x = this.V.x * CONSTANTS.TIMEDELTA;
+    this.y = this.V.y * CONSTANTS.TIMEDELTA;
+    return this;
 }
 
 Particle.prototype.collide = function(other) {
