@@ -83,6 +83,18 @@ function game_loop() {
 
 function update_world_state(state) {
     world_state = state;
+    console.log(JSON.stringify(state));
+}
+
+function reset_game() {
+    // Remove all entities that exist in game.
+    keys = Object.keys(game_objects);
+    keys.forEach(function(eid) {
+        game_objects[eid].destroy();
+        delete game_objects[eid];
+    });
+
+    world_state = {}
 }
 
 function prepare_game() {
