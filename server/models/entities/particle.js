@@ -67,4 +67,8 @@ Particle.prototype.collide = function(other) {
   return this;
 }
 
+Particle.prototype.serialize = function () {
+  console.log("particle serialize called");
+}
+
 module.exports = Particle;

@@ -1,5 +1,6 @@
 function GameObject(eid) {
   this.eid = eid;
+  this.init_draw();
 }
 
 GameObject.prototype.init_draw = function() {}
@@ -18,7 +19,3 @@ GameObject.prototype.replicate = function(state) {}
 
 GameObject.prototype.simulate = function() {}
 GameObject.prototype.destroy = function() {}
-
-GameObject.prototype.serialize = function () {}
-
-module.exports = GameObject;
