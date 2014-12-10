@@ -83,24 +83,25 @@ $(function() {
 
   change_state(STATES.LOBBY);
 
+  socket.on('game_state_update', function(data) {
+    if (state != data.state) {
+      change_state(data.state);
+    }
+
+  socket.on('player_info', function(id) {
+    console.log('hi')
+    server_player_id = id;
+  })
+
   $(".player_button").click(function () {
     this.innerHTML = "LOADING...";
     player_id = (this.id == "player_one" ? 1 : (this.id == "player_two" ? 2 : (this.id == "player_three" ? 3 : 4)));
     socket.emit('ready', player_id);
   });
 
-  socket.on('game_state_update', function(data) {
-    if (state != data.state) {
-      change_state(data.state);
-    }
-
   $(".instant_join").click(function () {
     change_state(STATES.GAME);
   });
-
-  socket.on('player_info', function(id) {
-    server_player_id = id;
-  })
 
   if (state == STATES.LOBBY) {
       update_lobby(data)
