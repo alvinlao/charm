@@ -13,6 +13,8 @@
 <body>
 
 <div id="lobby">
+	<canvas id="lobby_canvas"></canvas>
+
 	<div id="title">TETHER</div>
 	<div id="lobby_message"></div>
 
@@ -35,7 +37,7 @@
 </div>
 
 <div id="game">
-	<canvas id="game_canvas" width=800 height=600></canvas>
+	<canvas id="game_canvas"></canvas>
 </div>
 
 </body>
@@ -43,6 +45,23 @@
 <!-- MAIN -->
 <script>
 	var server_player_id;
+
+	(function() {
+		var NUM_STARS = 100;
+		var MAX_RADIUS = 1.5;
+
+		var lobby_canvas = oCanvas.create({ canvas: "#lobby_canvas", background: "#232129" });
+		lobby_canvas.width = window.innerWidth;
+		lobby_canvas.height = window.innerHeight;
+		var w = lobby_canvas.width;
+		var h = lobby_canvas.height;
+		for(var i = 0; i < NUM_STARS; i++) {
+			var r = Math.random() * MAX_RADIUS;
+			var x = Math.random() * w;
+			var y = Math.random() * h;
+			lobby_canvas.display.ellipse({x: x, y: y, radius:r, fill:"white"}).add();
+		}
+	})();
 </script>
 <script src="js/client.js"></script>
 <script src="js/controls.js"></script>

@@ -5,13 +5,12 @@ var ElasticParticle = require('../server/models/entities/elasticparticle')
 var Player = require('../server/models/entities/player')
 var Tether = require('../server/models/entities/tether')
 
-var world_state_broadcast_interval = -1;
-
 function Brain() {
     this.objects = {};
     this.actions = [];
 
-    this.interval_id;
+    this.game_loop_interval_id = -1;
+    this.world_state_broadcast_interval_id = -1;
 
     // Map of inputs
     // client_id -> inputs
@@ -41,7 +40,7 @@ Brain.prototype.loop = function() {
 }
 
 Brain.prototype.start = function(team, server) {
-    this.interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
+    this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
 
     var brain = this;
 
@@ -53,7 +52,7 @@ Brain.prototype.start = function(team, server) {
     this.objects[2].x = 600;
     this.objects[2].y = 100;
 
-    world_state_broadcast_interval = setInterval(function () {
+    this.world_state_broadcast_interval_id = setInterval(function () {
     	server.io.emit('world_state', brain.return_world_state());
     }, 1000);
 }
@@ -70,7 +69,8 @@ Brain.prototype.return_world_state = function() {
 }
 
 Brain.prototype.stop = function() {
-    clearInterval(this.interval_id);
+    clearInterval(this.game_loop_interval_id);
+    clearInterval(this.world_state_broadcast_interval_id);
 }
 
 module.exports = Brain;
