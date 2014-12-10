@@ -51,10 +51,10 @@ Brain.prototype.start = function(team, socket) {
 }
 
 Brain.prototype.return_world_state = function() {
-	var serialized_objects = [];
+	var serialized_objects = {};
 
 	for (key in this.objects) {
-		serialized_objects.push(this.objects[key].serialize());
+		serialized_objects[this.objects[key].eid] = this.objects[key].serialize();
 	}
 
 	return serialized_objects;
