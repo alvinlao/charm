@@ -1,38 +1,21 @@
-function Vector(x, y) {
-	this.x = x;
-	this.y = y;
-
-	return this;
+function Vector2D(x, y) {
+  this.x = x;
+  thix.y = y;
+  return this;
 }
 
-Vector.prototype.multiply = function(s) {
-	this.x *= s;
-	this.y *= s;
-
-	return this;
+Vector2D.prototype.add = function(other) {
+  return Vector2D(this.x + other.x, this.y + other.y);
 }
-
-Vector.prototype.divide = function(s) {
-	this.x /= s;
-	this.y /= s;
-
-	return this;
+Vector2d.prototype.scale = function(k) {
+  return Vector2D(k * this.x, k * this.y);
 }
-
-Vector.prototype.add = function(u) {
-	this.x += u.x;
-	this.y += u.y;
-
-	return this;
+Vector2D.prototype.subtract = function(other) {
+  return this.add(other.scale(-1));
 }
-
-Vector.prototype.sub = function(u) {
-	this.x -= u.x;
-	this.y -= u.y;
-
-	return this;
+Vector2D.prototype.dot = function(other) {
+  return this.x * other.x + this.y + other.y;
 }
-
-Vector.prototype.dot = function(u) {
-	return this.x * u.x + this.y * u.y;
+Vector2D.prototype.norm = function() {
+  return this.dot(this);
 }
