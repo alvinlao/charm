@@ -25,14 +25,14 @@ Brain.prototype.init_world = function() {
     this.world_state_broadcast_interval_id = -1;
 
     // Map of inputs
-    // eid -> inputs
-    this.inputs = [];
+    // client_id -> inputs
+    this.inputs = {};
     return this;
 }
 
-Brain.prototype.add_body = function(eid, body_def) {
+Brain.prototype.add_body = function(id, body_def) {
     var body = this.world.CreateBody(body_def);
-    this.objects[eid] = body;
+    this.objects[id] = body;
     return body;
 }
 
@@ -42,7 +42,6 @@ Brain.prototype.add_joint = function(joint_def) {
 }
 
 Brain.prototype.step = function() {
-    this.process_inputs();
     this.world.Step(CONSTANTS.TIMEDELTA, 1);
 }
 
@@ -54,17 +53,18 @@ Brain.prototype.queue_inputs = function(client_id, inputs) {
 }
 
 Brain.prototype.process_inputs = function() {
-    for (var i = 0; i < this.inputs.length; ++i) {
-        var input = this.inputs[i];
-        var eid = input.eid;
-        var input_vector = input.input;
+    for (key in this.inputs) {
+        var input = this.inputs[key];
+        this.inputs[key] = [];
 
-        var force = new b2Vec2(input_vector.x, input_vector.y);
-        force.Multiply(CONSTANTS.INPUT_MULTIPLIER);
-        this.objects[eid].apply_force(force);
+        // TODO, process input
     }
+}
 
-    this.inputs = [];
+Brain.prototype.loop = function() {
+    for(var objectId in this.objects) {
+        this.objects[objectId].update()
+    }
 }
 
 Brain.prototype.start = function(team, server) {
