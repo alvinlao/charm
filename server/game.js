@@ -1,7 +1,7 @@
 var client_module = require('../server/client');
 
-var NUM_PLAYERS = 2;
-var NUM_TEAMS = 1;
+var NUM_PLAYERS = 4;
+var NUM_TEAMS = 2;
 
 var STATES = Object.freeze({
 	LOBBY : 1,
