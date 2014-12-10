@@ -72,6 +72,7 @@ function get_player_color(player) {
 }
 
 function start_game() {
+  prepare_game();
 }
 
 function update_game(data) {
