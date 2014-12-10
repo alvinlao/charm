@@ -4,8 +4,16 @@ var Particle = require('../server/models/entities/particle')
 var ElasticParticle = require('../server/models/entities/elasticparticle')
 var Player = require('../server/models/entities/player')
 var Tether = require('../server/models/entities/tether')
+var b2d = require("box2d")
 
 function Brain() {
+    var worldAABB = new b2d.b2AABB(),
+        gravity = new b2d.Vec2(0.0, 0.0),
+        do_sleep = true;
+    worldAABB.lowerBound.Set(CONSTANTS.LOWER_X, CONSTANTS.LOWER_Y);
+    worldAABB.upperBound.Set(CONSTANTS.UPPER_X, CONSTANTS.UPPER_Y);
+
+    this.world = box2d.b2World(worldAABB, gravity, do_sleep);
     this.objects = {};
     this.actions = [];
 
@@ -15,6 +23,26 @@ function Brain() {
     // Map of inputs
     // client_id -> inputs
     this.inputs = {};
+    return this;
+}
+
+/* initial_bodies -- Map whose keys are ids and values are box2d world bodies
+ */
+Brain.prototype.init_world = function(initial_bodies) {
+    for(id in initial_bodies) {
+        this.add_body(id, initial_bodies[id]);
+    }
+    return this;
+}
+
+Brain.prototype.add_body = function(id, body_def) {
+    var body = this.world.createBody(body_def);
+    this.objects[id] = body;
+    return body;
+}
+
+Brain.prototype.step = function() {
+    this.world.Step(CONSTANTS.TIMEDELTA, 1);
 }
 
 Brain.prototype.set_interval = function(loop, loopInterval){
