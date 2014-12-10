@@ -1,6 +1,6 @@
-var client = require('../server/client');
+var client_module = require('../server/client');
 
-var NUM_PLAYERS = 1;
+var NUM_PLAYERS = 2;
 var NUM_TEAMS = 1;
 
 var STATES = Object.freeze({
@@ -11,64 +11,99 @@ var STATES = Object.freeze({
 
 var state = {
 	state: STATES.LOBBY,
-	clients: {},
-	num_clients: 0,
+	clients: [],
 	teams: {},
 
 	connect: connect,
 	disconnect: disconnect,
 	is_ready: is_ready,
-	assign_teams: assign_teams,
 	start: start,
+	get_team_id: get_team_id,
+	player_ready: player_ready,
+	get_lobby_state: get_lobby_state,
 }
 
 function connect(socket) {
-	if (state.num_clients >= NUM_PLAYERS) {
+	if(state.clients.length >= NUM_PLAYERS) {
 		return false;
 	}
 
-	if (!(socket.id in state.clients)) {
-		state.clients[socket.id] = new client.client_object(socket.id);
-		++state.num_clients;
+	if (get_client(socket.id) == null) {
+		state.clients.push(new client_module.client_object(socket.id));
 	}
 
 	return true;
 }
 
 function disconnect(socket) {
-	if (socket.id in state.clients) {
-		delete state.clients[socket.id]
-		--state.num_clients;
+	for(var i = 0; i < state.clients.length; ++i) {
+		var client = state.clients[i];
+		if (client.id == socket.id) {
+			state.clients.splice(i, 1);
+			return;
+		}
 	}
+}
+
+function get_client(client_id) {
+	for(var i = 0; i < state.clients.length; ++i) {
+		var client = state.clients[i];
+		if (client.id == client_id) {
+			return client;
+		}
+	}
+
+	return null;
+}
+
+function player_ready(client_id, player_id, team_id) {
+	var client = get_client(client_id)
+	client.state = client_module.STATES.READY;
+	client.team = team_id;
+	client.player_id = player_id;
 }
 
 function is_ready() {
-	return Object.keys(state.clients).length >= NUM_PLAYERS && state.state == STATES.LOBBY;
-}
-
-function assign_teams() {
-	var clients = Object.keys(state.clients);
-	var teams = [];
-	var team;
-
-	while (teams.length < NUM_TEAMS) {
-		team = []
-
-		while(team < NUM_PLAYERS) {
-			var index = Math.random() * clients.length;
-			team.push(clients[index])
-			clients.splice(index, 1)
-		}
-
-		teams.push(team)
+	for (var i = 0; i < state.clients.length; i++) {
+		var client = state.clients[i];
+		if (client.state != client_module.STATES.READY)
+			return false;
 	}
 
-	return teams;
+	return state.clients.length >= NUM_PLAYERS && state.state == STATES.LOBBY;
 }
 
 function start() {
 	console.log(state)
 	state.state = STATES.IN_GAME;
+	var teams = [];
+	for (var i = 0; i < NUM_TEAMS; ++i) {
+		teams.push([]);
+	}
+
+	for (var i = 0; i < state.clients.length; i++) {
+		var client = clients[i]
+		teams[client.team].push(client)
+	}
+
+	return teams;
+}
+
+function get_team_id(player_id) {
+	if (player_id < 2) {
+		return 0;
+	} else {
+		return 1;
+	}
+}
+
+function get_lobby_state() {
+	var lobby_state = [false, false, false, false];
+	for(var i = 0; i < state.clients.length; i++) {
+		lobby_state[i] = (state.clients[i].state == client_module.STATES.READY);
+	}
+
+	return lobby_state;
 }
 
 // EXPORT!

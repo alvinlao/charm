@@ -13,9 +13,9 @@ Hack away~~~
 </body>
 
 <script>
+	var socket;
 	$(function() {
-		var socket = io();
-		socket.emit('message', 'client connection');
+		socket = io();
 		socket.on('hello', function(msg) {
 			console.log(msg);
 		})

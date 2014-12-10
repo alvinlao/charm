@@ -9,6 +9,8 @@ function Client(id) {
 
 	this.x = 0;
 	this.y = 0;
+	this.team = -1;
+	this.player_id = -1;
 	this.state = STATES.LOBBY;
 }
 
