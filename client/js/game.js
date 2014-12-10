@@ -5,6 +5,8 @@ var player1;
 var player2;
 var tether;
 
+var socket;
+
 function game_loop() {
     // Handle controls
     buttons_held = [];
@@ -15,6 +17,7 @@ function game_loop() {
     }
 
     console.log(buttons_held);
+    socket.emit("inputs", buttons_held);
 
     // UPDATE
     // SIMULATE
@@ -29,6 +32,7 @@ function game_loop() {
 $(document).ready(function(){
     canvas = oCanvas.create({ canvas: "#game_canvas", background: "#eee" });
     controls = new Controls(canvas);
+    socket = io();
     
     tether = canvas.display.line({
         start: { x: 50, y: 50 },

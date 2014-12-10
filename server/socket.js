@@ -48,4 +48,9 @@ server.io.on('connection', function(socket) {
   socket.on('player_state', function(state) {
     console.log(state);
   });
+
+
+  socket.on('inputs', function(inputs){
+    console.log(inputs);
+  });
 })
