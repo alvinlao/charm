@@ -4,13 +4,13 @@
 	<title>Charm</title>
 	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
-  <script src="http://cdnjs.cloudflare.com/ajax/libs/ocanvas/2.7.3/ocanvas.min.js"></script>
+  <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
 </head>
 
 <body>
 
-<canvas id="game_canvas" width=800 height=600>
-</canvas>
+<div id="game" width=800 height=600>
+</div>
 
 
 </body>
@@ -18,8 +18,8 @@
 <script>
 
 $(document).ready(function(){
-    var canvas = oCanvas.create({ canvas: "#game_canvas", background: "#eee" });
-    canvas.display.ellipse({x:50, y:50, radius:10, fill:"black"}).add();
+    Crafty.init(800,600, $("#game")[0]);
+    Crafty.e('2D, DOM, Color').attr({x: 50, y: 50, w: 10, h: 10}).color('#000');
 });
 </script>
 
