@@ -7,3 +7,10 @@ function Particle(x, y) {
 	// Upcoming forces
 	this.F = [];
 }
+
+Particle.prototype.getPosition = function() {
+  return {x: this.x, y: this.y};
+}
+Particle.prototype.getVeloctiy = function() {
+  return {vx: this.vx, vy: this.y};
+}
