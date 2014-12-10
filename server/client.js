@@ -4,8 +4,9 @@ var STATES = Object.freeze({
 	IN_GAME : 3
 });
 
-function Client(id) {
-	this.id = id;
+function Client(socket) {
+	this.socket = socket;
+	this.id = socket.id;
 
 	this.x = 0;
 	this.y = 0;

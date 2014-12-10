@@ -59,6 +59,7 @@ function start_game() {
 }
 
 function update_game(data) {
+    player_id = data.player_id;
 }
 
 $(function() {
