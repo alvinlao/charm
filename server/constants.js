@@ -3,7 +3,8 @@ var CONSTANTS = Object.freeze({
     LOWER_Y: -100.0,
     UPPER_X: 100.0,
     UPPER_Y: 100.0,
-    TIMEDELTA: 1.0/60
+    TIMEDELTA: 1.0/60,
+    INPUT_MULTIPLIER: 2.0,
 });
 
 module.exports = CONSTANTS;
