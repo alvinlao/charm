@@ -5,14 +5,17 @@ var player1;
 var player2;
 var tether;
 
-function draw_loop(){
-    /*
+function game_loop(){
     canvas.clear();
-    */
     
+    // Example controls check
     if(controls.isControlDown(controls.key_map.up)) {
         console.log("Up is pressed!");
     }
+
+    // UPDATE
+    // SIMULATE
+    // DRAW
 }
 
 $(document).ready(function(){
@@ -28,7 +31,7 @@ $(document).ready(function(){
     player1 = canvas.display.ellipse({x: 50, y: 50, radius:20, fill:"black"}).add();
     player2 = canvas.display.ellipse({x: 400, y: 50, radius:20, fill:"black"}).add();
 
-    canvas.setLoop(draw_loop).start();
+    canvas.setLoop(game_loop).start();
 });
 
 
