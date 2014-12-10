@@ -13,7 +13,7 @@ function Particle(world, eid, x, y, m, r) {
     props.restitution = 1.0;
     props.friction = 0;
     var body_def = new b2d.b2BodyDef();
-    //body_def.AddShape(props);
+    body_def.AddShape(props);
     body_def.position.Set(x,y);
 
     this.body = world.CreateBody(eid, body_def);
