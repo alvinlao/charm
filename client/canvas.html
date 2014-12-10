@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+	<title>Charm</title>
+	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+</head>
+
+<body>
+
+<canvas id="game_canvas" width=500 height=300>
+</canvas>
+
+
+</body>
+
+<script>
+
+$(document).ready(function(){
+    var game_canvas = $("#game_canvas")[0];
+    var context = game_canvas.getContext('2d');
+
+    var width = game_canvas.width;
+    var height = game_canvas.height;
+
+    context.fillRect(0,0,width,height);
+});
+</script>
+

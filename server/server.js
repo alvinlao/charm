@@ -14,6 +14,10 @@ module.exports.start = function(portNumber) {
 		res.sendFile(appDir + '/client/index.html');
 	})
 
+	app.get('/game', function(req, res) {
+		res.sendFile(appDir + '/client/canvas.html');
+	})
+
 
 	// ===============
 	// Listen
