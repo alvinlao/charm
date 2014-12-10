@@ -31,7 +31,7 @@ function connect_player(socket) {
 	}
 
 	if (get_client(socket.id) == null) {
-		state.clients.push(new client_module.client_object(socket.id));
+		state.clients.push(new client_module.client_object(socket));
 	}
 
 	return true;
@@ -110,7 +110,11 @@ function broadcast_game_state(server) {
 		state.lobby_message = null;
 		server.io.emit('game_state_update', data);
 	} else if (state.state == STATES.IN_GAME) {
-		server.io.emit('game_state_update', data);
+		for (var i = 0; i < state.clients.length; ++i) {
+			var client = state.clients[i];
+			data.player_id = client.id;
+			client.socket.emit('game_state_update', data);
+		}
 	}
 }
 
