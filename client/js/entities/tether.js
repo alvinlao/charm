@@ -1,7 +1,12 @@
 var K = 10;				// Spring constant
 var NUM_NODES = 3;		// Number of nodes
 
+Tether.prototype = new GameObject();
+Tether.prototype.constructor = Tether;
+
 function Tether(x1, y1, x2, y2) {
+	GameObject.prototype.constructor.call(this);
+
 	this.nodes = []
 
 	var dx = Math.abs(x2 - x1);
