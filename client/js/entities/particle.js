@@ -18,7 +18,8 @@ function Particle(x, y, m, r) {
 	Check collision with another particle
  */
 Particle.prototype.intersects = function(other) {
-	// TODO
+  var dest = Math.sqrt((this.x - other.x)^2 + (this.y - other.y)^2);
+  return dist <= this.r = other.r;
 }
 
 /*
