@@ -10,8 +10,8 @@ function Particle(x, y, m, r) {
 	this.r = r || 0;
 
 	// Vectors
-	this.V = [];	// velocity
-	this.F = [];	// force
+	this.V = Vector2D(0,0);	// velocity
+	this.F = Vector2D(0,0);	// force
 }
 
 /*
