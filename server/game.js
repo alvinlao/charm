@@ -120,7 +120,7 @@ function broadcast_game_state(server) {
 }
 
 function get_team_id(player_id) {
-	if (player_id < 2) {
+	if (player_id <= 2) {
 		return 0;
 	} else {
 		return 1;
