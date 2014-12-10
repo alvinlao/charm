@@ -36,9 +36,14 @@ Brain.prototype.init_world = function(initial_bodies) {
 }
 
 Brain.prototype.add_body = function(id, body_def) {
-    var body = this.world.createBody(body_def);
+    var body = this.world.CreateBody(body_def);
     this.objects[id] = body;
     return body;
+}
+
+Brain.prototype.add_joint = function(joint_def) {
+    var joint = this.world.CreateJoint(joint_def);
+    return joint;
 }
 
 Brain.prototype.step = function() {

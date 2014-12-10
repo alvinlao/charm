@@ -1,6 +1,5 @@
 var GameObject = require('../entities/gameobject')
 var CONSTANTS = require('../constants')
-var Vector2D = require('../vector')
 var b2d = require('box2d')
 
 Particle.prototype = new GameObject();
@@ -18,6 +17,10 @@ function Particle(eid, x, y, m, r) {
     body_def.position.Set(x,y);
 
     this.body = brain.add_body(eid, body_def);
+}
+
+Particle.prototype.get_position = function() {
+    return this.body.m_position.Copy();
 }
 
 /* apply_force :: force : Vec2
