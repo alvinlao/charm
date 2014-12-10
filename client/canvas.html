@@ -4,11 +4,12 @@
 	<title>Charm</title>
 	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/ocanvas/2.7.3/ocanvas.min.js"></script>
 </head>
 
 <body>
 
-<canvas id="game_canvas" width=500 height=300>
+<canvas id="game_canvas" width=800 height=600>
 </canvas>
 
 
@@ -17,13 +18,8 @@
 <script>
 
 $(document).ready(function(){
-    var game_canvas = $("#game_canvas")[0];
-    var context = game_canvas.getContext('2d');
-
-    var width = game_canvas.width;
-    var height = game_canvas.height;
-
-    context.fillRect(0,0,width,height);
+    var canvas = oCanvas.create({ canvas: "#game_canvas", background: "#eee" });
+    canvas.display.ellipse({x:50, y:50, radius:10, fill:"black"}).add();
 });
 </script>
 
