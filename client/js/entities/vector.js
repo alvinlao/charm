@@ -1,4 +1,4 @@
-function Vector2D = function(x, y) {
+function Vector2D(x, y) {
   this.x = x;
   thix.y = y;
   return this;
