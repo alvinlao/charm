@@ -40,7 +40,7 @@ server.io.on('connection', function(socket) {
 
 			console.log('Teams: ');
 			console.log(teams);
-			brain.start(teams, socket);
+			brain.start(teams, server);
 		}
 	});
 

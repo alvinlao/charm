@@ -40,13 +40,13 @@ Brain.prototype.loop = function() {
     }
 }
 
-Brain.prototype.start = function(team, socket) {
+Brain.prototype.start = function(team, server) {
     this.interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
 
     var brain = this;
 
     world_state_broadcast_interval = setInterval(function () {
-    	socket.emit('world_state', brain.return_world_state);
+    	server.io.emit('world_state', brain.return_world_state());
     }, 1000);
 }
 
