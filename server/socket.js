@@ -10,7 +10,7 @@ server.io.on('connection', function(socket) {
 		console.log('Game full')
 
 		// Game has enough people
-		socket.emit('game full', 'Game is full')
+		socket.emit('game_full', 'Game is full')
 	}
 
 	socket.on('ready', function(player_id) {
@@ -21,7 +21,7 @@ server.io.on('connection', function(socket) {
 		// Broadcast lobby state
 		var lobby_state = game.get_lobby_state();
 		console.log(lobby_state);
-		server.io.emit('lobby update', lobby_state);
+		server.io.emit('lobby_update', lobby_state);
 
 		// Start game
 		if(game.is_ready()) {
