@@ -61,6 +61,7 @@ function game_loop() {
 
     replicate_state();
 
+
     var keys = Object.keys(game_objects);
     keys.forEach(function(eid){
         game_objects[eid].update(world_state[eid]);
@@ -75,20 +76,15 @@ function game_loop() {
     canvas.draw.redraw();
 }
 
-/* Example:
- * {player_id: 54321,
- *  inputs: ["up"]}
- */
-function update_other_players(state){
-    //player2.input(state[54321]);
-    //player2.draw();
+function update_world_state(state) {
+    world_state = state;
 }
 
 $(document).ready(function(){
     canvas = oCanvas.create({ canvas: "#game_canvas", background: "#eee" });
     controls = new Controls(canvas);
     socket = io();
-    socket.on('all_inputs', update_other_players);
+    socket.on('world_state', update_world_state);
 
     tether = canvas.display.line({
         start: { x: 50, y: 50 },
