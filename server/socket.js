@@ -15,8 +15,6 @@ server.io.on('connection', function(socket) {
 		socket.emit('game_full', 'Game is full');
         return;
 	} else {
-        console.log('hi')
-
 		game.broadcast_game_state(server);
 	}
 
