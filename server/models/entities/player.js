@@ -3,17 +3,14 @@ var Particle = require('../entities/Particle');
 Player.prototype = new Particle();
 Player.prototype.constructor = Player;
 
-function Player(eid) {
+function Player(eid, player_id) {
+	this.player_id = player_id;
+
 	Particle.prototype.constructor.call(this, eid, 0, 0, 10);
 }
 
 Player.prototype.init_draw = function() {
-	this.drawable = canvas.display.ellipse({x: this.x, y: this.y, radius:20, fill:"black"}).add();
-}
-
-Player.prototype.emitState = function(socket) {
-	var state = {x: this.x, y: this.y, vx: this.vx, vy: this.vy, playerId: this.id};
-  	socket.emit("player_state", state);
+	// this.drawable = canvas.display.ellipse({x: this.x, y: this.y, radius:20, fill:"black"}).add();
 }
 
 Player.prototype.control = function(state) {
@@ -63,6 +60,15 @@ Player.prototype.input = function(input_list) {
             this.x += 6;
         }
     }
+}
+
+Player.prototype.serialize = function () {
+	return {
+		entity_type: "player",
+		x : this.x,
+		y : this.y,
+		controller : this.player_id
+	}
 }
 
 module.exports = Player;
