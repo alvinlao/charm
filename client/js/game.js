@@ -41,7 +41,7 @@ $(document).ready(function(){
     canvas = oCanvas.create({ canvas: "#game_canvas", background: "#eee" });
     controls = new Controls(canvas);
     socket = io();
-    
+
     tether = canvas.display.line({
         start: { x: 50, y: 50 },
         end: { x: 400, y: 50 },
@@ -55,7 +55,3 @@ $(document).ready(function(){
 
     canvas.setLoop(game_loop).start();
 });
-
-
-
-
