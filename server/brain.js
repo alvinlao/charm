@@ -43,6 +43,15 @@ Brain.prototype.start = function(team, server) {
     this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
 
     var brain = this;
+
+    // Create player objects
+    this.objects[1] = new Player(1,1);
+    this.objects[1].x = 100;
+    this.objects[1].y = 100;
+    this.objects[2] = new Player(2,2);
+    this.objects[2].x = 600;
+    this.objects[2].y = 100;
+
     this.world_state_broadcast_interval_id = setInterval(function () {
     	server.io.emit('world_state', brain.return_world_state());
     }, 1000);
@@ -55,6 +64,7 @@ Brain.prototype.return_world_state = function() {
 		serialized_objects[this.objects[key].eid] = this.objects[key].serialize();
 	}
 
+    console.log(serialized_objects);
 	return serialized_objects;
 }
 

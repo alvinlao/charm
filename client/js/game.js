@@ -9,18 +9,6 @@ var player_id = server_player_id;
 
 var game_objects = {};
 var world_state = {};
-//var world_state = {1:{
-//        controller:-1,
-//        entity_type:"player",
-//        x:100,
-//        y:100
-//    }, 2:{
-//        controller:2,
-//        entity_type:"player",
-//        x:100,
-//        y:100
-//    }
-//};
 
 var game_object_prototypes = {
     player:Player.prototype.constructor
