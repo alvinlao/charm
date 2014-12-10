@@ -22,13 +22,13 @@ Particle.prototype.intersects = function(other) {
   return dist <= this.r = other.r;
 }
 
-Particle.prototype.applyForce = function() {
-  this.V.add(this.F.scale(1/this.m));
-  this.F = Vector2D(0,0);
+Particle.prototype.applyForce = function(newForce) {
+  this.F.add(newForce);
 }
 
 Particle.prototype.update = function () {
-  this.applyForce();
+  this.V.add(this.F.scale(1/this.m));
+  this.F = Vector2D(0,0);
   this.x = this.V.x * this.dt;
   this.y = this.V.y * this.dt;
 }
