@@ -4,9 +4,11 @@ var NUM_NODES = 3;		// Number of nodes
 Tether.prototype = new GameObject();
 Tether.prototype.constructor = Tether;
 
-function Tether(x1, y1, x2, y2) {
+function Tether(endpoint1, endpoint2) {
 	GameObject.prototype.constructor.call(this);
 
+  this.endpoint1 = endpoint1;
+  this.endpoint2 = endpoint2;
 	this.nodes = []
 
 	var dx = Math.abs(x2 - x1);

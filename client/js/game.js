@@ -25,7 +25,7 @@ function game_loop(){
 $(document).ready(function(){
     canvas = oCanvas.create({ canvas: "#game_canvas", background: "#eee" });
     controls = new Controls(canvas);
-    //initializeControls();
+    
     tether = canvas.display.line({
         start: { x: 50, y: 50 },
         end: { x: 400, y: 50 },

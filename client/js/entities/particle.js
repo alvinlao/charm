@@ -1,14 +1,31 @@
 Particle.prototype = new GameObject();
 Particle.prototype.constructor = Particle;
 
-function Particle(x, y) {
+function Particle(x, y, m, r) {
 	GameObject.prototype.constructor.call(this);
 
 	this.x = x;
 	this.y = y;
-	this.vx = 0;
-	this.vy = 0;
+	this.m = m;
+	this.r = r || 0;
 
-	// Upcoming forces
-	this.F = [];
+	// Vectors
+	this.V = Vector2D(0,0);	// velocity
+	this.F = Vector2D(0,0);	// force
+}
+
+/*
+	Check collision with another particle
+ */
+Particle.prototype.intersects = function(other) {
+  var dest = Math.sqrt((this.x - other.x)^2 + (this.y - other.y)^2);
+  return dist <= this.r = other.r;
+}
+
+/*
+	Apply collision logic to this particle
+	@other: Particle
+ */
+Particle.prototype.collide = function(other) {
+
 }
