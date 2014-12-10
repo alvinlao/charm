@@ -5,7 +5,7 @@ var tether;
 
 // Networking
 var socket;
-var player_id = -1;
+var player_id = server_player_id;
 
 var game_objects = {};
 var world_state = {1:{
@@ -85,7 +85,7 @@ function update_world_state(state) {
     world_state = state;
 }
 
-$(document).ready(function(){
+function prepare_game() {
     canvas = oCanvas.create({ canvas: "#game_canvas", background: "#eee" });
     controls = new Controls(canvas);
     socket = io();
@@ -98,5 +98,7 @@ $(document).ready(function(){
         cap: "round"
     }).add();
 
+    console.log("player id: " + server_player_id);
+
     canvas.setLoop(game_loop).start();
-});
+}
