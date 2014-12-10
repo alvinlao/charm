@@ -1,11 +1,14 @@
 var canvas;
 var controls;
 
+// Game objects
 var player1;
 var player2;
 var tether;
 
+// Networking
 var socket;
+var player_id = 12345;
 
 function game_loop() {
     // Handle controls
@@ -17,7 +20,12 @@ function game_loop() {
     }
 
     console.log(buttons_held);
-    socket.emit("inputs", buttons_held);
+
+    var input_packet = {
+        player_id: player_id,
+        inputs: buttons_held
+    };
+    socket.emit("inputs", input_packet);
 
     // UPDATE
     // SIMULATE

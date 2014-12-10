@@ -50,7 +50,9 @@ server.io.on('connection', function(socket) {
   });
 
 
-  socket.on('inputs', function(inputs){
-    console.log(inputs);
+  socket.on('inputs', function(state){
+    if(state.inputs.length > 0){
+      console.log(state);
+    }
   });
 })
