@@ -8,18 +8,41 @@
 
 <body>
 
-Hack away~~~
+<div>
+	<h2>TEAM 1</h2>
+
+	<div>Player 1 <button id="player_one" class="player_button">JOIN</button></div>
+	<div>Player 2 <button id="player_two" class="player_button">JOIN</button></div>
+</div>
+
+<div>
+	<h2>TEAM 2</h2>
+
+	<div>Player 3 <button id="player_three" class="player_button">JOIN</button></div>
+	<div>Player 4 <button id="player_four" class="player_button">JOIN</button></div>
+</div>
 
 </body>
 
 <script>
 	var socket;
 	$(function() {
-		socket = io();
-		socket.on('hello', function(msg) {
-			console.log(msg);
-		})
-		console.log("Loaded")
+		var socket = io();
+		$(".player_button").click(function () {
+			this.innerHTML = "LOADING...";
+			$(".player_button").attr('disabled','disabled');
+
+			var player_id = (this.id == "player_one" ? 1 : (this.id == "player_two" ? 2 : (this.id == "player_three" ? 3 : 4)));
+
+			socket.emit('ready', player_id);
+		});
+
+		socket.on('lobby_update', function (data) {
+			$(".player_button").each(function ( index, value ) {
+				if (data[index]) this.innerHTML = "JOINED";
+				else this.innerHTML = "JOIN";
+			});
+		});
 	})
 </script>
 </html>
