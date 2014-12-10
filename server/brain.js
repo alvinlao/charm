@@ -49,7 +49,7 @@ Brain.prototype.set_interval = function(loop, loopInterval){
 }
 
 Brain.prototype.queue_inputs = function(client_id, inputs) {
-    this.inputs[clinet_id] = inputs;
+    this.inputs[client_id] = inputs;
 }
 
 Brain.prototype.process_inputs = function() {
