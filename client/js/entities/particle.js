@@ -14,16 +14,23 @@ function Particle(x, y, m, r) {
 	this.F = Vector2D(0,0);	// force
 }
 
-/*
-	Check collision with another particle
- */
+Particle.prototype.getCentre = function() {
+  return Vector2D(this.x, this.y);
+}
+
+Particle.prototype.distToCentre = function(other) {
+  var x1 = this.getCentre(),
+      x2 = other.getCentre();
+  return x1.subtract(x2).norm();
+}
+
 Particle.prototype.intersects = function(other) {
-  var dest = Math.sqrt((this.x - other.x)^2 + (this.y - other.y)^2);
-  return dist <= this.r = other.r;
+  return this.distToCentre(other) <= this.r + other.r;
 }
 
 Particle.prototype.applyForce = function(newForce) {
   this.F.add(newForce);
+  return this;
 }
 
 Particle.prototype.update = function () {
@@ -31,12 +38,15 @@ Particle.prototype.update = function () {
   this.F = Vector2D(0,0);
   this.x = this.V.x * this.dt;
   this.y = this.V.y * this.dt;
+  return this;
 }
 
-/*
-	Apply collision logic to this particle
-	@other: Particle
- */
 Particle.prototype.collide = function(other) {
-
+  var M = this.m + other.m,
+      m = this.m * other.m,
+      V = other.V.subtract(this.V),
+      X = other.getCentre().subtract(this.getCentre()),
+      k = (2 * m * V.dot(X))/(M * X.norm());
+  this.applyForce(X.scale(k));
+  return this;
 }
