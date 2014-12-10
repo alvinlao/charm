@@ -41,23 +41,6 @@ function replicate_state() {
 }
 
 function game_loop() {
-    // Handle controls
-    buttons_held = [];
-    for(var button in controls.key_map){
-        if(controls.isControlDown(controls.key_map[button])) {
-            buttons_held.push(button);
-        }
-    }
-    if(buttons_held.length > 0){
-        //console.log(buttons_held);
-
-        var input_packet = {
-            eid: player_eid,
-            inputs: buttons_held
-        };
-        socket.emit("inputs", input_packet);
-    }
-
     replicate_state();
 
 
