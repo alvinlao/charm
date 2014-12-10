@@ -51,7 +51,7 @@ function update_lobby(data) {
       }
     } else {
       this.innerHTML = "JOIN";
-      if (player_id == -1) $(this).removeAttr('disabled');
+      $(this).removeAttr('disabled');
     }
   });
 }
@@ -79,7 +79,7 @@ $(function() {
     change_state(STATES.GAME);
   });
 
-    if (state == STATES.LOBBY) {
+  if (state == STATES.LOBBY) {
       update_lobby(data)
     } else if(state == STATES.GAME) {
       update_game(data);

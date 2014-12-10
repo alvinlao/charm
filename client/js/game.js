@@ -8,7 +8,7 @@ var tether;
 
 // Networking
 var socket;
-var player_id = 12345;
+var player_id = -1;
 
 function game_loop() {
     // Handle controls
