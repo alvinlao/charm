@@ -6,13 +6,13 @@ server.io.on('connection', function(socket) {
 	console.log('Client has connected: ' + socket.id);
 
 	// Game connect
-	if (!game.connect(socket)) {
+	if (!game.connect_player(socket)) {
 		console.log('Game full');
 
 		// Game has enough people
 		socket.emit('game_full', 'Game is full');
 	} else {
-		socket.emit('lobby_update', game.get_lobby_state());
+		game.broadcast_game_state(server);
 	}
 
 	socket.on('ready', function(player_id) {
@@ -22,13 +22,15 @@ server.io.on('connection', function(socket) {
 
 		// Broadcast lobby state
 		var lobby_state = game.get_lobby_state();
-		server.io.emit('lobby_update', lobby_state);
+		game.broadcast_game_state(server);
 
 		// Start game
 		if(game.is_ready()) {
 			console.log('Start game')
-			server.io.emit('game_start', null);
 			var teams = game.start();
+			game.broadcast_game_state(server);
+
+			console.log('Teams: ');
 			console.log(teams);
 			brain.start(teams, socket);
 		}
@@ -38,8 +40,8 @@ server.io.on('connection', function(socket) {
 		console.log('Client disconnect')
 
 		// Game disconnect
-		game.disconnect(socket);
-		server.io.emit('lobby_update', game.get_lobby_state());
+		game.disconnect_player(socket);
+		game.broadcast_game_state(server);
 	});
 
   // **

@@ -5,25 +5,27 @@ var NUM_TEAMS = 2;
 
 var STATES = Object.freeze({
 	LOBBY : 1,
-	IN_GAME : 2,
-	POST_GAME: 3
+	IN_GAME : 2
 });
 
 var state = {
 	state: STATES.LOBBY,
 	clients: [],
-	teams: {},
 
-	connect: connect,
-	disconnect: disconnect,
+	lobby_message: null,
+
+	connect_player: connect_player,
+	disconnect_player: disconnect_player,
 	is_ready: is_ready,
 	start: start,
+	stop: stop,
 	get_team_id: get_team_id,
 	player_ready: player_ready,
 	get_lobby_state: get_lobby_state,
+	broadcast_game_state: broadcast_game_state,
 }
 
-function connect(socket) {
+function connect_player(socket) {
 	if(state.clients.length >= NUM_PLAYERS) {
 		return false;
 	}
@@ -35,11 +37,17 @@ function connect(socket) {
 	return true;
 }
 
-function disconnect(socket) {
+function disconnect_player(socket) {
 	for(var i = 0; i < state.clients.length; ++i) {
 		var client = state.clients[i];
 		if (client.id == socket.id) {
 			state.clients.splice(i, 1);
+
+			if(state.state == STATES.IN_GAME) {
+				// Disconnect
+				state.lobby_message = "A player disconnected";
+				state.state = STATES.LOBBY;
+			}
 			return;
 		}
 	}
@@ -87,6 +95,23 @@ function start() {
 	}
 
 	return teams;
+}
+
+function stop() {
+	state.state = STATES.LOBBY;
+}
+
+function broadcast_game_state(server) {
+	var data = {state: state.state};
+
+	if(state.state == STATES.LOBBY) {
+		data.lobby = get_lobby_state();
+		data.lobby_message = state.lobby_message;
+		state.lobby_message = null;
+		server.io.emit('game_state_update', data);
+	} else if (state.state == STATES.IN_GAME) {
+		server.io.emit('game_state_update', data);
+	}
 }
 
 function get_team_id(player_id) {
