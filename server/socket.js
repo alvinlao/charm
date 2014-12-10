@@ -7,12 +7,12 @@ server.io.on('connection', function(socket) {
 	
 	// Game connect
 	if (!game.connect(socket)) {
-		console.log('Game full')
+		console.log('Game full');
 
 		// Game has enough people
-		socket.emit('game full', 'Game is full')
+		socket.emit('game_full', 'Game is full');
 	} else {
-		socket.emit('lobby_update', game.get_lobby_state())
+		socket.emit('lobby_update', game.get_lobby_state());
 	}
 
 	socket.on('ready', function(player_id) {
@@ -23,7 +23,7 @@ server.io.on('connection', function(socket) {
 		// Broadcast lobby state
 		var lobby_state = game.get_lobby_state();
 		console.log(lobby_state);
-		server.io.emit('lobby update', lobby_state);
+		server.io.emit('lobby_update', lobby_state);
 
 		// Start game
 		if(game.is_ready()) {
