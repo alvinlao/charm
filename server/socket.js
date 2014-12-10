@@ -22,7 +22,6 @@ server.io.on('connection', function(socket) {
 
 		// Broadcast lobby state
 		var lobby_state = game.get_lobby_state();
-		console.log(lobby_state);
 		server.io.emit('lobby_update', lobby_state);
 
 		// Start game
@@ -40,5 +39,6 @@ server.io.on('connection', function(socket) {
 
 		// Game disconnect
 		game.disconnect(socket);
+		server.io.emit('lobby_update', game.get_lobby_state());
 	});
 })

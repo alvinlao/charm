@@ -100,9 +100,11 @@ function get_team_id(player_id) {
 function get_lobby_state() {
 	var lobby_state = [false, false, false, false];
 	for(var i = 0; i < state.clients.length; i++) {
-		lobby_state[i] = (state.clients[i].state == client_module.STATES.READY);
+		var client = state.clients[i];
+		lobby_state[client.player_id-1] = (client.state == client_module.STATES.READY);
 	}
 
+	console.log("lobby state: " + lobby_state);
 	return lobby_state;
 }
 
