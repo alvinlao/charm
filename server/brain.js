@@ -46,7 +46,7 @@ Brain.prototype.start = function(team, socket) {
     var brain = this;
 
     world_state_broadcast_interval = setInterval(function () {
-    	socket.emit('world_state', brain.return_world_state);
+    	socket.emit('world_state', brain.return_world_state());
     }, 1000);
 }
 
