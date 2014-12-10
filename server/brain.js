@@ -76,12 +76,14 @@ Brain.prototype.start = function(team, server) {
     console.log("Hello!");
 
     // Create player objects
-    this.objects[1] = new Player(this.world, 1,1);
-    this.objects[1].x = 100;
-    this.objects[1].y = 100;
-    this.objects[2] = new Player(this.world, 2,2);
-    this.objects[2].x = 600;
-    this.objects[2].y = 100;
+    for(var i=0; i<team.length; i++){
+        for(var j=0; j<team[i].length; j++){
+            var eid = team[i][j].id;
+            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id);
+            this.objects[eid].x = 100;
+            this.objects[eid].y = 100;
+        }
+    }
 
     this.world_state_broadcast_interval_id = setInterval(function () {
     	server.io.emit('world_state', brain.return_world_state());
