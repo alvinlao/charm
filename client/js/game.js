@@ -75,7 +75,7 @@ function update_world_state(state) {
 }
 
 function prepare_game() {
-    canvas = oCanvas.create({ canvas: "#game_canvas", background: "#eee" });
+    canvas = oCanvas.create({ canvas: "#game_canvas", background: "#232129" });
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     controls = new Controls(canvas);
