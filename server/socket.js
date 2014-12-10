@@ -13,10 +13,15 @@ server.io.on('connection', function(socket) {
 
 		// Game has enough people
 		socket.emit('game_full', 'Game is full');
+        return;
 	} else {
-        socket.emit('player_info', socket.id);
+        console.log('hi')
+
 		game.broadcast_game_state(server);
 	}
+
+    // Send player info
+    socket.emit('player_info', socket.id);
 
 	socket.on('ready', function(player_id) {
 		var team_id = game.get_team_id(player_id)
