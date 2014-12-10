@@ -15,7 +15,7 @@ module.exports.start = function(portNumber) {
 		res.sendFile(appDir + '/client/index.html');
 	})
 
-  	app.use(express.static(appDir + '/client/js'));
+  	app.use(express.static(appDir + '/client'));
 
 	app.get('/game', function(req, res) {
 		res.sendFile(appDir + '/client/canvas.html');

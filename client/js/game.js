@@ -8,7 +8,7 @@ var tether;
 
 // Networking
 var socket;
-var player_id = 12345;
+var player_id = -1;
 
 function game_loop() {
     // Handle controls
@@ -53,7 +53,7 @@ $(document).ready(function(){
     controls = new Controls(canvas);
     socket = io();
     socket.on('all_inputs', update_other_players);
-    
+
     tether = canvas.display.line({
         start: { x: 50, y: 50 },
         end: { x: 400, y: 50 },
@@ -66,7 +66,3 @@ $(document).ready(function(){
 
     canvas.setLoop(game_loop).start();
 });
-
-
-
-
