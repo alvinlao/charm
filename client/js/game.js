@@ -19,15 +19,15 @@ function game_loop() {
         }
     }
 
-    if(buttons_held.len > 0) {
-        console.log(buttons_held);
-    }
+    if(buttons_held.length > 0){
+        //console.log(buttons_held);
 
-    var input_packet = {
-        player_id: player_id,
-        inputs: buttons_held
-    };
-    socket.emit("inputs", input_packet);
+        var input_packet = {
+            player_id: player_id,
+            inputs: buttons_held
+        };
+        socket.emit("inputs", input_packet);
+    }
 
     // UPDATE
     // SIMULATE
@@ -39,10 +39,20 @@ function game_loop() {
     canvas.draw.redraw();
 }
 
+/* Example:
+ * {player_id: 54321,
+ *  inputs: ["up"]}
+ */
+function update_other_players(state){
+    player2.input(state[54321]);
+    player2.draw();
+}
+
 $(document).ready(function(){
     canvas = oCanvas.create({ canvas: "#game_canvas", background: "#eee" });
     controls = new Controls(canvas);
     socket = io();
+    socket.on('all_inputs', update_other_players);
 
     tether = canvas.display.line({
         start: { x: 50, y: 50 },
@@ -51,9 +61,8 @@ $(document).ready(function(){
         cap: "round"
     }).add();
 
-    //player1 = canvas.display.ellipse({x: 50, y: 50, radius:20, fill:"black"}).add();
-    player1 = new Player(1, 10, 10);
-    player2 = canvas.display.ellipse({x: 400, y: 50, radius:20, fill:"black"}).add();
+    player1 = new Player(1, 100, 100);
+    player2 = new Player(1, 400, 100);
 
     canvas.setLoop(game_loop).start();
 });
