@@ -18,7 +18,7 @@ function game_loop(){
     // DRAW
 }
 
-$(document).ready(function(){
+function start_game() {
     canvas = oCanvas.create({ canvas: "#game_canvas", background: "#eee" });
     controls = new Controls(canvas);
     //initializeControls();
@@ -32,6 +32,8 @@ $(document).ready(function(){
     player2 = canvas.display.ellipse({x: 400, y: 50, radius:20, fill:"black"}).add();
 
     canvas.setLoop(game_loop).start();
-});
+}
 
+function end_game() {
 
+}
