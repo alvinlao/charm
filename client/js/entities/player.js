@@ -1,6 +1,3 @@
-var ACCELERATION = 2;
-var TOP_SPEED = 10
-
 Player.prototype = new Particle();
 Player.prototype.constructor = Player;
 
@@ -35,4 +32,8 @@ Player.prototype.update = function() {
 Player.prototype.draw = function() {
 	Particle.prototype.draw.call(this);
 	this.drawable.moveTo(this.x, this.y);
+}
+
+Player.prototype.input = function(input) {
+  
 }

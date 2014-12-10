@@ -82,7 +82,7 @@ function start() {
 	}
 
 	for (var i = 0; i < state.clients.length; i++) {
-		var client = clients[i]
+		var client = state.clients[i]
 		teams[client.team].push(client)
 	}
 
