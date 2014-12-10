@@ -26,17 +26,22 @@ var game_object_prototypes = {
 };
 
 function replicate_state() {
-    keys = Object.keys(world_state);
+    // Create entities that exist in world state but not game.
+    var keys = Object.keys(world_state);
     keys.forEach(function(eid) {
-        if (eid in game_objects) {
-            if(world_state[eid] == null) {
-                game_objects[eid].destroy();
-                delete game_objects[eid];
-            }
-        } else {
+        if (!(eid in game_objects)) {
             if(world_state[eid].entity_type in game_object_prototypes) {
                 game_objects[eid] = new game_object_prototypes[world_state[eid].entity_type](eid);
             }
+        }
+    });
+
+    // Remove entities that exist in game but not world state.
+    keys = Object.keys(game_objects);
+    keys.forEach(function(eid) {
+        if (!(eid in world_state)) {
+            game_objects[eid].destroy();
+            delete game_objects[eid];
         }
     });
 }
