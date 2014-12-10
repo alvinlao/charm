@@ -8,13 +8,26 @@ var Tether = require('../server/models/entities/tether')
 function Brain() {
     this.objects = {};
     this.actions = [];
+
+    // Map of inputs
+    // client_id -> inputs
+    this.inputs = {};
 }
 
 Brain.prototype.set_interval = function(loop, loopInterval){
 }
 
-Brain.prototype.process_inputs = function(inputs) {
-    var targetId = inputs.id;
+Brain.prototype.queue_inputs = function(client_id, inputs) {
+    this.inputs[clinet_id] = inputs;
+}
+
+Brain.prototype.process_inputs = function() {
+    for (key in this.inputs) {
+        var input = this.inputs[key];
+        this.inputs[key] = [];
+
+        // TODO, process input
+    }
 }
 
 Brain.prototype.loop = function() {
