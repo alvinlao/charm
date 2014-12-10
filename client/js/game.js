@@ -6,6 +6,7 @@ var tether;
 // Networking
 var socket;
 var player_id = server_player_id;
+var player_eid = -1;
 
 var game_objects = {};
 var world_state = {};
@@ -22,6 +23,10 @@ function replicate_state() {
             if(world_state[eid].entity_type in game_object_prototypes) {
                 game_objects[eid] = new game_object_prototypes[world_state[eid].entity_type](eid);
             }
+        }
+        // grab EID from here
+        if(world_state[eid].controller == player_id){
+            player_eid = eid;
         }
     });
 
@@ -47,7 +52,7 @@ function game_loop() {
         //console.log(buttons_held);
 
         var input_packet = {
-            player_id: player_id,
+            eid: player_eid,
             inputs: buttons_held
         };
         socket.emit("inputs", input_packet);
