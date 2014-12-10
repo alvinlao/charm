@@ -54,19 +54,7 @@ server.io.on('connection', function(socket) {
         }
 	});
 
-    // **
-    // GAME EVENTS
-    // **
-    socket.on('player_state', function(state) {
-        console.log(state);
+    socket.on('inputs', function(state){
+        brain.queue_inputs(socket.id, state.inputs);
     });
-
-
-  /* Example:
-   * {player_id: 12345,
-   *  inputs:["up"]}
-   */
-  socket.on('inputs', function(state){
-    brain.process_inputs(socket.id, state.inputs);
-  });
 })
