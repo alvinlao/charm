@@ -75,6 +75,10 @@ $(function() {
       change_state(data.state);
     }
 
+  $(".instant_join").click(function () {
+    change_state(STATES.GAME);
+  });
+
     if (state == STATES.LOBBY) {
       update_lobby(data)
     } else if(state == STATES.GAME) {

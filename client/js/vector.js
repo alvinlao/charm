@@ -23,3 +23,12 @@ Vector2D.prototype.direction = function() {
   var l = this.length();
   return Vector2D(this.x / l, this.y / l);
 }
+Vector2D.prototype.negate = function() {
+  return this.scale(-1);
+}
+
+ZeroVector.prototype = Object.create(Vector2D.prototype);
+ZeroVector.prototype.constructor = ZeroVector;
+function ZeroVector() {
+    return Vector2D(0,0);
+}
