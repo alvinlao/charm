@@ -48,7 +48,7 @@ Particle.prototype.intersects = function(other) {
     return this.distanceTo(other) <= CONSTANTS.EPSILON;
 }
 
-Particle.prototype.update = function () {
+Particle.prototype.control = function () {
     var F_net = this.F.reduce(function(a, b) { return a.add(b); }, ZeroVector());
     this.resetForces();
     this.V.add(this.F_net.scale(1/this.m) * CONSTANTS.TIMEDELTA);
