@@ -1,3 +1,5 @@
+var GameObject = require('../entities/gameobject');
+
 Tether.prototype = new GameObject();
 Tether.prototype.constructor = Tether;
 
@@ -30,3 +32,5 @@ Tether.prototype.update = function() {
 
 	for (var i = 0; i < NUM_NODES; ++i) this.nodes[i].update();
 }
+
+module.exports = Tether;
