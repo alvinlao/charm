@@ -9,11 +9,15 @@ var player_id = -1;
 
 var game_objects = {};
 var game_state = {1:{
-        controller:1,
-        entity_type:"player"
+        controller:-1,
+        entity_type:"player",
+        x:100,
+        y:100
     }, 2:{
         controller:2,
-        entity_type:"player"
+        entity_type:"player",
+        x:100,
+        y:100
     }
 };
 
@@ -59,7 +63,7 @@ function game_loop() {
 
     var keys = Object.keys(game_objects);
     keys.forEach(function(eid){
-        game_objects[eid].update();
+        game_objects[eid].update(game_state[eid]);
     });
     keys.forEach(function(eid){
         game_objects[eid].simulate();

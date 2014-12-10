@@ -14,7 +14,7 @@ Player.prototype.emitState = function(socket) {
   	socket.emit("player_state", state);
 }
 
-Player.prototype.update = function() {
+Player.prototype.control = function(state) {
 	//Particle.prototype.update.call(this);
 	//TODO; Change to force
 	if(controls.isControlDown(controls.key_map.up)) {
@@ -29,6 +29,11 @@ Player.prototype.update = function() {
 	if(controls.isControlDown(controls.key_map.right)) {
 		this.x += 6;
 	}
+}
+
+Player.prototype.replicate = function(state) {
+	this.x = state["x"];
+	this.y = state["y"];
 }
 
 Player.prototype.draw = function() {
