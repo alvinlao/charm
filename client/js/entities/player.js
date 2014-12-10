@@ -7,6 +7,7 @@ function Player(eid) {
 
 Player.prototype.init_draw = function() {
 	this.drawable = canvas.display.ellipse({x: this.x, y: this.y, radius:20, fill:"white"}).add();
+	this.drawable.strokeColor = "white";
 }
 
 Player.prototype.emitState = function(socket) {
@@ -32,8 +33,12 @@ Player.prototype.control = function(state) {
 }
 
 Player.prototype.replicate = function(state) {
-	this.x = state["x"];
-	this.y = state["y"];
+	this.drawable.strokeWidth = 3.0 - 2.0*Math.sqrt(Math.pow(state.x - this.x, 2) + Math.pow(state.y - this.y,2))/8.5;	
+
+	this.x = state.x;
+	this.y = state.y;
+
+	this.drawable.fill = "#FFAAAA";
 }
 
 Player.prototype.draw = function() {

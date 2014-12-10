@@ -76,6 +76,7 @@ function start_game() {
 }
 
 function update_game(data) {
+  reset_game();
 }
 
 $(function() {
