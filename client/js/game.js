@@ -1,8 +1,8 @@
 var canvas;
 var controls;
 
-var player1_object;
-var player1_particle;
+var player1;
+var player2;
 var tether;
 
 function game_loop() {

@@ -13,7 +13,7 @@ Player.prototype.emitState = function(socket) {
 }
 
 Player.prototype.update = function() {
-	Particle.prototype.update.call(this);
+	//Particle.prototype.update.call(this);
 	//TODO; Change to force
 	if(controls.isControlDown(controls.key_map.up)) {
 		this.y -= 6;
