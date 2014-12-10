@@ -17,5 +17,5 @@ Vector2D.prototype.dot = function(other) {
   return this.x * other.x + this.y * other.y;
 }
 Vector2D.prototype.norm = function() {
-  return this.dot(this);
+  return Math.sqrt(this.dot(this));
 }
