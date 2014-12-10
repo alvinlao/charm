@@ -1,3 +1,6 @@
+var ACCELERATION = 2;
+var TOP_SPEED = 10
+
 Player.prototype = new Particle();
 Player.prototype.constructor = Player;
 
