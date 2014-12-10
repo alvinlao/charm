@@ -19,7 +19,11 @@
 
 $(document).ready(function(){
     Crafty.init(800,600, $("#game")[0]);
-    Crafty.e('2D, DOM, Color').attr({x: 50, y: 50, w: 10, h: 10}).color('#000');
+    Crafty.background("#eee")
+    Crafty.e('2D, Fourway, Canvas, Color, Ball')
+      .attr({x: 50, y: 50, w: 30, h: 30})
+      .color('#000')
+      .fourway(2);
 });
 </script>
 
