@@ -8,7 +8,7 @@ var socket;
 var player_id = -1;
 
 var game_objects = {};
-var game_state = {1:{
+var world_state = {1:{
         controller:-1,
         entity_type:"player",
         x:100,
@@ -26,16 +26,16 @@ var game_object_prototypes = {
 };
 
 function replicate_state() {
-    keys = Object.keys(game_state);
+    keys = Object.keys(world_state);
     keys.forEach(function(eid) {
         if (eid in game_objects) {
-            if(game_state[eid] == null) {
+            if(world_state[eid] == null) {
                 game_objects[eid].destroy();
                 delete game_objects[eid];
             }
         } else {
-            if(game_state[eid].entity_type in game_object_prototypes) {
-                game_objects[eid] = new game_object_prototypes[game_state[eid].entity_type](eid);
+            if(world_state[eid].entity_type in game_object_prototypes) {
+                game_objects[eid] = new game_object_prototypes[world_state[eid].entity_type](eid);
             }
         }
     });
@@ -63,7 +63,7 @@ function game_loop() {
 
     var keys = Object.keys(game_objects);
     keys.forEach(function(eid){
-        game_objects[eid].update(game_state[eid]);
+        game_objects[eid].update(world_state[eid]);
     });
     keys.forEach(function(eid){
         game_objects[eid].simulate();
