@@ -1,7 +1,8 @@
 <!doctype html>
 <html>
 <head>
-	<title>Charm</title>
+	<title>Tether</title>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 	<script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
 	<script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/ocanvas/2.7.3/ocanvas.min.js"></script>
@@ -12,19 +13,19 @@
 <body>
 
 <div id="lobby">
+	<div id="title">TETHER</div>
 	<div id="lobby_message"></div>
-	<div>
-		<h2>TEAM 1</h2>
 
-		<div>Player 1 <button id="player_one" class="player_button">JOIN</button></div>
-		<div>Player 2 <button id="player_two" class="player_button">JOIN</button></div>
-	</div>
+	<div id="lobby_teams">
+		<div class="lobby_team">
+			<div><button id="player_one" class="player_button lobby_circle">JOIN</button></div>
+			<div><button id="player_two" class="player_button lobby_circle">JOIN</button></div>
+		</div>
 
-	<div>
-		<h2>TEAM 2</h2>
-
-		<div>Player 3 <button id="player_three" class="player_button">JOIN</button></div>
-		<div>Player 4 <button id="player_four" class="player_button">JOIN</button></div>
+		<div class="lobby_team">
+			<div><button id="player_three" class="player_button lobby_circle">JOIN</button></div>
+			<div><button id="player_four" class="player_button lobby_circle">JOIN</button></div>
+		</div>
 	</div>
 
   <br>
@@ -41,7 +42,7 @@
 
 <!-- MAIN -->
 <script>
-	var player_id;
+	var server_player_id;
 </script>
 <script src="js/client.js"></script>
 <script src="js/controls.js"></script>
