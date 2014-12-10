@@ -12,12 +12,12 @@ function Brain() {
  */
 Brain.prototype.init_world = function() {
     var worldAABB = new b2d.b2AABB(),
-        gravity = new b2d.Vec2(0.0, 0.0),
+        gravity = new b2d.b2Vec2(0.0, 0.0),
         do_sleep = true;
     worldAABB.lowerBound.Set(CONSTANTS.LOWER_X, CONSTANTS.LOWER_Y);
     worldAABB.upperBound.Set(CONSTANTS.UPPER_X, CONSTANTS.UPPER_Y);
 
-    this.world = new box2d.b2World(worldAABB, gravity, do_sleep);
+    this.world = new b2d.b2World(worldAABB, gravity, do_sleep);
     this.objects = {};
     this.actions = [];
 
