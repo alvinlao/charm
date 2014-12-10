@@ -10,3 +10,7 @@ Player.prototype.emitState = function(socket) {
   var state = {x: this.x, y: this.y, vx: this.vx, vy: this.vy, playerId: this.id};
   socket.emit("player_state", state);
 }
+
+Player.prototype.input = function(input) {
+  
+}
