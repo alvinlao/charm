@@ -17,6 +17,7 @@ var state = {
 	connect_player: connect_player,
 	disconnect_player: disconnect_player,
 	is_ready: is_ready,
+	is_running: is_running,
 	start: start,
 	stop: stop,
 	get_team_id: get_team_id,
@@ -31,7 +32,7 @@ function connect_player(socket) {
 	}
 
 	if (get_client(socket.id) == null) {
-		state.clients.push(new client_module.client_object(socket.id));
+		state.clients.push(new client_module.client_object(socket));
 	}
 
 	return true;
@@ -81,6 +82,10 @@ function is_ready() {
 	return state.clients.length >= NUM_PLAYERS && state.state == STATES.LOBBY;
 }
 
+function is_running() {
+	return state.state == STATES.IN_GAME;
+}
+
 function start() {
 	console.log(state)
 	state.state = STATES.IN_GAME;
@@ -110,7 +115,11 @@ function broadcast_game_state(server) {
 		state.lobby_message = null;
 		server.io.emit('game_state_update', data);
 	} else if (state.state == STATES.IN_GAME) {
-		server.io.emit('game_state_update', data);
+		for (var i = 0; i < state.clients.length; ++i) {
+			var client = state.clients[i];
+			data.player_id = client.id;
+			client.socket.emit('game_state_update', data);
+		}
 	}
 }
 
