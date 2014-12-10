@@ -19,7 +19,9 @@ function game_loop() {
         }
     }
 
-    console.log(buttons_held);
+    if(buttons_held.len > 0) {
+        console.log(buttons_held);
+    }
 
     var input_packet = {
         player_id: player_id,
