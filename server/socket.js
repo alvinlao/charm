@@ -50,9 +50,13 @@ server.io.on('connection', function(socket) {
   });
 
 
+  /* Example:
+   * {player_id: 12345,
+   *  inputs:["up"]}
+   */
   socket.on('inputs', function(state){
-    if(state.inputs.length > 0){
-      console.log(state);
-    }
+    console.log(state);
+    // player 54321 always moves down whenever our player moves
+    server.io.emit("all_inputs", {54321: ["down"]});
   });
 })
