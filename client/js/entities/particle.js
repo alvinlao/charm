@@ -1,8 +1,8 @@
 Particle.prototype = new GameObject();
 Particle.prototype.constructor = Particle;
 
-function Particle(x, y, m, r) {
-	GameObject.prototype.constructor.call(this);
+function Particle(eid, x, y, m, r) {
+	GameObject.prototype.constructor.call(this, eid);
 
 	this.x = x;
 	this.y = y;

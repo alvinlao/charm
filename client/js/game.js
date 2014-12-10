@@ -1,27 +1,47 @@
 var canvas;
 var controls;
 
-var player1;
-var player2;
 var tether;
 
-function game_loop() {
-    // Handle controls
-    buttons_held = [];
-    for(var button in controls.key_map){
-        if(controls.isControlDown(controls.key_map[button])) {
-            buttons_held.push(button);
+var game_objects = {};
+var game_state = {1:{
+    controller:1,
+    entity_type:"player"
+}};
+
+var game_object_prototypes = {
+    player:Player.prototype.constructor
+};
+
+function replicate_state() {
+    keys = Object.keys(game_state);
+    keys.forEach(function(eid){
+        if (eid in game_objects) {
+            if(game_state[eid] == null) {
+                game_objects[eid].destroy();
+                delete game_objects[eid];
+            }
+        } else {
+            if(game_state[eid].entity_type in game_object_prototypes) {
+                game_objects[eid] = new game_object_prototypes[game_state[eid].entity_type](eid);
+            }
         }
-    }
+    });
+}
 
-    console.log(buttons_held);
+function game_loop() {
+    replicate_state();
 
-    // UPDATE
-    // SIMULATE
-    // DRAW
-    player1.update();
-    player1.simulate();
-    player1.draw();
+    var keys = Object.keys(game_objects);
+    keys.forEach(function(eid){
+        game_objects[eid].update();
+    });
+    keys.forEach(function(eid){
+        game_objects[eid].simulate();
+    });
+    keys.forEach(function(eid){
+        game_objects[eid].draw();
+    });
 
     canvas.draw.redraw();
 }
@@ -38,8 +58,7 @@ $(document).ready(function(){
     }).add();
 
     //player1 = canvas.display.ellipse({x: 50, y: 50, radius:20, fill:"black"}).add();
-    player1 = new Player(1, 10, 10);
-    player2 = canvas.display.ellipse({x: 400, y: 50, radius:20, fill:"black"}).add();
+    //game_objects['1'] = new Player(1, 10, 10);
 
     canvas.setLoop(game_loop).start();
 });
