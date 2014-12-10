@@ -22,26 +22,39 @@
 	<div>Player 4 <button id="player_four" class="player_button">JOIN</button></div>
 </div>
 
+<div id="game_message" style="display: none">Game starting...</div>
+
 </body>
 
 <script>
 	var socket;
 	$(function() {
 		var socket = io();
+
+		var player_id = -1;
+
 		$(".player_button").click(function () {
 			this.innerHTML = "LOADING...";
-			$(".player_button").attr('disabled','disabled');
 
-			var player_id = (this.id == "player_one" ? 1 : (this.id == "player_two" ? 2 : (this.id == "player_three" ? 3 : 4)));
+			player_id = (this.id == "player_one" ? 1 : (this.id == "player_two" ? 2 : (this.id == "player_three" ? 3 : 4)));
 
 			socket.emit('ready', player_id);
 		});
 
 		socket.on('lobby_update', function (data) {
 			$(".player_button").each(function ( index, value ) {
-				if (data[index]) this.innerHTML = "JOINED";
-				else this.innerHTML = "JOIN";
+				$(this).attr('disabled','disabled');
+				if (data[index]) {
+					this.innerHTML = "JOINED";
+				} else {
+					this.innerHTML = "JOIN";
+					if (player_id == -1) $(this).removeAttr('disabled');
+				}
 			});
+		});
+
+		socket.on('game_start', function () {
+			$("#game_message").show();
 		});
 	})
 </script>

@@ -26,7 +26,7 @@ server.io.on('connection', function(socket) {
 		// Start game
 		if(game.is_ready()) {
 			console.log('Start game')
-
+			server.io.emit('game_start', null);
 			var teams = game.start();
 			console.log(teams);
 			brain.start(teams, socket);
