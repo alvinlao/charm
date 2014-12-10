@@ -21,7 +21,10 @@ Particle.prototype.distToCentre = function(other) {
   var x1 = this.getCentre(),
       x2 = other.getCentre();
   return x1.subtract(x2).length();
+}
 
+Particle.prototype.directionToCentre = function(other) {
+  return other.getCentre().subtract(this.getCentre()).direction();
 }
 
 Particle.prototype.intersects = function(other) {
