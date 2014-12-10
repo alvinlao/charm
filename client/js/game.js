@@ -88,6 +88,8 @@ function update_world_state(state) {
 
 function prepare_game() {
     canvas = oCanvas.create({ canvas: "#game_canvas", background: "#eee" });
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     controls = new Controls(canvas);
     socket = io();
     socket.on('world_state', update_world_state);
