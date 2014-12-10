@@ -17,8 +17,8 @@ function Tether(body1, body2) {
     // Create internal nodes for rope
     var dv = this.body2.get_position();
     dv.Subtract(this.body1.get_position());
-    dv.Multiply(dv.Length()/CONSTANTS.NUM_NODES);
-    for(var i = 0; i < CONSTANTS.NUM_NODES; i++) {
+    dv.Multiply(dv.Length()/CONSTANTS.TETHER_NUM_NODES);
+    for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
         var u = this.body1.get_position();
         var v = dv.Copy();
         v.Multiply(i);
@@ -33,7 +33,7 @@ function Tether(body1, body2) {
     rjd1.body1 = this.body1;
     rjd1.body2 = this.internal_nodes[0];
     this.joints.push(brain.create_joint(b2d.b2RevoluteJoint(rjd1)));
-    for(var i = 0; i < CONSTANTS.NUM_NODES - 1; i++){
+    for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES - 1; i++){
         var rjd = b2d.b2RevoluteJointDef(),
             a = this.internal_nodes[i],
             b = this.internal_nodes[i+1];
@@ -43,34 +43,11 @@ function Tether(body1, body2) {
         this.joints.append(brain.create_joint(b2d.b2RevoluteJoint(rjd)));
     }
     var rjd2 = b2d.b2RevoluteJointDef(),
-        last_internal_node = this.internal_nodes[CONSTANTS.NUM_NODES - 1];
+        last_internal_node = this.internal_nodes[CONSTANTS.TETHER_NUM_NODES - 1];
     rjd2.anchorPoint(last_internal_node.get_position());
     rjd2.body1 = last_internal_node;
     rjd2.body2 = this.body2;
     this.joints.push(brain.create_joint(b2d.b2RevoluteJoint(rjd2)));
-
-
-	var dx = Math.abs(particle2.x - particle1.x),
-	dy = Math.abs(particle2.y - particle1.y),
-	ddx = dx/(NUM_NODES-1),
-	ddy = dy/(NUM_NODES-1);
-
-	for (var i = 0; i < NUM_NODES; ++i) {
-		this.nodes.push(new ElasticParticle(particle1.x + ddx*i, particle1.y + ddy*i, K));
-	}
-}
-
-Tether.prototype.update = function() {
-	this.nodes[0].hookesLaw(this.nodes[i + 1]);
-
-	for (var i = 1; i < NUM_NODES - 1; ++i) {
-		this.nodes[i].hookesLaw(this.nodes[i - 1]);
-		this.nodes[i].hookesLaw(this.nodes[i + 1]);
-	}
-
-	this.nodes[NUM_NODES - 1].hookesLaw(this.nodes[NUM_NODES - 2]);
-
-	for (var i = 0; i < NUM_NODES; ++i) this.nodes[i].update();
 }
 
 module.exports = Tether;
