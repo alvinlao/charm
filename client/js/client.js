@@ -37,6 +37,10 @@ $(function() {
     socket.emit('ready', player_id);
   });
 
+  $(".instant_join").click(function () {
+    change_state(STATES.GAME);
+  });
+
   socket.on('lobby_update', function (data) {
     $(".player_button").each(function ( index, value ) {
       $(this).attr('disabled','disabled');
