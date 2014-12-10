@@ -1,4 +1,9 @@
 var CONSTANTS = require('../server/constants')
+var GameObject = require('../server/models/entities/gameobject')
+var Particle = require('../server/models/entities/particle')
+var ElasticParticle = require('../server/models/entities/elasticparticle')
+var Player = require('../server/models/entities/player')
+var Tether = require('../server/models/entities/tether')
 
 function Brain() {
     this.objects = {};

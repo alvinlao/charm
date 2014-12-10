@@ -1,3 +1,6 @@
+var Particle = require('../entities/particle');
+var Vector2D = require('../vector');
+
 ElasticParticle.prototype = new Particle();
 ElasticParticle.prototype.constructor = ElasticParticle;
 
@@ -21,3 +24,5 @@ ElasticParticle.prototype.hookesLaw = function(other, equilibriumDistance) {
 		this.applyForce(this.V.scale(-CONSTANTS.DAMPING_COEFFICIENT));
 	}
 }
+
+module.exports = ElasticParticle;

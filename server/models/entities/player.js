@@ -1,3 +1,5 @@
+var Particle = require('../entities/Particle');
+
 Player.prototype = new Particle();
 Player.prototype.constructor = Player;
 
@@ -62,3 +64,5 @@ Player.prototype.input = function(input_list) {
         }
     }
 }
+
+module.exports = Player;

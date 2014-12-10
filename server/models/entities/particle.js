@@ -1,3 +1,7 @@
+var GameObject = require('../entities/gameobject')
+var CONSTANTS = require('../constants')
+var Vector2D = require('../vector')
+
 Particle.prototype = new GameObject();
 Particle.prototype.constructor = Particle;
 
@@ -62,3 +66,5 @@ Particle.prototype.collide = function(other) {
   this.applyForce(X.scale(k));
   return this;
 }
+
+module.exports = Particle;

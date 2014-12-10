@@ -32,3 +32,5 @@ ZeroVector.prototype.constructor = ZeroVector;
 function ZeroVector() {
     return Vector2D(0,0);
 }
+
+module.exports = Vector2D;

@@ -19,3 +19,5 @@ GameObject.prototype.replicate = function(state) {}
 
 GameObject.prototype.simulate = function() {}
 GameObject.prototype.destroy = function() {}
+
+module.exports = GameObject;

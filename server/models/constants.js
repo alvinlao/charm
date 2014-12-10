@@ -7,3 +7,5 @@ var CONSTANTS = Object.freeze({
     PLAYER_ACCELERATION: 2,
     DAMPING_COEFFICIENT: 1
 });
+
+module.exports = CONSTANTS;
