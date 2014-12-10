@@ -1,6 +1,6 @@
 var STATES = Object.freeze({
-  LOBBY: 1,
-  GAME: 2
+    LOBBY: 1,
+    GAME: 2
 });
 
 var state = STATES.LOBBY;
@@ -38,7 +38,7 @@ function update_lobby(data) {
   var lobby_status = data.lobby;
 
   if(data.lobby_message) {
-    $('#lobby_message').innerHTML = data.lobby_message; 
+    $('#lobby_message').innerHTML = data.lobby_message;
   }
 
   $(".player_button").each(function ( index, value ) {
@@ -54,6 +54,9 @@ function update_lobby(data) {
       $(this).removeAttr('disabled');
     }
   });
+}
+
+function start_game() {
 }
 
 function update_game(data) {
