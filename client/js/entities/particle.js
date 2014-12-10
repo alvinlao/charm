@@ -7,10 +7,10 @@ function Particle(x, y, m, r) {
 	this.x = x;
 	this.y = y;
 	this.m = m;
-	this.r = r || 0;
+	this.r = r || CONSTANTS.MIN_FLOAT;
 
 	this.V = Vector2D(0,0);	// velocity
-	this.F = Vector2D(0,0);	// force
+	this.F = [];            // :: [Vector2D]
 }
 
 Particle.prototype.getCentre = function() {
@@ -29,13 +29,13 @@ Particle.prototype.intersects = function(other) {
 }
 
 Particle.prototype.applyForce = function(newForce) {
-  this.F.add(newForce);
+  this.F.push(newForce);
   return this;
 }
 
 Particle.prototype.update = function () {
   this.V.add(this.F.scale(1/this.m));
-  this.F = Vector2D(0,0);
+  this.F = [];
   this.x = this.V.x * this.dt;
   this.y = this.V.y * this.dt;
   return this;
