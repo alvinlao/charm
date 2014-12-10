@@ -2,10 +2,15 @@ var server = require('../server/server')
 var game = require('../server/game')
 
 server.io.on('connection', function(socket) {
-	console.log('Client has connected');
+	console.log('Client has connected: ' + socket.id);
 	
-	server.io.emit('hello', game.state)
-	socket.on('message', function(msg) {
-		console.log(msg);
-	})
+	// Game connect
+	game.connect(socket);
+
+	socket.on('disconnect', function() {
+		console.log('Client disconnect')
+
+		// Game disconnect
+		game.disconnect(socket);
+	});
 })
