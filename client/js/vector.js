@@ -14,8 +14,12 @@ Vector2D.prototype.subtract = function(other) {
   return this.add(other.scale(-1));
 }
 Vector2D.prototype.dot = function(other) {
-  return this.x * other.x + this.y + other.y;
+  return this.x * other.x + this.y * other.y;
 }
 Vector2D.prototype.norm = function() {
-  return this.dot(this);
+  return Math.sqrt(this.dot(this));
+}
+Vector2D.prototype.direction = function() {
+  var l = this.length();
+  return Vector2D(this.x / l, this.y / l);
 }

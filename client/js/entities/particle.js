@@ -9,7 +9,6 @@ function Particle(x, y, m, r) {
 	this.m = m;
 	this.r = r || CONSTANTS.MIN_FLOAT;
 
-	// Vectors
 	this.V = Vector2D(0,0);	// velocity
 	this.F = [];            // :: [Vector2D]
 }
@@ -22,6 +21,7 @@ Particle.prototype.distToCentre = function(other) {
   var x1 = this.getCentre(),
       x2 = other.getCentre();
   return x1.subtract(x2).norm();
+
 }
 
 Particle.prototype.intersects = function(other) {
