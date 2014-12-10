@@ -17,6 +17,7 @@ var state = {
 	connect_player: connect_player,
 	disconnect_player: disconnect_player,
 	is_ready: is_ready,
+	is_running: is_running,
 	start: start,
 	stop: stop,
 	get_team_id: get_team_id,
@@ -79,6 +80,10 @@ function is_ready() {
 	}
 
 	return state.clients.length >= NUM_PLAYERS && state.state == STATES.LOBBY;
+}
+
+function is_running() {
+	return state.state == STATES.IN_GAME;
 }
 
 function start() {

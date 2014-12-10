@@ -9,6 +9,8 @@ function Brain() {
     this.objects = {};
     this.actions = [];
 
+    this.interval_id;
+
     // Map of inputs
     // client_id -> inputs
     this.inputs = {};
@@ -37,7 +39,11 @@ Brain.prototype.loop = function() {
 }
 
 Brain.prototype.start = function(team) {
-    game_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
+    this.interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
+}
+
+Brain.prototype.stop = function() {
+    clearInterval(this.interval_id);
 }
 
 module.exports = Brain;

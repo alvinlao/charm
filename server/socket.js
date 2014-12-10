@@ -44,6 +44,10 @@ server.io.on('connection', function(socket) {
 		// Game disconnect
 		game.disconnect_player(socket);
 		game.broadcast_game_state(server);
+
+        if(!game.is_running()) {
+            brain.stop();
+        }
 	});
 
     // **
@@ -59,8 +63,6 @@ server.io.on('connection', function(socket) {
    *  inputs:["up"]}
    */
   socket.on('inputs', function(state){
-    console.log(state);
-    // player 54321 always moves down whenever our player moves
-    server.io.emit("all_inputs", {54321: ["down"]});
+    brain.process_inputs(socket.id, state.inputs);
   });
 })
