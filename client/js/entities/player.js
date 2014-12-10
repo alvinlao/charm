@@ -6,8 +6,8 @@ function Player(eid) {
 }
 
 Player.prototype.init_draw = function() {
-	this.drawable = canvas.display.ellipse({x: this.x, y: this.y, radius:20, fill:"black"}).add();
-	this.drawable.strokeColor = "#000000";
+	this.drawable = canvas.display.ellipse({x: this.x, y: this.y, radius:20, fill:"white"}).add();
+	this.drawable.strokeColor = "white";
 }
 
 Player.prototype.emitState = function(socket) {

@@ -8,18 +8,7 @@ var socket;
 var player_id = server_player_id;
 
 var game_objects = {};
-var world_state = {1:{
-        controller:-1,
-        entity_type:"player",
-        x:100,
-        y:100
-    }, 2:{
-        controller:2,
-        entity_type:"player",
-        x:100,
-        y:100
-    }
-};
+var world_state = {};
 
 var game_object_prototypes = {
     player:Player.prototype.constructor
@@ -98,7 +87,9 @@ function reset_game() {
 }
 
 function prepare_game() {
-    canvas = oCanvas.create({ canvas: "#game_canvas", background: "#eee" });
+    canvas = oCanvas.create({ canvas: "#game_canvas", background: "#232129" });
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
     controls = new Controls(canvas);
     socket = io();
     socket.on('world_state', update_world_state);
