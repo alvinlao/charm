@@ -96,6 +96,7 @@ $(function() {
     this.innerHTML = "LOADING...";
     player_id = (this.id == "player_one" ? 1 : (this.id == "player_two" ? 2 : (this.id == "player_three" ? 3 : 4)));
     socket.emit('ready', player_id);
+    $(this).attr('disabled','disabled');
   });
 
   $(".instant_join").click(function () {
