@@ -19,7 +19,6 @@ function Asteroid(world, eid, x, y, r, active) {
     return this;
 }
 
-
 Asteroid.prototype.serialize = function () {
     var pos = this.get_position();
 	return {
@@ -27,7 +26,8 @@ Asteroid.prototype.serialize = function () {
 		x : pos.x,
 		y : pos.y,
         r : this.r,
-        active: this.active
+        active: this.active,
+        velocity: this.get_velocity()
 
 	}
 }
