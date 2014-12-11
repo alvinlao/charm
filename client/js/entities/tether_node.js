@@ -20,12 +20,8 @@ TetherNode.prototype.init_draw = function(state) {
 	this.left_drawable = null;
 	this.right_drawable = null;
 
-	//console.log(world_state);
-	//console.log(this.left_eid);
-	//console.log(state.left);
 	if(this.left_eid in world_state) {
 		if(world_state[this.left_eid].entity_type == "player") {
-			console.log("Found left side");
 			this.left_drawable = canvas.display.line({
 		        start: { x: world_state[this.left_eid].x , y: world_state[this.left_eid].y },
 		        end: { x: this.x, y: this.y },
@@ -36,7 +32,6 @@ TetherNode.prototype.init_draw = function(state) {
 	}
 
 	if(this.right_eid in world_state) {
-		console.log("Found right side");
 		this.right_drawable = canvas.display.line({
 			        start: { x: this.x , y: this.y },
 			        end: { x: world_state[this.right_eid].x, y: world_state[this.right_eid].y },
@@ -76,4 +71,10 @@ TetherNode.prototype.draw = function() {
 
 TetherNode.prototype.destroy = function() {
 	this.drawable.remove();
+	if(this.left_drawable != null) {
+		this.left_drawable.remove();
+	}
+	if(this.right_drawable != null) {
+		this.right_drawable.remove();
+	}
 }

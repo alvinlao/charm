@@ -147,7 +147,13 @@ Brain.prototype.process_inputs = function() {
         var force = new b2d.b2Vec2(input.x, input.y);
         force.Multiply(CONSTANTS.INPUT_MULTIPLIER);
         this.objects[eid].apply_force(force);
-        this.objects[eid].direction = input;
+
+        if(input.x != 0 || input.y != 0 || !this.objects[eid].direction) {
+            this.objects[eid].direction = input;
+            this.objects[eid].pressed = true;
+        } else {
+            this.objects[eid].pressed = false;
+        }
     }
 }
 

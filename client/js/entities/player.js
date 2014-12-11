@@ -10,6 +10,7 @@ function Player(eid, state) {
 	this.dx = 0;
 	this.dy = 0;
 	this.rotation = 0;
+	this.pressed = true;
 }
 
 Player.prototype.init_draw = function(state) {
@@ -70,8 +71,10 @@ Player.prototype.control = function(state) {
 Player.prototype.replicate = function(state) {
 	this.dx = state.direction.x;
 	this.dy = state.direction.y;
+	this.pressed = state.pressed;
 
 	if(this.dx != 0 || this.dy != 0) {
+		console.log("a direction!");
 		this.rotation = toDegrees(Math.atan2(this.dy, this.dx)) + 90;
 	}
 
@@ -84,7 +87,7 @@ Player.prototype.draw = function() {
 	this.drawable.rotateTo( this.rotation );
 	this.drawable.moveTo(this.x, this.y);
 
-	if(this.dx != 0 || this.dy != 0) {
+	if((this.dx != 0 || this.dy != 0) && this.pressed) {
 		this.trail.opacity = 1;
 		this.trail.rotateTo( this.rotation );
 
