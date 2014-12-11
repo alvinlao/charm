@@ -3,7 +3,7 @@ var CONSTANTS = Object.freeze({
     MIN_Y: 0,
     MAX_X: 1000,
     MAX_Y: 600,
-    TIMEDELTA: 1.0/60,
+    TIMEDELTA: 1.0/120,
     INPUT_MULTIPLIER: 100,
     EPSILON: 1e-60,
     TETHER_NODE_MASS: 0.001,

@@ -58,9 +58,7 @@ function game_loop() {
 }
 
 function update_world_state(state) {
-    console.log(Object.keys(state).length);
     world_state = state;
-    console.log(Object.keys(world_state).length);
 }
 
 function reset_game() {
