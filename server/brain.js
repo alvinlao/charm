@@ -22,6 +22,7 @@ Brain.prototype.init_world = function() {
 
     this.world = new b2d.b2World(worldAABB, gravity, do_sleep);
     this.objects = {};
+    this.tether_nodes = {};
     this.actions = [];
 
     this.game_loop_interval_id = -1;
@@ -73,6 +74,53 @@ Brain.prototype.step = function() {
         }
 
         body_list = body_list.m_next;
+    }
+
+    this.tether_nodes = {};
+    var joint_list = this.world.GetJointList();
+    while (joint_list != null) {
+        var lefteid = joint_list.m_node1.other.m_userData.eid;
+        var righteid = joint_list.m_node2.other.m_userData.eid;
+
+        var leftp = joint_list.m_node1.other.m_xf.position;
+        var rightp = joint_list.m_node2.other.m_xf.position;
+
+        var leftv = joint_list.m_node1.other.m_linearVelocity;
+        var rightv = joint_list.m_node2.other.m_linearVelocity;
+
+        var left = {
+            entity_type: 'tether_node',
+            eid: lefteid,
+            x: leftp.x,
+            y: leftp.y,
+            vx: leftv.x,
+            vy: leftv.y,
+            right: righteid,
+        }
+
+        var right = {
+            entity_type: 'tether_node',
+            eid: righteid,
+            x: rightp.x,
+            y: rightp.y,
+            vx: rightv.x,
+            vy: rightv.y,
+            left: lefteid,
+        }
+
+        if(lefteid in this.tether_nodes) {
+            this.tether_nodes[lefteid].right = righteid;
+        } else {
+            this.tether_nodes[lefteid] = left;
+        }
+
+        if(righteid in this.tether_nodes) {
+            this.tether_nodes[righteid].left = lefteid;
+        } else {
+            this.tether_nodes[righteid] = right;    
+        }
+
+        joint_list = joint_list.m_next;
     }
 }
 
@@ -141,7 +189,12 @@ Brain.prototype.return_world_state = function(brain) {
 		serialized_objects[brain.objects[key].eid] = brain.objects[key].serialize();
 	}
 
-    // console.log(serialized_objects)
+    for (eid in this.tether_nodes) {
+        if (!(eid in serialized_objects)) {
+            serialized_objects[eid] = this.tether_nodes[eid];
+        }
+    }
+
 	return serialized_objects;
 }
 
