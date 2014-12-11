@@ -125,7 +125,7 @@ Brain.prototype.step = function() {
         if(righteid in this.tether_nodes) {
             this.tether_nodes[righteid].left = lefteid;
         } else {
-            this.tether_nodes[righteid] = right;    
+            this.tether_nodes[righteid] = right;
         }
 
         joint_list = joint_list.m_next;
