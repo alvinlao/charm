@@ -186,7 +186,7 @@ Brain.prototype.start = function(team, server) {
             if(is_good){
                 previous_asteroids.push([x_pos, y_pos]);
                 var eid = this.get_eid();
-                this.objects[eid] = new Asteroid(this.world, eid, x_pos, y_pos, radius);
+                this.objects[eid] = new Asteroid(this.world, eid, x_pos, y_pos, radius, false);
                 break;
             }
         }

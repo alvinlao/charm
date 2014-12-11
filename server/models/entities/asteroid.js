@@ -5,8 +5,8 @@ var b2d = require("box2d");
 Asteroid.prototype = Object.create(Particle.prototype);
 Asteroid.prototype.constructor = Asteroid;
 
-function Asteroid(world, eid, x, y, r) {
-    this.active = false;
+function Asteroid(world, eid, x, y, r, active) {
+    this.active = active;
     var params = {
         density: 12,
         restitution: 0.5,
