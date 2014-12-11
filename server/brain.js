@@ -94,16 +94,11 @@ Brain.prototype.step = function() {
         var leftp = joint_list.m_node1.other.m_xf.position;
         var rightp = joint_list.m_node2.other.m_xf.position;
 
-        var leftv = joint_list.m_node1.other.m_linearVelocity;
-        var rightv = joint_list.m_node2.other.m_linearVelocity;
-
         var left = {
             entity_type: 'tether_node',
             eid: lefteid,
             x: leftp.x,
             y: leftp.y,
-            vx: leftv.x,
-            vy: leftv.y,
             right: righteid,
         }
 
@@ -112,8 +107,6 @@ Brain.prototype.step = function() {
             eid: righteid,
             x: rightp.x,
             y: rightp.y,
-            vx: rightv.x,
-            vy: rightv.y,
             left: lefteid,
         }
 
@@ -209,7 +202,7 @@ Brain.prototype.start = function(team, server) {
         eids.push(this.get_eid());
     }
     var b2 = this.objects[1].get_position();
-    console.log('before b2: ' + b2.x + " " + b2.y);
+    
     Tether(this.world, eids, this.objects[0], this.objects[1]);
 
     Wall(this.world, -1, 0, 0, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 1, 1);
