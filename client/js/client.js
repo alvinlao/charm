@@ -38,7 +38,6 @@ function update_lobby(data) {
 
   if(data.lobby_message) {
     $('#lobby_message').text(data.lobby_message);
-    console.log('msg')
   }
 
   $(".player_button").each(function ( index, value ) {
@@ -84,6 +83,7 @@ document.onready = function() {
   change_state(STATES.LOBBY);
 
   socket.on('game_state_update', function(data) {
+    console.log(data)
     if (state != data.state) {
       change_state(data);
     }

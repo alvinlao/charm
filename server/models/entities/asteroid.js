@@ -1,5 +1,5 @@
 var CONSTANTS = require('../../constants')
-var Particle = require('../entities/Particle');
+var Particle = require('../entities/particle');
 var b2d = require("box2d");
 
 Asteroid.prototype = Object.create(Particle.prototype);

@@ -130,11 +130,16 @@ Brain.prototype.process_inputs = function() {
         var input_data = this.inputs[eid];
         var input = input_data.input;
 
-        var force = new b2d.b2Vec2(input.x, input.y);
-        force.Multiply(CONSTANTS.INPUT_MULTIPLIER);
-        this.objects[eid].apply_force(force);
+        if(input.brake) {
+            this.objects[eid].pressed = false;
+            this.objects[eid].apply_brake();
+        } else {
+            var force = new b2d.b2Vec2(input.x, input.y);
+            force.Multiply(CONSTANTS.INPUT_MULTIPLIER);
+            this.objects[eid].apply_force(force);
+        }
 
-        if(input.x != 0 || input.y != 0 || !this.objects[eid].direction) {
+        if(!input.brake || input.x != 0 || input.y != 0 || !this.objects[eid].direction) {
             this.objects[eid].direction = input;
             this.objects[eid].pressed = true;
         } else {
@@ -259,9 +264,9 @@ Brain.prototype.start = function(team, server, game) {
         } else if (shape_one_data["particle_type"] == CONSTANTS.TYPE_ASTEROID && shape_two_data["particle_type"] == CONSTANTS.TYPE_WALL) {
             var asteroid_entity = brain.objects[shape_one_data["eid"]];
 
-            asteroid_entity.active = false; 
+            asteroid_entity.active = false;
             asteroid_entity.team_id = null;
-        } else if (shape_one_data["particle_type"] == CONSTANTS.TYPE_WALL && shape_two_data == CONSTANTS.TYPE_ASTEROID) {
+        } else if (shape_one_data["particle_type"] == CONSTANTS.TYPE_WALL && shape_two_data["particle_type"] == CONSTANTS.TYPE_ASTEROID) {
             var asteroid_entity = brain.objects[shape_two_data["eid"]];
 
             asteroid_entity.active = false;
@@ -279,8 +284,7 @@ Brain.prototype.start = function(team, server, game) {
 Brain.prototype.end_game = function (losing_team) {
     console.log("GAME ENDED, team " + losing_team + " has lost!" );
 
-    this.game.state.state = 1; // STATES.LOBBY
-    this.game.state.lobby_message = "Team " + losing_team + " has lost!";
+    this.game.state.lobby_message = losing_team;
     this.game.stop();
 
     this.stop();

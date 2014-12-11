@@ -109,6 +109,7 @@ function start() {
 
 function stop() {
 	state.state = STATES.LOBBY;
+	reset_lobby_state();
 	broadcast_game_state();
 }
 
@@ -130,6 +131,13 @@ function get_team_id(player_id) {
 		return 0;
 	} else {
 		return 1;
+	}
+}
+
+function reset_lobby_state() {
+	for(var i = 0; i < state.clients.length; i++) {
+		var client = state.clients[i];
+		client.state = client_module.STATES.LOBBY;
 	}
 }
 
