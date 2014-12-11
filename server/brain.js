@@ -58,17 +58,20 @@ Brain.prototype.process_inputs = function() {
         var eid = input_data.eid;
         var input = input_data.input;
 
-        var force = new b2Vec2(input.x, input.y);
+        var force = new b2d.b2Vec2(input.x, input.y);
         force.Multiply(CONSTANTS.INPUT_MULTIPLIER);
-        console.log(force)
         this.objects[eid].apply_force(force);
     }
 
     this.inputs = [];
 }
 
+Brain.prototype.loop = function(that) {
+    that.step();
+}
+
 Brain.prototype.start = function(team, server) {
-    this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
+    this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL, this);
 
     var brain = this.init_world();
 

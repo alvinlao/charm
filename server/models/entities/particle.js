@@ -24,7 +24,7 @@ Particle.prototype.get_position = function() {
 }
 
 Particle.prototype.apply_force = function(force) {
-    this.body.ApplyForce(force);
+    this.body.ApplyForce(force, this.body.GetPosition());
     return this;
 }
 
