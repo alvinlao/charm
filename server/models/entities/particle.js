@@ -32,4 +32,9 @@ Particle.prototype.serialize = function () {
   console.log("particle serialize called");
 }
 
+Particle.prototype.sync = function() {
+    this.x = this.get_position().x;
+    this.y = this.get_position().y;
+}
+
 module.exports = Particle;
