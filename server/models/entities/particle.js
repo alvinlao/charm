@@ -1,5 +1,5 @@
 var GameObject = require('../entities/gameobject')
-var CONSTANTS = require('../constants')
+var CONSTANTS = require('../../constants')
 var b2d = require('box2d')
 
 Particle.prototype = Object.create(GameObject.prototype);
@@ -15,12 +15,22 @@ function Particle(world, eid, x, y, m, r) {
     var body_def = new b2d.b2BodyDef(props);
     body_def.userData = {circleShape: props, eid: eid};
     body_def.position.Set(x,y);
+
+    // Mass
+    var mass_data = body_def.massData;
+    mass_data.mass = m;
+
     this.body = world.CreateBody(body_def);
+    this.body.m_linearDamping = CONSTANTS.PLAYER_FRICTION;
     return this;
 }
 
 Particle.prototype.get_position = function() {
     return this.body.GetPosition();
+}
+
+Particle.prototype.get_velocity = function() {
+    return this.body.GetLinearVelocity();
 }
 
 Particle.prototype.apply_force = function(force) {
@@ -29,12 +39,21 @@ Particle.prototype.apply_force = function(force) {
 }
 
 Particle.prototype.serialize = function () {
-  console.log("particle serialize called");
+    var pos = this.get_position();
+    return {
+        entity_type: "particle",
+        x : pos.x,
+        y : pos.y,
+        vx: this.v.x,
+        vy: this.v.y
+    }
 }
 
-Particle.prototype.sync = function() {
+Particle.prototype.sync = function(body) {
+    this.body = body;
     this.x = this.get_position().x;
     this.y = this.get_position().y;
+    this.v = this.get_velocity();
 }
 
 module.exports = Particle;

@@ -39,6 +39,9 @@ Player.prototype.emitState = function(socket) {
 }
 
 Player.prototype.control = function(state) {
+    this.x = state.x;
+    this.y = state.y;
+
 	//Particle.prototype.update.call(this);
 	var odx = this.dx;
 	var ody = this.dy;

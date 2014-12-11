@@ -1,29 +1,15 @@
 var Particle = require('../entities/Particle');
+var b2d = require('box2d')
 
 Player.prototype = Object.create(Particle.prototype);
 Player.prototype.constructor = Player;
 
-function Player(world, eid, player_id, x, y) {
+function Player(world, eid, player_id, x, y, team) {
 	this.player_id = player_id;
 	Particle.prototype.constructor.call(this, world, eid, x, y, 10);
+    this.direction = new b2d.b2Vec2(0,0);
+    this.team = team;
     return this;
-}
-
-Player.prototype.control = function(state) {
-	//Particle.prototype.update.call(this);
-	//TODO; Change to force
-	if(controls.isControlDown(controls.key_map.up)) {
-		this.y -= 6;
-	}
-	if(controls.isControlDown(controls.key_map.down)) {
-		this.y += 6;
-	}
-	if(controls.isControlDown(controls.key_map.left)) {
-		this.x -= 6;
-	}
-	if(controls.isControlDown(controls.key_map.right)) {
-		this.x += 6;
-	}
 }
 
 Player.prototype.input = function(input_list) {
@@ -50,6 +36,10 @@ Player.prototype.serialize = function () {
 		entity_type: "player",
 		x : pos.x,
 		y : pos.y,
+        vx: this.v.x,
+        vy: this.v.y,
+        team: this.team,
+        direction: this.direction,
 		controller : this.player_id
 	}
 }

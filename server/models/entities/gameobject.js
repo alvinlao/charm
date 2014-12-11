@@ -10,8 +10,6 @@ GameObject.prototype.update = function(state) {
 	}
 }
 
-GameObject.prototype.control = function(state) {}
-
 GameObject.prototype.simulate = function() {}
 GameObject.prototype.destroy = function() {}
 
