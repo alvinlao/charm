@@ -40,6 +40,11 @@ Particle.prototype.apply_force = function(force) {
     return this;
 }
 
+Particle.prototype.apply_brake = function() {
+    this.body.SetLinearVelocity(new b2d.b2Vec2(0.0, 0.0));
+    return this;
+}
+
 Particle.prototype.serialize = function () {
     var pos = this.get_position();
     return {
