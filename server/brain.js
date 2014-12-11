@@ -278,6 +278,10 @@ Brain.prototype.start = function(team, server, game) {
 
 Brain.prototype.end_game = function (losing_team) {
     console.log("GAME ENDED, team " + losing_team + " has lost!" );
+
+    this.game.state.state = 1; // STATES.LOBBY
+    this.game.state.lobby_message = "Team " + losing_team + " has lost!";
+
     this.stop();
     this.server.io.emit('game_ended', losing_team);
 }
