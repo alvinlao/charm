@@ -160,16 +160,22 @@ Brain.prototype.start = function(team, server) {
     var brain = this;
 
     // Create player objects
-    for(var i=0; i<team.length; i++){
-        for(var j=0; j<team[i].length; j++){
-            var eid = this.get_eid(),
-                x0 = 100 + j * (CONSTANTS.MAX_X/2 - 300),
-                y0 = 100 + i * (CONSTANTS.MAX_Y - 300);
-            previous_asteroids.push([x0,y0]);
-            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, x0, y0, i);
-        }
-    }
+    var yoffset = (CONSTANTS.MAX_Y - CONSTANTS.TETHER_INITIAL_DISTANCE)/2;
+    var y0 = yoffset;
+    var y1 = CONSTANTS.MAX_Y - yoffset;
 
+    var xoffset = 100;
+    var x0 = xoffset;
+    var x1 = CONSTANTS.MAX_X - xoffset;
+
+    var positions = [[x0, y0], [x0, y1], [x1, y0], [x1, y1]];
+    var teams = [0, 0, 1, 1];
+    for (var i = 0; i < positions.length; i++) {
+        var position = positions[i];
+        var eid = this.get_eid();
+        previous_asteroids.push(position);
+        this.objects[eid] = new Player(this.world, eid, team[teams[i]][i%2].player_id, position[0], position[1], teams[i]);
+    }
 
     // Create some asteroids
     for(var i=0; i<10; i++){
