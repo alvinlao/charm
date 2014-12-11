@@ -91,7 +91,7 @@ function prepare_game() {
         particles = new VisualParticles();
         socket = io();
         socket.on('world_state', update_world_state);
-        //socket.on('game_ended', game_over);
+        socket.on('game_ended', game_over);
 
         loaded = true;
 
@@ -108,11 +108,20 @@ function game_over(state){
     }
 
     if(won){
+        $("#lobby_message").text("WINNER!");
+    }
+    else{
+        $("#lobby_message").text("LOSER!");
+    }
+
+    /*
+    if(won){
         $("#end_game_container").css("visibility","visible");
     }
     else{
         $("#end_game_container").css("visibility","visible");
         $("#end_game").text("LOSER!").css("color","red").css("border-color","red");
     }
+    */
 }
 
