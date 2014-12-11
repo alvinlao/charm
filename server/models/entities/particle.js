@@ -28,6 +28,10 @@ Particle.prototype.get_position = function() {
     return this.body.GetPosition();
 }
 
+Particle.prototype.get_velocity = function() {
+    return this.body.GetLinearVelocity();
+}
+
 Particle.prototype.apply_force = function(force) {
     this.body.ApplyForce(force, this.body.GetPosition());
     return this;
@@ -41,6 +45,7 @@ Particle.prototype.sync = function(body) {
     this.body = body;
     this.x = this.get_position().x;
     this.y = this.get_position().y;
+    this.v = this.get_velocity();
 }
 
 module.exports = Particle;

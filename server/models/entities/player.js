@@ -50,6 +50,8 @@ Player.prototype.serialize = function () {
 		entity_type: "player",
 		x : pos.x,
 		y : pos.y,
+        vx: this.v.x,
+        vy: this.v.y,
 		controller : this.player_id
 	}
 }
