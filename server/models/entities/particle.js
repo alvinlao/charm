@@ -5,7 +5,7 @@ var b2d = require('box2d')
 Particle.prototype = Object.create(GameObject.prototype);
 Particle.prototype.constructor = Particle;
 
-function Particle(world, eid, x, y, m, r) {
+function Particle(world, eid, x, y, m, r, params) {
 	GameObject.prototype.constructor.call(this, eid);
 
     var body_def = new b2d.b2BodyDef();
@@ -16,14 +16,15 @@ function Particle(world, eid, x, y, m, r) {
     this.body = world.CreateBody(body_def);
     this.body.m_linearDamping = CONSTANTS.PLAYER_FRICTION;
 
-    
+
     var shape_def = new b2d.b2CircleDef();
     shape_def.radius = r || CONSTANTS.EPSILON;
-    shape_def.density = 1;
-    shape_def.restitution = 0.8;
-    shape_def.friction = 0.2;
+    params = params || {};
+    shape_def.density = params.density || 1;
+    shape_def.restitution = params.restitution || 0.8;
+    shape_def.friction = params.friction || 0.2;
     this.body.CreateShape(shape_def);
-    
+
     return this;
 }
 
