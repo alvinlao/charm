@@ -1,9 +1,9 @@
-function GameObject(eid) {
+function GameObject(eid, state) {
   this.eid = eid;
-  this.init_draw();
+  this.init_draw(state);
 }
 
-GameObject.prototype.init_draw = function() {}
+GameObject.prototype.init_draw = function(state) {}
 GameObject.prototype.draw = function() {}
 
 GameObject.prototype.update = function(state) {

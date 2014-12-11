@@ -3,6 +3,8 @@ var controls;
 
 var tether;
 
+var world;
+
 // Networking
 var socket;
 var player_id = server_player_id;
@@ -20,7 +22,7 @@ function replicate_state() {
     keys.forEach(function(eid) {
         if (!(eid in game_objects)) {
             if(world_state[eid].entity_type in game_object_prototypes) {
-                game_objects[eid] = new game_object_prototypes[world_state[eid].entity_type](eid);
+                game_objects[eid] = new game_object_prototypes[world_state[eid].entity_type](eid, world_state[eid]);
             }
         }
     });
@@ -66,6 +68,8 @@ function reset_game() {
     });
 
     world_state = {}
+    world.clear();
+    world.init();
 }
 
 function prepare_game() {
@@ -73,6 +77,7 @@ function prepare_game() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     controls = new Controls(canvas);
+    world = new World();
     socket = io();
     socket.on('world_state', update_world_state);
 
