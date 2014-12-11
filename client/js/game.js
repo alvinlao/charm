@@ -60,7 +60,6 @@ function game_loop() {
 
 function update_world_state(state) {
     world_state = state;
-    console.log(JSON.stringify(state));
 }
 
 function reset_game() {

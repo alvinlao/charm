@@ -25,7 +25,6 @@ function change_state(new_state) {
 }
 
 function reset_lobby() {
-  console.log('reset')
   $('#lobby_message').innerHTML = "";
   $(".player_button").each(function ( index, value ) {
     this.innerHTML = "JOIN";
@@ -90,7 +89,6 @@ $(function() {
     }
 
   socket.on('player_info', function(id) {
-    console.log('hi')
     server_player_id = id;
   })
 
