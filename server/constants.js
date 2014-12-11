@@ -25,7 +25,7 @@ var CONSTANTS = Object.freeze({
     TYPE_TETHER_NODE:3,
     TYPE_WALL:4,
 
-    NUM_PLAYERS: 1,
+    NUM_PLAYERS: 4,
     NUM_TEAMS: 2,
 });
 
