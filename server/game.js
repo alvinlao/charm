@@ -1,7 +1,5 @@
+var CONSTANTS = require('../server/constants')
 var client_module = require('../server/client');
-
-var NUM_PLAYERS = 4;
-var NUM_TEAMS = 2;
 
 var STATES = Object.freeze({
 	LOBBY : 1,
@@ -27,7 +25,7 @@ var state = {
 }
 
 function connect_player(socket) {
-	if(state.clients.length >= NUM_PLAYERS) {
+	if(state.clients.length >= CONSTANTS.NUM_PLAYERS) {
 		return false;
 	}
 
@@ -79,7 +77,7 @@ function is_ready() {
 			return false;
 	}
 
-	return state.clients.length >= NUM_PLAYERS && state.state == STATES.LOBBY;
+	return state.clients.length >= CONSTANTS.NUM_PLAYERS && state.state == STATES.LOBBY;
 }
 
 function is_running() {
@@ -89,7 +87,7 @@ function is_running() {
 function start() {
 	state.state = STATES.IN_GAME;
 	var teams = [];
-	for (var i = 0; i < NUM_TEAMS; ++i) {
+	for (var i = 0; i < CONSTANTS.NUM_TEAMS; ++i) {
 		teams.push([]);
 	}
 
@@ -128,7 +126,7 @@ function get_team_id(player_id) {
 
 function get_lobby_state() {
 	var lobby_state = [];
-	for(var i = 0; i < NUM_PLAYERS; ++i) {
+	for(var i = 0; i < CONSTANTS.NUM_PLAYERS; ++i) {
 		lobby_state.push(false)
 	}
 	for(var i = 0; i < state.clients.length; i++) {

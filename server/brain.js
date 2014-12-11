@@ -172,7 +172,7 @@ Brain.prototype.start = function(team, server) {
 
     var positions = [[x0, y0], [x0, y1], [x1, y0], [x1, y1]];
     var teams = [0, 0, 1, 1];
-    for (var i = 0; i < positions.length; i++) {
+    for (var i = 0; i < (positions.length < CONSTANTS.NUM_PLAYERS ? positions.length : CONSTANTS.NUM_PLAYERS); i++) {
         var position = positions[i];
         var eid = this.get_eid();
         previous_asteroids.push(position);
