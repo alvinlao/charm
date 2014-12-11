@@ -8,8 +8,6 @@ var b2d = require("box2d")
 function Brain() {
 }
 
-/* initial_bodies -- Map whose keys are ids and values are box2d world bodies
- */
 Brain.prototype.init_world = function() {
     var worldAABB = new b2d.b2AABB(),
         gravity = new b2d.b2Vec2(0.0, 0.0),
@@ -87,7 +85,7 @@ Brain.prototype.start = function(team, server) {
     }
     this.objects[1] = new Player(this.world, 1,1, 100, 100);
     this.objects[2] = new Player(this.world, 2,2, 600, 100);
-    //Tether(this.world, this.objects[1], this.objects[2]);
+    Tether(this.world, this.objects[1], this.objects[2]);
 
     var brain = this;
 
