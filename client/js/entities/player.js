@@ -35,7 +35,6 @@ Player.prototype.emitState = function(socket) {
 
 Player.prototype.control = function(state) {
 	//Particle.prototype.update.call(this);
-	//TODO; Change to force
 	var odx = this.dx;
 	var ody = this.dy;
 	this.dx = 0;
@@ -68,7 +67,7 @@ Player.prototype.control = function(state) {
 	if(this.dx != odx || this.dy != ody) {
 		console.log(JSON.stringify({eid:this.eid, input:{x:this.dx, y:this.dy}}));
 
-	    //socket.emit("inputs", {eid:this.eid, input:{x:this.dx, y:this.dy}});
+	    socket.emit("inputs", {eid:this.eid, input:{x:this.dx, y:this.dy}});
     }
 }
 
