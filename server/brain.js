@@ -29,7 +29,8 @@ Brain.prototype.init_world = function() {
     this.eid = 0;
 
     // List of inputs from players
-    this.inputs = [];
+    // eid => input
+    this.inputs = {};
 }
 
 Brain.prototype.step = function() {
@@ -55,21 +56,18 @@ Brain.prototype.set_interval = function(loop, loopInterval){
 }
 
 Brain.prototype.queue_inputs = function(data) {
-    this.inputs.push(data);
+    this.inputs[data.eid] = data;
 }
 
 Brain.prototype.process_inputs = function() {
-    for (var i = 0; i < this.inputs.length; i++) {
-        var input_data = this.inputs[i];
-        var eid = input_data.eid;
+    for (var eid in this.inputs) {
+        var input_data = this.inputs[eid];
         var input = input_data.input;
 
         var force = new b2d.b2Vec2(input.x, input.y);
         force.Multiply(CONSTANTS.INPUT_MULTIPLIER);
         this.objects[eid].apply_force(force);
     }
-
-    this.inputs = [];
 }
 
 Brain.prototype.loop = function(that) {
@@ -85,7 +83,7 @@ Brain.prototype.start = function(team, server) {
     for(var i=0; i<team.length; i++){
         for(var j=0; j<team[i].length; j++){
             var eid = this.get_eid();
-            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, 100, 100);
+            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, 100+100*i, 100+100*j);
         }
     }
 
