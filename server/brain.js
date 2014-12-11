@@ -24,9 +24,8 @@ Brain.prototype.init_world = function() {
     this.game_loop_interval_id = -1;
     this.world_state_broadcast_interval_id = -1;
 
-    // Map of inputs
-    // client_id -> inputs
-    this.inputs = {};
+    // List of inputs from players
+    this.inputs = [];
     return this;
 }
 
@@ -42,23 +41,30 @@ Brain.prototype.add_joint = function(joint_def) {
 }
 
 Brain.prototype.step = function() {
+    this.process_inputs();
     this.world.Step(CONSTANTS.TIMEDELTA, 1);
 }
 
 Brain.prototype.set_interval = function(loop, loopInterval){
 }
 
-Brain.prototype.queue_inputs = function(client_id, inputs) {
-    this.inputs[client_id] = inputs;
+Brain.prototype.queue_inputs = function(data) {
+    this.inputs.push(data);
 }
 
 Brain.prototype.process_inputs = function() {
-    for (key in this.inputs) {
-        var input = this.inputs[key];
-        this.inputs[key] = [];
+    for (var i = 0; i < this.inputs.length; i++) { 
+        var input_data = this.inputs[i];
+        var eid = input_data.eid;
+        var input = input_data.input;
 
-        // TODO, process input
+        var force = new b2Vec2(input.x, input.y);
+        force.Multiply(CONSTANTS.INPUT_MULTIPLIER);
+        console.log(force)
+        this.objects[eid].apply_force(force);
     }
+
+    this.inputs = [];
 }
 
 Brain.prototype.loop = function() {
