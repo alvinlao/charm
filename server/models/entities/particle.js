@@ -38,7 +38,14 @@ Particle.prototype.apply_force = function(force) {
 }
 
 Particle.prototype.serialize = function () {
-  console.log("particle serialize called");
+    var pos = this.get_position();
+    return {
+        entity_type: "particle",
+        x : pos.x,
+        y : pos.y,
+        vx: this.v.x,
+        vy: this.v.y
+    }
 }
 
 Particle.prototype.sync = function(body) {
