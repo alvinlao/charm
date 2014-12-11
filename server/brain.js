@@ -84,19 +84,19 @@ Brain.prototype.start = function(team, server) {
     var brain = this;
 
     this.world_state_broadcast_interval_id = setInterval(function () {
-    	server.io.emit('world_state', brain.return_world_state(brain));
+    	server.io.emit('world_state', brain.return_world_state());
     }, 1000);
 }
 
-Brain.prototype.return_world_state = function(brain) {
+Brain.prototype.return_world_state = function() {
     // Sync world and objects
     // Linked List
-    var body_list = brain.world.GetBodyList();
+    var body_list = this.world.GetBodyList();
     while (body_list != null) {
         if (body_list.m_userData) {
             var eid = body_list.m_userData.eid;
-            if(brain.objects[eid]) {
-                brain.objects[eid].sync();
+            if(this.objects[eid]) {
+                this.objects[eid].sync();
             }
         }
 
@@ -105,11 +105,10 @@ Brain.prototype.return_world_state = function(brain) {
 
 	var serialized_objects = {};
 
-	for (key in brain.objects) {
-		serialized_objects[brain.objects[key].eid] = brain.objects[key].serialize();
+	for (key in this.objects) {
+		serialized_objects[this.objects[key].eid] = this.objects[key].serialize();
 	}
 
-    console.log(serialized_objects)
 	return serialized_objects;
 }
 
