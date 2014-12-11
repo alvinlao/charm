@@ -1,5 +1,6 @@
 var ship_assets = ["assets/ship_1.png", "assets/ship_2.png"]
 var ship_trail_assets = ["assets/ship_1_trail.png", "assets/ship_2_trail.png"]
+var team_colors = ["#ecaf4f", "#66bfd6"]
 
 Player.prototype = Object.create(Particle.prototype);
 Player.prototype.constructor = Player;

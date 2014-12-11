@@ -20,6 +20,10 @@ TetherNode.prototype.init_draw = function(state) {
 	this.left_drawable = null;
 	this.right_drawable = null;
 
+	if(!state.team) {
+		state.team = 0;
+	}
+
 	if(this.left_eid in world_state) {
 		if(world_state[this.left_eid].entity_type == "player") {
 			this.left_drawable = canvas.display.line({
@@ -27,7 +31,7 @@ TetherNode.prototype.init_draw = function(state) {
 		        end: { x: this.x, y: this.y },
 		        stroke: "4px #ecaf4f",
 		        cap: "round",
-		        shadow: "0px 0px 6px #ecaf4f"
+		        shadow: "0px 0px 6px " + team_colors[state.team]
     		}).add();
 		}
 	}
@@ -38,7 +42,7 @@ TetherNode.prototype.init_draw = function(state) {
 			        end: { x: world_state[this.right_eid].x, y: world_state[this.right_eid].y },
 			        stroke: "4px #ecaf4f",
 			        cap: "round",
-			        shadow: "0px 0px 6px #ecaf4f"
+			        shadow: "0px 0px 6px " + team_colors[state.team]
 	    		}).add();
 	}
 }
