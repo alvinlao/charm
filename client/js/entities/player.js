@@ -16,8 +16,6 @@ Player.prototype.init_draw = function(state) {
 	//this.drawable = canvas.display.ellipse({x: this.x, y: this.y, radius:20, fill:"white"}).add();
 	//this.drawable.strokeColor = "white";
 
-	console.log(state.team);
-
 	this.trail = canvas.display.image({
 		x: this.x,
 		y: this.y+24,
@@ -70,13 +68,8 @@ Player.prototype.control = function(state) {
 }
 
 Player.prototype.replicate = function(state) {
-	this.dx = state.x - this.x; this.dx /= this.dx;
-	this.dy = state.y - this.y;	this.dx /= this.dx;
-
-	if(this.dx != 0 && this.dy != 0) {
-		this.dx *= 0.7071;
-		this.dy *= 0.7071;
-	}
+	this.dx = state.direction.x;
+	this.dy = state.direction.y;
 
 	if(this.dx != 0 || this.dy != 0) {
 		this.rotation = toDegrees(Math.atan2(this.dy, this.dx)) + 90;
