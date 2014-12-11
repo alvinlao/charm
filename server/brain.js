@@ -8,8 +8,6 @@ var b2d = require("box2d")
 function Brain() {
 }
 
-/* initial_bodies -- Map whose keys are ids and values are box2d world bodies
- */
 Brain.prototype.init_world = function() {
     var worldAABB = new b2d.b2AABB(),
         gravity = new b2d.b2Vec2(0.0, 0.0),
@@ -26,17 +24,6 @@ Brain.prototype.init_world = function() {
 
     // List of inputs from players
     this.inputs = [];
-}
-
-Brain.prototype.add_body = function(id, body_def) {
-    var body = this.world.CreateBody(body_def);
-    this.objects[id] = body;
-    return body;
-}
-
-Brain.prototype.add_joint = function(joint_def) {
-    var joint = this.world.CreateJoint(joint_def);
-    return joint;
 }
 
 Brain.prototype.step = function() {
@@ -84,6 +71,7 @@ Brain.prototype.start = function(team, server) {
     }
     this.objects[5] = new Player(this.world, 5,1, 100, 100);
     this.objects[6] = new Player(this.world, 6,2, 600, 100);
+    Tether(this.world, this.objects[1], this.objects[2]);
     //Tether(this.world, this.objects[1], this.objects[2]);
 
     var brain = this;
