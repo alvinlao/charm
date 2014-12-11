@@ -25,7 +25,6 @@ function Tether(world, eids, body1, body2, team_id) {
         var bodyDef = new b2d.b2BodyDef();
         bodyDef.position.x = x;
         bodyDef.position.y = y + (2 * i - 1) * d;
-        console.log("x: " + bodyDef.position.x + " y: " + bodyDef.position.y);
         bodyDef.userData = { eid: -CONSTANTS.TETHER_NUM_NODES * i };
         boxDef = new b2d.b2PolygonDef();
         boxDef.SetAsBox(0.1, d);
@@ -42,7 +41,7 @@ function Tether(world, eids, body1, body2, team_id) {
         link = body;
     }
     // final body
-    revolute_joint.Initialize(link, this.body2.body, new b2d.b2Vec2(this.body2.get_position().x, y - d));
+    revolute_joint.Initialize(link, this.body2.body, new b2d.b2Vec2(this.body2.get_position().x, y + 2 * (CONSTANTS.TETHER_NUM_NODES - 1) * d));
     world.CreateJoint(revolute_joint);
     body.SetMassFromShapes();
     return this;
