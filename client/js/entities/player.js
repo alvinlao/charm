@@ -65,9 +65,6 @@ Player.prototype.control = function(state) {
 		this.dy *= 0.7071;
 	}
 
-	this.x += this.dx;
-	this.y += this.dy;
-
 	if(this.dx != 0 || this.dy != 0) {
 		this.rotation = toDegrees(Math.atan2(this.dy, this.dx)) + 90;
 	}
