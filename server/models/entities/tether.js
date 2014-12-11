@@ -182,6 +182,7 @@ function createBox(world, x, y, width, height, mass, options)
 {
     var body_def = new b2d.b2BodyDef();
     body_def.position.Set(x , y);
+    options.particle_type = CONSTANTS.TYPE_TETHER_NODE;
     body_def.userData = options;
     body_def.massData.mass = mass;
     

@@ -9,7 +9,7 @@ function Wall(world, eid, x, y, width, height) {
 	GameObject.prototype.constructor.call(this, eid);
 
     var body_def = new b2d.b2BodyDef();
-    body_def.userData = {eid: eid};
+    body_def.userData = {eid: eid, particle_type: CONSTANTS.TYPE_WALL};
     body_def.position.Set(x,y);
 
     this.body = world.CreateBody(body_def);
