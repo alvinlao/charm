@@ -14,6 +14,7 @@ var game_objects = {};
 var world_state = {};
 
 var loaded = false;
+var our_team_id;
 
 var game_object_prototypes = {
     player:Player.prototype.constructor,
@@ -28,6 +29,8 @@ function replicate_state() {
         if (!(eid in game_objects)) {
             if(world_state[eid].entity_type in game_object_prototypes) {
                 game_objects[eid] = new game_object_prototypes[world_state[eid].entity_type](eid, world_state[eid]);
+                if(world_state[eid].controller == player_id)
+                    our_team_id = world_state[eid].team;
             }
         }
     });
@@ -88,6 +91,7 @@ function prepare_game() {
         particles = new VisualParticles();
         socket = io();
         socket.on('world_state', update_world_state);
+        socket.on('game_ended', game_over);
 
         loaded = true;
 
@@ -97,7 +101,12 @@ function prepare_game() {
     }
 }
 
-function game_over(won){
+function game_over(state){
+    var won = true;
+    if(state.team_id == our_team_id){
+        won = false;
+    }
+
     if(won){
         $("#end_game_container").css("visibility","visible");
     }
