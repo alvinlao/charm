@@ -15,7 +15,7 @@ function TetherNode(eid, state) {
 }
 
 TetherNode.prototype.init_draw = function(state) {
-	this.drawable = canvas.display.ellipse({x: this.x, y: this.y, radius:8, fill:"white"}).add();
+	//this.drawable = canvas.display.ellipse({x: this.x, y: this.y, radius:8, fill:"white"}).add();
 
 	this.left_drawable = null;
 	this.right_drawable = null;
@@ -52,7 +52,7 @@ TetherNode.prototype.replicate = function(state) {
 
 TetherNode.prototype.draw = function() {
 	Particle.prototype.draw.call(this);
-	this.drawable.moveTo(this.x, this.y);
+	//this.drawable.moveTo(this.x, this.y);
 
 	if(this.left_drawable != null) {
 		this.left_drawable.start.x = world_state[this.left_eid].x;
@@ -70,7 +70,7 @@ TetherNode.prototype.draw = function() {
 }
 
 TetherNode.prototype.destroy = function() {
-	this.drawable.remove();
+	//this.drawable.remove();
 	if(this.left_drawable != null) {
 		this.left_drawable.remove();
 	}

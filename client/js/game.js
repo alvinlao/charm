@@ -4,6 +4,7 @@ var controls;
 var tether;
 
 var world;
+var particles;
 
 // Networking
 var socket;
@@ -13,6 +14,7 @@ var game_objects = {};
 var world_state = {};
 
 var loaded = false;
+var our_team_id;
 
 var game_object_prototypes = {
     player:Player.prototype.constructor,
@@ -27,6 +29,8 @@ function replicate_state() {
         if (!(eid in game_objects)) {
             if(world_state[eid].entity_type in game_object_prototypes) {
                 game_objects[eid] = new game_object_prototypes[world_state[eid].entity_type](eid, world_state[eid]);
+                if(world_state[eid].controller == player_id)
+                    our_team_id = world_state[eid].team;
             }
         }
     });
@@ -55,6 +59,8 @@ function game_loop() {
         game_objects[eid].draw();
     });
 
+    particles.update(33.33);
+
     canvas.draw.redraw();
 }
 
@@ -73,6 +79,8 @@ function reset_game() {
     world_state = {}
     world.clear();
     world.init();
+    particles.clear();
+    particles.init(100);
 }
 
 function prepare_game() {
@@ -80,8 +88,10 @@ function prepare_game() {
         canvas = oCanvas.create({ canvas: "#game_canvas", background: "#232129" });
         controls = new Controls(canvas);
         world = new World();
+        particles = new VisualParticles();
         socket = io();
         socket.on('world_state', update_world_state);
+        socket.on('game_ended', game_over);
 
         loaded = true;
 
@@ -90,3 +100,19 @@ function prepare_game() {
         console.log("ERROR: game loaded a second time!");
     }
 }
+
+function game_over(state){
+    var won = true;
+    if(state.team_id == our_team_id){
+        won = false;
+    }
+
+    if(won){
+        $("#end_game_container").css("visibility","visible");
+    }
+    else{
+        $("#end_game_container").css("visibility","visible");
+        $("#end_game").text("LOSER!").css("color","red").css("border-color","red");
+    }
+}
+
