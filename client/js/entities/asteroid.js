@@ -36,8 +36,8 @@ Asteroid.prototype.replicate = function(state) {
 	this.y = state.y;
     this.r = state.r;
 
-    if(state.active) {
-    	particles.spawn(this.x + (1 - Math.random()*2)*state.r;, this.y + (1 - Math.random()*2)*state.r;, state.velocity.x/100, state.velocity.y/100, 1, 100 + 300*Math.random(), "#FF00BB");
+    if(state.active || true) {
+    	particles.spawn(this.x + (0.5 - Math.random())*state.r, this.y + (0.5 - Math.random())*state.r, state.velocity.x/100, state.velocity.y/100, 1.5+Math.random(), 300 + 200*Math.random(), "#FF00BB");
     }
 }
 
