@@ -5,12 +5,13 @@ TetherNode.prototype = Object.create(Particle.prototype);
 TetherNode.prototype.constructor = TetherNode;
 
 function TetherNode(eid, state) {
+	this.left_eid = state.left;
+	this.right_eid = state.right;
+
 	Particle.prototype.constructor.call(this, eid, state);
 
 	this.dx = 0;
 	this.dy = 0;
-	this.left = state.left;
-	this.right = state.right;
 }
 
 TetherNode.prototype.init_draw = function(state) {
@@ -19,11 +20,14 @@ TetherNode.prototype.init_draw = function(state) {
 	this.left_drawable = null;
 	this.right_drawable = null;
 
-	if(this.left in world_state) {
-		if(world_state[this.left].entity_type == "player") {
+	//console.log(world_state);
+	//console.log(this.left_eid);
+	//console.log(state.left);
+	if(this.left_eid in world_state) {
+		if(world_state[this.left_eid].entity_type == "player") {
 			console.log("Found left side");
 			this.left_drawable = canvas.display.line({
-		        start: { x: world_state[this.left].x , y: world_state[this.left].y },
+		        start: { x: world_state[this.left_eid].x , y: world_state[this.left_eid].y },
 		        end: { x: this.x, y: this.y },
 		        stroke: "4px #0aa",
 		        cap: "round"
@@ -31,30 +35,15 @@ TetherNode.prototype.init_draw = function(state) {
 		}
 	}
 
-	if(this.right in world_state) {
+	if(this.right_eid in world_state) {
 		console.log("Found right side");
 		this.right_drawable = canvas.display.line({
 			        start: { x: this.x , y: this.y },
-			        end: { x: world_state[this.right].x, y: world_state[this.right].y },
+			        end: { x: world_state[this.right_eid].x, y: world_state[this.right_eid].y },
 			        stroke: "4px #0aa",
 			        cap: "round"
 	    		}).add();
 	}
-	//this.drawable.strokeColor = "white";
-
-	/*this.trail = canvas.display.image({
-		x: this.x,
-		y: this.y+24,
-		origin: { x: "center", y: "center" },
-		image: ship_trail_assets[state.team],
-		width: 32, height: 38}).add();
-
-	this.drawable = canvas.display.image({
-		x: this.x,
-		y: this.y,
-		origin: { x: "center", y: "center" },
-		image: ship_assets[state.team],
-		width: 25, height: 25}).add();*/
 }
 
 TetherNode.prototype.control = function(state) {
@@ -69,6 +58,20 @@ TetherNode.prototype.replicate = function(state) {
 TetherNode.prototype.draw = function() {
 	Particle.prototype.draw.call(this);
 	this.drawable.moveTo(this.x, this.y);
+
+	if(this.left_drawable != null) {
+		this.left_drawable.start.x = world_state[this.left_eid].x;
+		this.left_drawable.start.y = world_state[this.left_eid].y;
+		this.left_drawable.end.x = this.x;
+		this.left_drawable.end.y = this.y;
+	}
+	if(this.right_drawable != null) {
+		this.right_drawable.start.x = this.x;
+		this.right_drawable.start.y = this.y;
+		this.right_drawable.end.x = world_state[this.right_eid].x;
+		this.right_drawable.end.y = world_state[this.right_eid].y;
+		
+	}
 }
 
 TetherNode.prototype.destroy = function() {
