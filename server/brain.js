@@ -26,17 +26,6 @@ Brain.prototype.init_world = function() {
     this.inputs = [];
 }
 
-Brain.prototype.add_body = function(id, body_def) {
-    var body = this.world.CreateBody(body_def);
-    this.objects[id] = body;
-    return body;
-}
-
-Brain.prototype.add_joint = function(joint_def) {
-    var joint = this.world.CreateJoint(joint_def);
-    return joint;
-}
-
 Brain.prototype.step = function() {
     this.process_inputs();
     this.world.Step(CONSTANTS.TIMEDELTA, 1);
