@@ -151,6 +151,7 @@ Brain.prototype.loop = function(that) {
 }
 
 Brain.prototype.start = function(team, server, game) {
+    this.server = server;
     this.game = game;
     this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL, this);
 
@@ -231,21 +232,44 @@ Brain.prototype.start = function(team, server, game) {
     // east wall
     Wall(this.world, -1, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 3, 0, 1, CONSTANTS.MAX_Y - CONSTANTS.MIN_Y - 1);
 
-    // set contact listener for active asteroid collisions
-    var listener = new b2d.b2ContactListener();
+    var contact_listener = new b2d.b2ContactListener();
 
-    listener.Add = function(point) {
+    contact_listener.Add = function(point) {
         var shape_one_data = point.shape1.GetBody().GetUserData(),
             shape_two_data = point.shape2.GetBody().GetUserData();
 
         if (shape_one_data["particle_type"] == CONSTANTS.TYPE_ASTEROID && shape_two_data["particle_type"] == CONSTANTS.TYPE_TETHER_NODE) {
-            if (brain.objects[shape_one_data["eid"]].active) brain.end_game(shape_two_data["team_id"]);
+            var asteroid_entity = brain.objects[shape_one_data["eid"]];
+            var team_id = shape_two_data["team_id"];
+
+            if (asteroid_entity.active && asteroid_entity.team_id != team_id) brain.end_game(team_id);
+            else {
+                asteroid_entity.active = true;
+                asteroid_entity.team_id = team_id;
+            }
         } else if (shape_one_data["particle_type"] == CONSTANTS.TYPE_TETHER_NODE && shape_two_data["particle_type"] == CONSTANTS.TYPE_ASTEROID) {
-            if (brain.objects[shape_two_data["eid"]].active) brain.end_game(shape_one_data["team_id"]);
+            var asteroid_entity = brain.objects[shape_two_data["eid"]];
+            var team_id = shape_one_data["team_id"];
+
+            if (asteroid_entity.active && asteroid_entity.team_id != team_id) brain.end_game(team_id);
+            else {
+                asteroid_entity.active = true;
+                asteroid_entity.team_id = team_id;
+            }
+        } else if (shape_one_data["particle_type"] == CONSTANTS.TYPE_ASTEROID && shape_two_data["particle_type"] == CONSTANTS.TYPE_WALL) {
+            var asteroid_entity = brain.objects[shape_one_data["eid"]];
+
+            asteroid_entity.active = false; 
+            asteroid_entity.team_id = null;
+        } else if (shape_one_data["particle_type"] == CONSTANTS.TYPE_WALL && shape_two_data == CONSTANTS.TYPE_ASTEROID) {
+            var asteroid_entity = brain.objects[shape_two_data["eid"]];
+
+            asteroid_entity.active = false;
+            asteroid_entity.team_id = null;
         }
     }
 
-    this.world.SetContactListener(listener);
+    this.world.SetContactListener(contact_listener);
 
     this.world_state_broadcast_interval_id = setInterval(function () {
     	server.io.emit('world_state', brain.return_world_state(brain));
@@ -255,7 +279,7 @@ Brain.prototype.start = function(team, server, game) {
 Brain.prototype.end_game = function (losing_team) {
     console.log("GAME ENDED, team " + losing_team + " has lost!" );
     this.stop();
-    server.io.emit('game_ended', losing_team);
+    this.server.io.emit('game_ended', losing_team);
 }
 
 Brain.prototype.return_world_state = function() {

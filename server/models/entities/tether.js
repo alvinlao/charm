@@ -23,9 +23,9 @@ function Tether(world, eids, body1, body2, team_id) {
     for (var i = 1; i <= CONSTANTS.TETHER_NUM_NODES; i++) {
         // rope segment
         var bodyDef = new b2d.b2BodyDef();
-        bodyDef.position.x = x;
-        bodyDef.position.y = y + (2 * i - 1) * d;
-        bodyDef.userData = { eid: eids[i-1] };
+        bodyDef.position.x = x + (2 * i - 1) * d;
+        bodyDef.position.y = y;
+        bodyDef.userData = { eid: eid[i-1], particle_type:CONSTANTS.TYPE_TETHER_NODE, team_id: team_id };
         boxDef = new b2d.b2PolygonDef();
         boxDef.SetAsBox(0.1, d);
         boxDef.density = 1;
