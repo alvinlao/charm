@@ -24,6 +24,7 @@ Asteroid.prototype.init_draw = function() {
 
 Asteroid.prototype.draw = function() {
 	Particle.prototype.draw.call(this);
+    this.drawable.scale(this.r/80, this.r/80);
 	this.drawable.moveTo(this.x, this.y);
 }
 
@@ -31,6 +32,7 @@ Asteroid.prototype.replicate = function(state) {
 
 	this.x = state.x;
 	this.y = state.y;
+    this.r = state.r;
 
 }
 
