@@ -243,6 +243,8 @@ Brain.prototype.start = function(team, server) {
 
 Brain.prototype.end_game = function (losing_team) {
     console.log("GAME ENDED, team " + losing_team + " has lost!" );
+    this.stop();
+    server.io.emit('game_ended', losing_team);
 }
 
 Brain.prototype.return_world_state = function() {
@@ -261,8 +263,8 @@ Brain.prototype.return_world_state = function() {
 }
 
 Brain.prototype.stop = function() {
-    clearInterval(this.game_loop_interval_id);
-    clearInterval(this.world_state_broadcast_interval_id);
+    this.game_loop_interval_id = clearInterval(this.game_loop_interval_id);
+    this.world_state_broadcast_interval_id = clearInterval(this.world_state_broadcast_interval_id);
 }
 
 module.exports = Brain;
