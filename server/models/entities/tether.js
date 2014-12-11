@@ -30,9 +30,9 @@ function Tether(world, eids, body1, body2, team_id) {
         bodyDef.userData = { eid: eids[i-1], particle_type:CONSTANTS.TYPE_TETHER_NODE, team_id: team_id };
         boxDef = new b2d.b2PolygonDef();
         boxDef.SetAsBox(0.1, 0.9 * d);
-        boxDef.density = 1;
-        boxDef.friction = 0.5;
-        boxDef.restitution = 0.2;
+        boxDef.density = CONSTANTS.TETHER_NODE_DENSITY;
+        boxDef.friction = CONSTANTS.TETHER_NODE_FRICTION;
+        boxDef.restitution = CONSTANTS.TETHER_NODE_RESTITUTION;
         body = world.CreateBody(bodyDef);
         body.CreateShape(boxDef);
         // joint

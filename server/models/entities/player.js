@@ -7,7 +7,12 @@ Player.prototype.constructor = Player;
 
 function Player(world, eid, player_id, x, y, team) {
 	this.player_id = player_id;
-	Particle.prototype.constructor.call(this, world, eid, x, y, CONSTANTS.PLAYER_MASS, CONSTANTS.PLAYER_RADIUS, CONSTANTS.TYPE_PLAYER);
+    var params = {
+        density: CONSTANTS.PLAYER_DENSITY,
+        restitution: CONSTANTS.PLAYER_RESTITUTION,
+        friction: CONSTANTS.PLAYER_FRICTION,
+    };
+	Particle.prototype.constructor.call(this, world, eid, x, y, CONSTANTS.PLAYER_MASS, CONSTANTS.PLAYER_RADIUS, params, CONSTANTS.TYPE_PLAYER);
     this.direction = new b2d.b2Vec2(0,0);
     this.team = team;
     return this;
