@@ -62,11 +62,11 @@ server.io.on('connection', function(socket) {
     });
 
 
-  /* Example:
-   * {player_id: 12345,
-   *  inputs:["up"]}
-   */
-  socket.on('inputs', function(state){
-    brain.process_inputs(socket.id, state.inputs);
-  });
+    /* Example:
+    * {player_id: 12345,
+    *  inputs:["up"]}
+    */
+    socket.on('inputs', function(data){
+        brain.queue_inputs(data);
+    });
 })

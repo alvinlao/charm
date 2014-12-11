@@ -87,7 +87,6 @@ function is_running() {
 }
 
 function start() {
-	console.log(state)
 	state.state = STATES.IN_GAME;
 	var teams = [];
 	for (var i = 0; i < NUM_TEAMS; ++i) {
@@ -132,13 +131,10 @@ function get_lobby_state() {
 	for(var i = 0; i < NUM_PLAYERS; ++i) {
 		lobby_state.push(false)
 	}
-
 	for(var i = 0; i < state.clients.length; i++) {
 		var client = state.clients[i];
 		lobby_state[client.player_id-1] = (client.state == client_module.STATES.READY);
 	}
-
-	console.log("lobby state: " + lobby_state);
 	return lobby_state;
 }
 
