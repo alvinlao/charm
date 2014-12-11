@@ -17,8 +17,8 @@ Brain.prototype.init_world = function() {
     var worldAABB = new b2d.b2AABB(),
         gravity = new b2d.b2Vec2(0.0, 0.0),
         do_sleep = true;
-    worldAABB.lowerBound.Set(CONSTANTS.LOWER_X, CONSTANTS.LOWER_Y);
-    worldAABB.upperBound.Set(CONSTANTS.UPPER_X, CONSTANTS.UPPER_Y);
+    worldAABB.lowerBound.Set(CONSTANTS.MIN_X, CONSTANTS.MIN_Y);
+    worldAABB.upperBound.Set(CONSTANTS.MAX_X, CONSTANTS.MAX_Y);
 
     this.world = new b2d.b2World(worldAABB, gravity, do_sleep);
     this.objects = {};
@@ -42,6 +42,29 @@ Brain.prototype.step = function() {
     // Linked List
     var body_list = this.world.GetBodyList();
     while (body_list != null) {
+        /*
+         * WRAP LOGIC
+         */
+        var current_position = body_list.GetPosition(),
+            current_angle = body_list.GetAngle(),
+            x0 = current_position.x,
+            y0 = current_position.y,
+            x1 = x0,
+            y1 = y0;
+
+        if (x0 < CONSTANTS.MIN_X) {
+            x1 = CONSTANTS.MAX_X;
+        } else if(x0 > CONSTANTS.MAX_X) {
+            x1 = CONSTANTS.MIN_X;
+        }
+        if (y0 < CONSTANTS.MIN_Y) {
+            y1 = CONSTANTS.MAX_Y;
+        } else if (y0 > CONSTANTS.MAX_Y) {
+            y1 = CONSTANTS.MIN_Y;
+        }
+        var new_position = new b2d.b2Vec2(x1, y1);
+        body_list.SetXForm(new_position, current_angle);
+
         if (body_list.m_userData) {
             var eid = body_list.m_userData.eid;
             if(this.objects[eid]) {
@@ -85,7 +108,7 @@ Brain.prototype.start = function(team, server) {
     for(var i=0; i<team.length; i++){
         for(var j=0; j<team[i].length; j++){
             var eid = this.get_eid();
-            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, 100+100*i, 100+100*j);
+            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, 100+100*i, 100+100*j, i);
         }
     }
 
@@ -102,7 +125,7 @@ Brain.prototype.start = function(team, server) {
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
         eids.push(this.get_eid());
     }
-    // Tether(this.world, eids, this.objects[1], this.objects[2]);
+    Tether(this.world, eids, this.objects[0], this.objects[1]);
 
     var brain = this;
 
@@ -118,7 +141,7 @@ Brain.prototype.return_world_state = function(brain) {
 		serialized_objects[brain.objects[key].eid] = brain.objects[key].serialize();
 	}
 
-    console.log(serialized_objects);
+    // console.log(serialized_objects)
 	return serialized_objects;
 }
 
