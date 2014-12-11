@@ -80,7 +80,7 @@ function Tether(world, eids, body1, body2, team_id) {
     // dv.Multiply(dist/(2*CONSTANTS.TETHER_NUM_NODES));
     // var u = this.body1.get_position().Copy();
 
-    var body = createBox(world, u.x, u.y, dv.Length(), r_height, CONSTANTS.TETHER_NODE_MASS, {eid: eids[i], team_id: team_id});
+    // var body = createBox(world, u.x, u.y, dv.Length(), r_height, CONSTANTS.TETHER_NODE_MASS, {eid: eids[i], team_id: team_id});
     // //rope
     // for (var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) 
     // {
