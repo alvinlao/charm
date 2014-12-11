@@ -2,6 +2,7 @@ var CONSTANTS = require('../server/constants')
 var GameObject = require('../server/models/entities/gameobject')
 var Particle = require('../server/models/entities/particle')
 var Player = require('../server/models/entities/player')
+var Asteroid = require('../server/models/entities/asteroid')
 var Tether = require('../server/models/entities/tether')
 var b2d = require("box2d")
 
@@ -87,6 +88,15 @@ Brain.prototype.start = function(team, server) {
         }
     }
 
+
+    // Create some asteroids
+    for(var i=0; i<10; i++){
+        var x_pos = Math.random() * 500;
+        var y_pos = Math.random() * 500;
+        var eid = this.get_eid();
+        this.objects[eid] = new Asteroid(this.world, eid, x_pos, y_pos);
+    }
+
     var eids = [];
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
         eids.push(this.get_eid());
@@ -107,6 +117,7 @@ Brain.prototype.return_world_state = function(brain) {
 		serialized_objects[brain.objects[key].eid] = brain.objects[key].serialize();
 	}
 
+    console.log(serialized_objects);
 	return serialized_objects;
 }
 
