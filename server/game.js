@@ -24,7 +24,10 @@ var state = {
 	player_ready: player_ready,
 	get_lobby_state: get_lobby_state,
 	broadcast_game_state: broadcast_game_state,
+	set_server: set_server,
 }
+
+var server;
 
 function connect_player(socket) {
 	if(state.clients.length >= NUM_PLAYERS) {
@@ -47,11 +50,15 @@ function disconnect_player(socket) {
 			if(state.state == STATES.IN_GAME) {
 				// Disconnect
 				state.lobby_message = "A player disconnected";
-				state.state = STATES.LOBBY;
+				stop();
 			}
 			return;
 		}
 	}
+}
+
+function set_server(s)  {
+	server = s;
 }
 
 function get_client(client_id) {
@@ -98,14 +105,16 @@ function start() {
 		teams[client.team].push(client)
 	}
 
+	broadcast_game_state();
 	return teams;
 }
 
 function stop() {
 	state.state = STATES.LOBBY;
+	broadcast_game_state();
 }
 
-function broadcast_game_state(server) {
+function broadcast_game_state() {
 	var data = {state: state.state};
 
 	if(state.state == STATES.LOBBY) {
