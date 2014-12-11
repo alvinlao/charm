@@ -3,6 +3,7 @@ var GameObject = require('../server/models/entities/gameobject')
 var Particle = require('../server/models/entities/particle')
 var Player = require('../server/models/entities/player')
 var Asteroid = require('../server/models/entities/asteroid')
+var Wall = require('../server/models/entities/wall')
 var Tether = require('../server/models/entities/tether')
 var b2d = require("box2d")
 
@@ -46,25 +47,25 @@ Brain.prototype.step = function() {
         /*
          * WRAP LOGIC
          */
-        var current_position = body_list.GetPosition(),
-            current_angle = body_list.GetAngle(),
-            x0 = current_position.x,
-            y0 = current_position.y,
-            x1 = x0,
-            y1 = y0;
+        // var current_position = body_list.GetPosition(),
+        //     current_angle = body_list.GetAngle(),
+        //     x0 = current_position.x,
+        //     y0 = current_position.y,
+        //     x1 = x0,
+        //     y1 = y0;
 
-        if (x0 < CONSTANTS.MIN_X) {
-            x1 = CONSTANTS.MAX_X;
-        } else if(x0 > CONSTANTS.MAX_X) {
-            x1 = CONSTANTS.MIN_X;
-        }
-        if (y0 < CONSTANTS.MIN_Y) {
-            y1 = CONSTANTS.MAX_Y;
-        } else if (y0 > CONSTANTS.MAX_Y) {
-            y1 = CONSTANTS.MIN_Y;
-        }
-        var new_position = new b2d.b2Vec2(x1, y1);
-        body_list.SetXForm(new_position, current_angle);
+        // if (x0 < CONSTANTS.MIN_X) {
+        //     x1 = CONSTANTS.MAX_X;
+        // } else if(x0 > CONSTANTS.MAX_X) {
+        //     x1 = CONSTANTS.MIN_X;
+        // }
+        // if (y0 < CONSTANTS.MIN_Y) {
+        //     y1 = CONSTANTS.MAX_Y;
+        // } else if (y0 > CONSTANTS.MAX_Y) {
+        //     y1 = CONSTANTS.MIN_Y;
+        // }
+        // var new_position = new b2d.b2Vec2(x1, y1);
+        // body_list.SetXForm(new_position, current_angle);
 
         // Check for speeds
         var current_velocity = body_list.GetLinearVelocity();
@@ -204,6 +205,14 @@ Brain.prototype.start = function(team, server) {
     }
     Tether(this.world, eids, this.objects[0], this.objects[1]);
     */
+
+    Wall(this.world, -1, 0, 0, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 1, 1);
+
+    Wall(this.world, -1, 0, 0, 1, CONSTANTS.MAX_Y - CONSTANTS.MIN_Y - 1);
+
+    Wall(this.world, -1, -1, CONSTANTS.MAX_Y - CONSTANTS.MIN_Y - 2, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 1, 1);
+
+    Wall(this.world, -1, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 3, 0, 1, CONSTANTS.MAX_Y - CONSTANTS.MIN_Y - 1);
 
     var brain = this;
 
