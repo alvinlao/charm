@@ -15,10 +15,11 @@ function Wall(world, eid, x, y, width, height) {
     this.body = world.CreateBody(body_def);
 
     var polygon_def = new b2d.b2PolygonDef();
-    polygon_def.restitution = 0.8;
+    polygon_def.restitution = CONSTANTS.WALL_RESTITUTION;
+    polygon_def.friction = CONSTANTS.WALL_FRICTION;
     polygon_def.SetAsBox(width, height);
     this.body.CreateShape(polygon_def);
-    
+
     return this;
 }
 
