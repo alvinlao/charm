@@ -172,13 +172,13 @@ Brain.prototype.start = function(team, server) {
         while(true){
             var x_pos = Math.random() * CONSTANTS.MAX_X;
             var y_pos = Math.random() * CONSTANTS.MAX_Y;
-            var radius = Math.floor(Math.random() *  CONSTANTS.ASTEROID_RADIUS);
+            var radius = CONSTANTS.ASTEROID_MIN_SIZE + Math.random() * (CONSTANTS.ASTEROID_MAX_SIZE - CONSTANTS.ASTEROID_MIN_SIZE);
 
             var is_good = true;
             for(var j=0; j<previous_asteroids.length; j++){
                 var prev_asteroid = previous_asteroids[j];
                 var dist_squared = prev_asteroid[0]*prev_asteroid[0] + prev_asteroid[1]*prev_asteroid[1];
-                if(dist_squared < 2000){
+                if(dist_squared < 9000){
                     is_good = false;
                     break;
                 }
