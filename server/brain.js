@@ -66,6 +66,14 @@ Brain.prototype.step = function() {
         var new_position = new b2d.b2Vec2(x1, y1);
         body_list.SetXForm(new_position, current_angle);
 
+        // Check for speeds
+        var current_velocity = body_list.GetLinearVelocity();
+        if(CONSTANTS.MAX_SPEED < current_velocity.Length()) {
+            current_velocity.Normalize();
+            current_velocity.Multiply(CONSTANTS.MAX_SPEED);
+            body_list.SetLinearVelocity(current_velocity);
+        }
+
         if (body_list.m_userData) {
             var eid = body_list.m_userData.eid;
             if(this.objects[eid]) {
@@ -144,6 +152,7 @@ Brain.prototype.process_inputs = function() {
 }
 
 Brain.prototype.loop = function(that) {
+    if (this.world) console.log(this.world.GetContactList());
     that.step();
 }
 
@@ -155,8 +164,10 @@ Brain.prototype.start = function(team, server) {
     // Create player objects
     for(var i=0; i<team.length; i++){
         for(var j=0; j<team[i].length; j++){
-            var eid = this.get_eid();
-            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, 100+100*i, 100+100*j, i);
+            var eid = this.get_eid(),
+                x0 = 100 + j * (CONSTANTS.MAX_X/2 - 300),
+                y0 = 100 + i * (CONSTANTS.MAX_Y - 300);
+            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, x0, y0);
         }
     }
 

@@ -1,9 +1,11 @@
-Particle.prototype = new GameObject();
+Particle.prototype = Object.create(GameObject.prototype);
 Particle.prototype.constructor = Particle;
 
-function Particle(eid, x, y) {
-	this.x = x;
-	this.y = y;
+function Particle(eid, state) {
+	console.log(JSON.stringify(state));
 
-	GameObject.prototype.constructor.call(this, eid);
+	this.x = state.x;
+	this.y = state.y;
+
+	GameObject.prototype.constructor.call(this, eid, state);
 }

@@ -1,4 +1,4 @@
-Asteroid.prototype = new Particle();
+Asteroid.prototype = Object.create(Particle.prototype);
 Asteroid.prototype.constructor = Asteroid;
 
 function Asteroid(eid) {
