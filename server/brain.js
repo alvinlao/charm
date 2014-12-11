@@ -108,8 +108,10 @@ Brain.prototype.start = function(team, server) {
     // Create player objects
     for(var i=0; i<team.length; i++){
         for(var j=0; j<team[i].length; j++){
-            var eid = this.get_eid();
-            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, 100+100*i, 100+100*j, i);
+            var eid = this.get_eid(),
+                x0 = 100 + j * (CONSTANTS.MAX_X/2 - 300),
+                y0 = 100 + i * (CONSTANTS.MAX_Y - 300);
+            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, x0, y0);
         }
     }
 

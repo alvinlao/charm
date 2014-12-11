@@ -10,7 +10,7 @@ function Particle(world, eid, x, y, m, r) {
     var props = new b2d.b2CircleDef();
     props.radius = r || CONSTANTS.EPSILON;
     props.density = m /(Math.PI * props.radius^2);
-    props.restitution = 1.0;
+    props.restitution = 0.8;
     props.friction = 0;
     var body_def = new b2d.b2BodyDef(props);
     body_def.userData = {circleShape: props, eid: eid};
