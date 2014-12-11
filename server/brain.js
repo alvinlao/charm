@@ -150,7 +150,8 @@ Brain.prototype.loop = function(that) {
     that.step();
 }
 
-Brain.prototype.start = function(team, server) {
+Brain.prototype.start = function(team, server, game) {
+    this.game = game;
     this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL, this);
 
     this.init_world();
@@ -210,9 +211,13 @@ Brain.prototype.start = function(team, server) {
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
         eids.push(this.get_eid());
     }
-    var b2 = this.objects[1].get_position();
-    
-    Tether(this.world, eids, this.objects[0], this.objects[1], 1);
+    Tether(this.world, eids, this.objects[0], this.objects[1], 0);
+
+    var eids = [];
+    for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
+        eids.push(this.get_eid());
+    }
+    Tether(this.world, eids, this.objects[2], this.objects[3], 1);
 
     // north wall
     Wall(this.world, -1, 0, 0, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 1, 1);

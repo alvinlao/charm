@@ -11,11 +11,12 @@ function hide_all() {
   $('#game').hide();
 }
 
-function change_state(new_state) {
-  state = new_state;
+function change_state(data) {
+  state = data.state;
 
   hide_all();
   if (state == STATES.LOBBY) {
+    update_lobby(data);
     $('#lobby').show();
   } else if(state == STATES.GAME) {
     reset_lobby();
@@ -25,7 +26,7 @@ function change_state(new_state) {
 }
 
 function reset_lobby() {
-  $('#lobby_message').innerHTML = "";
+  $('#lobby_message').text("");
   $(".player_button").each(function ( index, value ) {
     this.innerHTML = "JOIN";
     $(this).removeAttr('disabled');
@@ -36,7 +37,8 @@ function update_lobby(data) {
   var lobby_status = data.lobby;
 
   if(data.lobby_message) {
-    $('#lobby_message').innerHTML = data.lobby_message;
+    $('#lobby_message').text(data.lobby_message);
+    console.log('msg')
   }
 
   $(".player_button").each(function ( index, value ) {
@@ -83,7 +85,7 @@ document.onready = function() {
 
   socket.on('game_state_update', function(data) {
     if (state != data.state) {
-      change_state(data.state);
+      change_state(data);
     }
 
   socket.on('player_info', function(id) {
@@ -96,11 +98,6 @@ document.onready = function() {
     player_id = (this.id == "player_one" ? 1 : (this.id == "player_two" ? 2 : (this.id == "player_three" ? 3 : 4)));
     socket.emit('ready', player_id);
     $(this).attr('disabled','disabled');
-  });
-
-  $(".instant_join").unbind( "click" );
-  $(".instant_join").click(function () {
-    change_state(STATES.GAME);
   });
 
   if (state == STATES.LOBBY) {
