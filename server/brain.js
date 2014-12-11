@@ -88,8 +88,6 @@ Brain.prototype.start = function(team, server) {
             eid++;
         }
     }
-    console.log(152873241872);
-    console.log(team);
 
     this.world_state_broadcast_interval_id = setInterval(function () {
     	server.io.emit('world_state', brain.return_world_state());
