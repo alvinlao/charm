@@ -11,12 +11,15 @@ function Asteroid(eid, state) {
 	this.rotation = 0;
 }
 
-Asteroid.prototype.init_draw = function() {
+Asteroid.prototype.init_draw = function(state) {
 	this.drawable = canvas.display.image({
 		x: this.x,
 		y: this.y,
 		origin: {x: "center", y: "center"},
-		image: astroid_assets[Math.floor(Math.random()*astroid_assets.length)]
+		image: astroid_assets[Math.floor(Math.random()*astroid_assets.length)],
+		width: 2*state.r,
+		height: 2*state.r,
+		shadow: "0px 0px 100px #FF00BB"
 		}).add();
 
 	this.drawable.rotateTo(Math.random()*360);
@@ -24,7 +27,6 @@ Asteroid.prototype.init_draw = function() {
 
 Asteroid.prototype.draw = function() {
 	Particle.prototype.draw.call(this);
-    this.drawable.scale(this.r/20, this.r/20);
 	this.drawable.moveTo(this.x, this.y);
 }
 
@@ -34,6 +36,9 @@ Asteroid.prototype.replicate = function(state) {
 	this.y = state.y;
     this.r = state.r;
 
+    if(state.active) {
+    	particles.spawn(this.x + (1 - Math.random()*2)*state.r;, this.y + (1 - Math.random()*2)*state.r;, state.velocity.x/100, state.velocity.y/100, 1, 100 + 300*Math.random(), "#FF00BB");
+    }
 }
 
 Asteroid.prototype.destroy = function() {

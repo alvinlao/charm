@@ -4,6 +4,7 @@ var controls;
 var tether;
 
 var world;
+var particles;
 
 // Networking
 var socket;
@@ -55,6 +56,8 @@ function game_loop() {
         game_objects[eid].draw();
     });
 
+    particles.update(33.33);
+
     canvas.draw.redraw();
 }
 
@@ -73,6 +76,8 @@ function reset_game() {
     world_state = {}
     world.clear();
     world.init();
+    particles.clear();
+    particles.init(100);
 }
 
 function prepare_game() {
@@ -80,6 +85,7 @@ function prepare_game() {
         canvas = oCanvas.create({ canvas: "#game_canvas", background: "#232129" });
         controls = new Controls(canvas);
         world = new World();
+        particles = new VisualParticles();
         socket = io();
         socket.on('world_state', update_world_state);
 
