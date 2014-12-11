@@ -1,5 +1,5 @@
 var GameObject = require('../entities/gameobject')
-var CONSTANTS = require('../constants')
+var CONSTANTS = require('../../constants')
 var b2d = require('box2d')
 
 Particle.prototype = Object.create(GameObject.prototype);
