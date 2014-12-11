@@ -3,10 +3,12 @@ var CONSTANTS = require('../constants')
 var Particle = require('../entities/particle')
 var b2d = require('box2d');
 
-Tether.prototype = new GameObject();
+Tether.prototype = Object.create(GameObject.prototype);
 Tether.prototype.constructor = Tether;
 
-function Tether(world, body1, body2) {
+/* eids :: [eid]
+ */
+function Tether(world, eids, body1, body2) {
 	GameObject.prototype.constructor.call(this);
 
 	this.body1 = body1;
@@ -23,31 +25,29 @@ function Tether(world, body1, body2) {
         var v = dv.Copy();
         v.Multiply(i);
         u.Add(v);
-        var internal_node = Particle(world, -1, u.x, u.y, CONSTANTS.TETHER_NODE_MASS, CONSTANTS.TETHER_NODE_RADIUS);
+        var internal_node = new Particle(world, eids[i], u.x, u.y, CONSTANTS.TETHER_NODE_MASS, CONSTANTS.TETHER_NODE_RADIUS);
         this.internal_nodes.push(internal_node);
     }
 
     // Model links with joints
-    var rjd1 = b2d.b2RevoluteJointDef();
-    rjd1.anchorPoint(this.body1.get_position());
-    rjd1.body1 = this.body1;
-    rjd1.body2 = this.internal_nodes[0];
-    this.joints.push(world.CreateJoint(b2d.b2RevoluteJoint(rjd1)));
+    var rjd1 = new b2d.b2RevoluteJointDef();
+    rjd1.Initialize(this.body1.body, this.internal_nodes[0].body, this.body1.get_position());
+    this.joints.push(world.CreateJoint(rjd1));
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES - 1; i++){
-        var rjd = b2d.b2RevoluteJointDef(),
+        var rjd = new b2d.b2RevoluteJointDef(),
             a = this.internal_nodes[i],
             b = this.internal_nodes[i+1];
-        rjd.anchorPoint(a.get_position());
-        rjd.body1 = a;
-        rjd.body2 = b;
-        this.joints.append(world.CreateJoint(b2d.b2RevoluteJoint(rjd)));
+        rjd.Initialize(a.body, b.body, a.get_position());
+        this.joints.push(world.CreateJoint(rjd));
     }
-    var rjd2 = b2d.b2RevoluteJointDef(),
+    var rjd2 = new b2d.b2RevoluteJointDef(),
         last_internal_node = this.internal_nodes[CONSTANTS.TETHER_NUM_NODES - 1];
-    rjd2.anchorPoint(last_internal_node.get_position());
-    rjd2.body1 = last_internal_node;
-    rjd2.body2 = this.body2;
-    this.joints.push(world.CreateJoint(b2d.b2RevoluteJoint(rjd2)));
+    rjd2.Initialize(last_internal_node.body, this.body2.body, last_internal_node.get_position());
+    this.joints.push(world.CreateJoint(rjd2));
+}
+
+Tether.prototype.sync = function() {
+    console.log("Tether is syncing!");
 }
 
 module.exports = Tether;

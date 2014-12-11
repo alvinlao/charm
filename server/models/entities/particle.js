@@ -24,12 +24,17 @@ Particle.prototype.get_position = function() {
 }
 
 Particle.prototype.apply_force = function(force) {
-    this.body.ApplyForce(force);
+    this.body.ApplyForce(force, this.body.GetPosition());
     return this;
 }
 
 Particle.prototype.serialize = function () {
   console.log("particle serialize called");
+}
+
+Particle.prototype.sync = function() {
+    this.x = this.get_position().x;
+    this.y = this.get_position().y;
 }
 
 module.exports = Particle;

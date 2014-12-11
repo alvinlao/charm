@@ -8,8 +8,10 @@ var b2d = require("box2d")
 function Brain() {
 }
 
-/* initial_bodies -- Map whose keys are ids and values are box2d world bodies
- */
+Brain.prototype.get_eid = function() {
+    return this.eid++;
+}
+
 Brain.prototype.init_world = function() {
     var worldAABB = new b2d.b2AABB(),
         gravity = new b2d.b2Vec2(0.0, 0.0),
@@ -24,20 +26,10 @@ Brain.prototype.init_world = function() {
     this.game_loop_interval_id = -1;
     this.world_state_broadcast_interval_id = -1;
 
+    this.eid = 0;
+
     // List of inputs from players
     this.inputs = [];
-    return this;
-}
-
-Brain.prototype.add_body = function(id, body_def) {
-    var body = this.world.CreateBody(body_def);
-    this.objects[id] = body;
-    return body;
-}
-
-Brain.prototype.add_joint = function(joint_def) {
-    var joint = this.world.CreateJoint(joint_def);
-    return joint;
 }
 
 Brain.prototype.step = function() {
@@ -58,46 +50,66 @@ Brain.prototype.process_inputs = function() {
         var eid = input_data.eid;
         var input = input_data.input;
 
-        var force = new b2Vec2(input.x, input.y);
+        var force = new b2d.b2Vec2(input.x, input.y);
         force.Multiply(CONSTANTS.INPUT_MULTIPLIER);
-        console.log(force)
         this.objects[eid].apply_force(force);
     }
 
     this.inputs = [];
 }
 
-Brain.prototype.start = function(team, server) {
-    this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
+Brain.prototype.loop = function(that) {
+    that.step();
+}
 
-    var brain = this.init_world();
+Brain.prototype.start = function(team, server) {
+    this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL, this);
+
+    this.init_world();
 
     // Create player objects
-    var eid = 1;
     for(var i=0; i<team.length; i++){
         for(var j=0; j<team[i].length; j++){
-            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id);
-            this.objects[eid].x = 100;
-            this.objects[eid].y = 100;
-            eid++;
+            var eid = this.get_eid();
+            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, 100, 100);
         }
     }
-    this.objects[1] = new Player(this.world, 1,1, 100, 100);
-    this.objects[2] = new Player(this.world, 2,2, 600, 100);
-    //Tether(this.world, this.objects[1], this.objects[2]);
+
+    var eids = [];
+    for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
+        eids.push(this.get_eid());
+    }
+    Tether(this.world, eids, this.objects[1], this.objects[2]);
+
+    var brain = this;
 
     this.world_state_broadcast_interval_id = setInterval(function () {
-    	server.io.emit('world_state', brain.return_world_state());
+    	server.io.emit('world_state', brain.return_world_state(brain));
     }, 1000);
 }
 
-Brain.prototype.return_world_state = function() {
+Brain.prototype.return_world_state = function(brain) {
+    // Sync world and objects
+    // Linked List
+    var body_list = brain.world.GetBodyList();
+    while (body_list != null) {
+        if (body_list.m_userData) {
+            var eid = body_list.m_userData.eid;
+            if(brain.objects[eid]) {
+                brain.objects[eid].sync();
+            }
+        }
+
+        body_list = body_list.m_next;
+    }
+
 	var serialized_objects = {};
 
-	for (key in this.objects) {
-		serialized_objects[this.objects[key].eid] = this.objects[key].serialize();
+	for (key in brain.objects) {
+		serialized_objects[brain.objects[key].eid] = brain.objects[key].serialize();
 	}
 
+    console.log(serialized_objects)
 	return serialized_objects;
 }
 
