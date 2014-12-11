@@ -24,6 +24,9 @@ var CONSTANTS = Object.freeze({
     TYPE_ASTEROID:2,
     TYPE_TETHER_NODE:3,
     TYPE_WALL:4,
+
+    NUM_PLAYERS: 1,
+    NUM_TEAMS: 2,
 });
 
 module.exports = CONSTANTS;
