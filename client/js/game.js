@@ -11,7 +11,8 @@ var game_objects = {};
 var world_state = {};
 
 var game_object_prototypes = {
-    player:Player.prototype.constructor
+    player:Player.prototype.constructor,
+    Asteroid:Asteroid.prototype.constructor
 };
 
 function replicate_state() {
