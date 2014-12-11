@@ -4,7 +4,10 @@ var STATES = Object.freeze({
 });
 
 var state = STATES.LOBBY;
-var socket = io();
+
+var socket = io.connect(document.URL, {
+  'reconnection': false
+});
 
 function hide_all() {
   $('#lobby').hide();
