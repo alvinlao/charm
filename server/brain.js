@@ -35,6 +35,18 @@ Brain.prototype.init_world = function() {
 Brain.prototype.step = function() {
     this.process_inputs();
     this.world.Step(CONSTANTS.TIMEDELTA, 1);
+
+    // Sync world and objects
+    // Linked List
+    var body_list = this.world.GetBodyList();
+    while (body_list != null) {
+        if (body_list.m_userData) {
+            var eid = body_list.m_userData.eid;
+            this.objects[eid].sync(body_list); 
+        }
+
+        body_list = body_list.m_next;
+    }
 }
 
 Brain.prototype.set_interval = function(loop, loopInterval){
@@ -85,7 +97,7 @@ Brain.prototype.start = function(team, server) {
 
     this.world_state_broadcast_interval_id = setInterval(function () {
     	server.io.emit('world_state', brain.return_world_state());
-    }, 1000);
+    }, 33);
 }
 
 Brain.prototype.return_world_state = function() {
