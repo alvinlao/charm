@@ -231,7 +231,7 @@ Brain.prototype.return_world_state = function(brain) {
             serialized_objects[eid] = this.tether_nodes[eid];
         }
     }
-
+    console.log(serialized_objects)
 	return serialized_objects;
 }
 
