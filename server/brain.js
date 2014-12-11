@@ -29,6 +29,18 @@ Brain.prototype.init_world = function() {
 Brain.prototype.step = function() {
     this.process_inputs();
     this.world.Step(CONSTANTS.TIMEDELTA, 1);
+
+    // Sync world and objects
+    // Linked List
+    var body_list = this.world.GetBodyList();
+    while (body_list != null) {
+        if (body_list.m_userData) {
+            var eid = body_list.m_userData.eid;
+            this.objects[eid].sync(body_list); 
+        }
+
+        body_list = body_list.m_next;
+    }
 }
 
 Brain.prototype.set_interval = function(loop, loopInterval){
@@ -71,29 +83,16 @@ Brain.prototype.start = function(team, server) {
     }
     this.objects[5] = new Player(this.world, 5,1, 100, 100);
     this.objects[6] = new Player(this.world, 6,2, 600, 100);
-    Tether(this.world, this.objects[1], this.objects[2]);
-    //Tether(this.world, this.objects[1], this.objects[2]);
+    // Tether(this.world, this.objects[1], this.objects[2]);
 
     var brain = this;
 
     this.world_state_broadcast_interval_id = setInterval(function () {
     	server.io.emit('world_state', brain.return_world_state(brain));
-    }, 1000);
+    }, 16);
 }
 
 Brain.prototype.return_world_state = function(brain) {
-    // Sync world and objects
-    // Linked List
-    var body_list = brain.world.GetBodyList();
-    while (body_list != null) {
-        if (body_list.m_userData) {
-            var eid = body_list.m_userData.eid;
-            brain.objects[eid].sync();  
-        }
-
-        body_list = body_list.m_next;
-    }
-
 	var serialized_objects = {};
 
 	for (key in brain.objects) {
