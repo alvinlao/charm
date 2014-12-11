@@ -7,21 +7,21 @@ Particle.prototype.constructor = Particle;
 
 function Particle(world, eid, x, y, m, r) {
 	GameObject.prototype.constructor.call(this, eid);
-    var props = new b2d.b2CircleDef();
-    props.radius = r || CONSTANTS.EPSILON;
-    props.density = m /(Math.PI * props.radius^2);
-    props.restitution = 0.8;
-    props.friction = 0;
-    var body_def = new b2d.b2BodyDef(props);
-    body_def.userData = {circleShape: props, eid: eid};
-    body_def.position.Set(x,y);
 
-    // Mass
-    var mass_data = body_def.massData;
-    mass_data.mass = m;
+    var body_def = new b2d.b2BodyDef();
+    body_def.userData = {eid: eid};
+    body_def.position.Set(x,y);
+    body_def.massData.mass = m;
 
     this.body = world.CreateBody(body_def);
     this.body.m_linearDamping = CONSTANTS.PLAYER_FRICTION;
+
+    var shape_def = new b2d.b2CircleDef();
+    shape_def.radius = r || CONSTANTS.EPSILON;
+    shape_def.density = 1;
+    shape_def.restitution = 0.8;
+    shape_def.friction = 0.2;
+    this.body.CreateShape(shape_def);
     return this;
 }
 

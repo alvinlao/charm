@@ -17,20 +17,28 @@ function Tether(world, eids, body1, body2) {
     // Create internal nodes for rope
     var dv = this.body2.get_position();
     dv.Subtract(this.body1.get_position());
+    var dist = dv.Length();
     dv.Normalize();
     dv.Multiply(dv.Length()/(CONSTANTS.TETHER_NUM_NODES + 1));
+
+    var RADIUS = 0.8 * (dist / CONSTANTS.TETHER_NUM_NODES);
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
         var u = this.body1.get_position();
         var v = dv.Copy();
         v.Multiply(i + 1);
         u.Add(v);
-        var internal_node = new Particle(world, eids[i], u.x, u.y, CONSTANTS.TETHER_NODE_MASS, CONSTANTS.TETHER_NODE_RADIUS);
+        var internal_node = new Particle(world, eids[i], u.x, u.y, CONSTANTS.TETHER_NODE_MASS, RADIUS);
         this.internal_nodes.push(internal_node);
     }
 
     // Model links with joints
-    var rjd1 = new b2d.b2RevoluteJointDef();
-    rjd1.Initialize(this.body1.body, this.internal_nodes[0].body, this.body1.get_position());
+    var rjd1 = new b2d.b2RevoluteJointDef(),
+        first_node = this.internal_nodes[0]
+        dv = this.body1.get_position();
+    dv.Subtract(first_node.get_position());
+    dv.Multiply(0.5);
+    var anchor = this.body1.get_position();
+    rjd1.Initialize(this.body1.body, this.internal_nodes[0].body, anchor);
     this.joints.push(world.CreateJoint(rjd1));
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES - 1; i++){
         var rjd = new b2d.b2RevoluteJointDef(),
@@ -45,8 +53,13 @@ function Tether(world, eids, body1, body2) {
         this.joints.push(world.CreateJoint(rjd));
     }
     var rjd2 = new b2d.b2RevoluteJointDef(),
-        last_internal_node = this.internal_nodes[CONSTANTS.TETHER_NUM_NODES - 1];
-    rjd2.Initialize(last_internal_node.body, this.body2.body, last_internal_node.get_position());
+        last_node = this.internal_nodes[CONSTANTS.TETHER_NUM_NODES - 1],
+        dv = last_node.get_position();
+    dv.Subtract(this.body2.get_position());
+    dv.Multiply(0.5);
+    var anchor = last_node.get_position();
+    anchor.Add(dv);
+    rjd2.Initialize(last_node.body, this.body2.body, anchor);
     this.joints.push(world.CreateJoint(rjd2));
 }
 
