@@ -82,12 +82,8 @@ Player.prototype.replicate = function(state) {
 		this.rotation = toDegrees(Math.atan2(this.dy, this.dx)) + 90;
 	}
 
-	//this.x = state.x;
-	//this.y = state.y;
-
-	this.x = 200;
-	this.y = 200;
-
+	this.x = state.x;
+	this.y = state.y;
 }
 
 Player.prototype.draw = function() {
