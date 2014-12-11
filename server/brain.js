@@ -9,9 +9,7 @@ function Brain() {
 }
 
 Brain.prototype.get_eid = function() {
-    var eid = this.eid;
-    this.eid += 1;
-    return eid;
+    return this.eid++;
 }
 
 Brain.prototype.init_world = function() {
@@ -76,8 +74,7 @@ Brain.prototype.start = function(team, server) {
             this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, 100, 100);
         }
     }
-    this.objects[this.get_eid()] = new Player(this.world, 5,1, 100, 100);
-    this.objects[this.get_eid()] = new Player(this.world, 6,2, 600, 100);
+
     var eids = [];
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
         eids.push(this.get_eid());
