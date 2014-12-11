@@ -90,3 +90,14 @@ function prepare_game() {
         console.log("ERROR: game loaded a second time!");
     }
 }
+
+function game_over(won){
+    if(won){
+        $("#end_game_container").css("visibility","visible");
+    }
+    else{
+        $("#end_game_container").css("visibility","visible");
+        $("#end_game").text("LOSER!").css("color","red").css("border-color","red");
+    }
+}
+
