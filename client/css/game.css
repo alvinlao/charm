@@ -2,6 +2,7 @@ html, body {
     overflow: hidden;
     height: 100%;
     color: white;
+    background: #222;
     font-family: 'Open Sans', sans-serif;
     margin: 0;
 }
@@ -46,7 +47,7 @@ html, body {
     border: 0;
     border-radius: 50%;
     width: 50px;
-    height: 50px; 
+    height: 50px;
     margin: 5px;
 }
 
