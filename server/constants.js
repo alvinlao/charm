@@ -18,6 +18,11 @@ var CONSTANTS = Object.freeze({
     PLAYER_FRICTION: 0,
     DAMPING_COEFFICIENT: 0,
     MAX_SPEED: 32,
+
+    TYPE_PLAYER:1,
+    TYPE_ASTEROID:2,
+    TYPE_TETHER_NODE:3,
+    TYPE_WALL:4,
 });
 
 module.exports = CONSTANTS;
