@@ -208,7 +208,6 @@ Brain.prototype.return_world_state = function(brain) {
         }
     }
 
-    console.log(serialized_objects);
 	return serialized_objects;
 }
 
