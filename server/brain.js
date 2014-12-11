@@ -22,6 +22,8 @@ Brain.prototype.init_world = function() {
     this.game_loop_interval_id = -1;
     this.world_state_broadcast_interval_id = -1;
 
+    this.eid = 0;
+
     // List of inputs from players
     this.inputs = [];
 }
@@ -62,11 +64,10 @@ Brain.prototype.start = function(team, server) {
     this.init_world();
 
     // Create player objects
-    var eid = 1;
     for(var i=0; i<team.length; i++){
         for(var j=0; j<team[i].length; j++){
-            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, 100, 100);
-            eid++;
+            this.objects[this.eid] = new Player(this.world, this.eid, team[i][j].player_id, 100, 100);
+            this.eid++;
         }
     }
     this.objects[5] = new Player(this.world, 5,1, 100, 100);
