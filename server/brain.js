@@ -42,7 +42,9 @@ Brain.prototype.step = function() {
     while (body_list != null) {
         if (body_list.m_userData) {
             var eid = body_list.m_userData.eid;
-            this.objects[eid].sync(body_list); 
+            if(this.objects[eid]) {
+                this.objects[eid].sync(body_list);
+            }
         }
 
         body_list = body_list.m_next;
@@ -100,11 +102,11 @@ Brain.prototype.start = function(team, server) {
     }, 33);
 }
 
-Brain.prototype.return_world_state = function() {
+Brain.prototype.return_world_state = function(brain) {
 	var serialized_objects = {};
 
-	for (key in this.objects) {
-		serialized_objects[this.objects[key].eid] = this.objects[key].serialize();
+	for (key in brain.objects) {
+		serialized_objects[brain.objects[key].eid] = brain.objects[key].serialize();
 	}
 
 	return serialized_objects;
