@@ -77,9 +77,6 @@ Brain.prototype.start = function(team, server) {
     this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
 
     var brain = this.init_world();
-    console.log(this.world);
-    console.log(brain.world);
-    console.log("Hello!");
 
     // Create player objects
     for(var i=0; i<team.length; i++){
@@ -103,7 +100,6 @@ Brain.prototype.return_world_state = function() {
 		serialized_objects[this.objects[key].eid] = this.objects[key].serialize();
 	}
 
-    console.log(serialized_objects);
 	return serialized_objects;
 }
 
