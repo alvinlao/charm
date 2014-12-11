@@ -1,4 +1,5 @@
 var Particle = require('../entities/Particle');
+var b2d = require('box2d')
 
 Player.prototype = Object.create(Particle.prototype);
 Player.prototype.constructor = Player;
@@ -6,6 +7,7 @@ Player.prototype.constructor = Player;
 function Player(world, eid, player_id, x, y) {
 	this.player_id = player_id;
 	Particle.prototype.constructor.call(this, world, eid, x, y, 10);
+    this.direction = new b2d.b2Vec2(0,0);
     return this;
 }
 
@@ -50,6 +52,9 @@ Player.prototype.serialize = function () {
 		entity_type: "player",
 		x : pos.x,
 		y : pos.y,
+        vx: this.v.x,
+        vy: this.v.y,
+        direction: this.direction,
 		controller : this.player_id
 	}
 }

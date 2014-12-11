@@ -28,19 +28,31 @@ Particle.prototype.get_position = function() {
     return this.body.GetPosition();
 }
 
+Particle.prototype.get_velocity = function() {
+    return this.body.GetLinearVelocity();
+}
+
 Particle.prototype.apply_force = function(force) {
     this.body.ApplyForce(force, this.body.GetPosition());
     return this;
 }
 
 Particle.prototype.serialize = function () {
-  console.log("particle serialize called");
+    var pos = this.get_position();
+    return {
+        entity_type: "particle",
+        x : pos.x,
+        y : pos.y,
+        vx: this.v.x,
+        vy: this.v.y
+    }
 }
 
 Particle.prototype.sync = function(body) {
     this.body = body;
     this.x = this.get_position().x;
     this.y = this.get_position().y;
+    this.v = this.get_velocity();
 }
 
 module.exports = Particle;
