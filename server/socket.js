@@ -35,7 +35,7 @@ server.io.on('connection', function(socket) {
 			console.log('Start game')
 			var teams = game.start();
 			game.broadcast_game_state(server);
-			brain.start(teams, server);
+			brain.start(teams, server, game);
 		}
 	});
 
