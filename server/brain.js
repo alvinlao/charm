@@ -167,7 +167,7 @@ Brain.prototype.start = function(team, server) {
             var eid = this.get_eid(),
                 x0 = 100 + j * (CONSTANTS.MAX_X/2 - 300),
                 y0 = 100 + i * (CONSTANTS.MAX_Y - 300);
-            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, x0, y0);
+            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, x0, y0, i);
         }
     }
 
@@ -180,11 +180,13 @@ Brain.prototype.start = function(team, server) {
         this.objects[eid] = new Asteroid(this.world, eid, x_pos, y_pos);
     }
 
+    /*
     var eids = [];
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
         eids.push(this.get_eid());
     }
     Tether(this.world, eids, this.objects[0], this.objects[1]);
+    */
 
     var brain = this;
 
@@ -206,6 +208,7 @@ Brain.prototype.return_world_state = function(brain) {
         }
     }
 
+    console.log(serialized_objects);
 	return serialized_objects;
 }
 

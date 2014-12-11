@@ -78,8 +78,6 @@ function reset_game() {
 
 function prepare_game() {
     canvas = oCanvas.create({ canvas: "#game_canvas", background: "#232129" });
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
     controls = new Controls(canvas);
     world = new World();
     socket = io();
