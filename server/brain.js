@@ -28,9 +28,6 @@ Brain.prototype.init_world = function() {
     this.tether_nodes = {};
     this.actions = [];
 
-    this.game_loop_interval_id = -1;
-    this.world_state_broadcast_interval_id = -1;
-
     this.eid = 0;
 
     // List of inputs from players
@@ -153,6 +150,9 @@ Brain.prototype.loop = function(that) {
 Brain.prototype.start = function(team, server, game) {
     this.server = server;
     this.game = game;
+    this.game_loop_interval_id = -1;
+    this.world_state_broadcast_interval_id = -1;
+
     this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL, this);
 
     this.init_world();
