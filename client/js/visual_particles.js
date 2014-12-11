@@ -67,12 +67,13 @@ VisualParticle.prototype.init = function(x, y, vx, vy, r, duration, color) {
 
 VisualParticle.prototype.update = function(step) {
 	this.elapsed += step;
-	this.x += this.vx*step;
-	this.y += this.vy*step;
-	this.drawable.moveTo(this.x, this.y);
-
 	if(this.elapsed > this.duration) {
 		this.reset();
+	} else {
+		this.x += this.vx*step;
+		this.y += this.vy*step;
+		this.drawable.moveTo(this.x, this.y);
+		this.drawable.opacity = ((this.duration-this.elapsed)/this.duration);
 	}
 }
 

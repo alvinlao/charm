@@ -19,7 +19,7 @@ Asteroid.prototype.init_draw = function(state) {
 		image: astroid_assets[Math.floor(Math.random()*astroid_assets.length)],
 		width: 2*state.r,
 		height: 2*state.r,
-		shadow: "0px 0px 100px #FF00BB"
+		shadow: "0px 0px 100px #ecaf4f"
 		}).add();
 
 	this.drawable.rotateTo(Math.random()*360);
@@ -37,7 +37,7 @@ Asteroid.prototype.replicate = function(state) {
     this.r = state.r;
 
     if(state.active || true) {
-    	particles.spawn(this.x + (0.5 - Math.random())*state.r, this.y + (0.5 - Math.random())*state.r, state.velocity.x/100, state.velocity.y/100, 1.5+Math.random(), 300 + 200*Math.random(), "#FF00BB");
+    	particles.spawn(this.x + (0.5 - Math.random())*state.r, this.y + (0.5 - Math.random())*state.r, state.velocity.x/100, state.velocity.y/100, 1.5+Math.random(), 300 + 200*Math.random(), "#ecaf4f");
     }
 }
 
