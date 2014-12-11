@@ -59,13 +59,13 @@ function update_lobby(data) {
 }
 
 function get_player_color(player) {
-  if (player === 0) {
+  if (player == 0) {
     return "#5F98E3"
-  } else if (player === 1) {
+  } else if (player == 1) {
     return "#BE5FE3"
-  } else if (player === 2) {
+  } else if (player == 2) {
     return "#9FE35F"
-  } else if (player === 3) {
+  } else if (player == 3) {
     return "#E3855F"
   } else {
     return "#D1D1D1"

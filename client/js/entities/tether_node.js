@@ -25,8 +25,9 @@ TetherNode.prototype.init_draw = function(state) {
 			this.left_drawable = canvas.display.line({
 		        start: { x: world_state[this.left_eid].x , y: world_state[this.left_eid].y },
 		        end: { x: this.x, y: this.y },
-		        stroke: "4px #0aa",
-		        cap: "round"
+		        stroke: "4px #ecaf4f",
+		        cap: "round",
+		        shadow: "0px 0px 6px #ecaf4f"
     		}).add();
 		}
 	}
@@ -35,8 +36,9 @@ TetherNode.prototype.init_draw = function(state) {
 		this.right_drawable = canvas.display.line({
 			        start: { x: this.x , y: this.y },
 			        end: { x: world_state[this.right_eid].x, y: world_state[this.right_eid].y },
-			        stroke: "4px #0aa",
-			        cap: "round"
+			        stroke: "4px #ecaf4f",
+			        cap: "round",
+			        shadow: "0px 0px 6px #ecaf4f"
 	    		}).add();
 	}
 }
