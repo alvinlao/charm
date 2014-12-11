@@ -93,7 +93,7 @@ Brain.prototype.start = function(team, server) {
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
         eids.push(this.get_eid());
     }
-    Tether(this.world, eids, this.objects[1], this.objects[2]);
+    // Tether(this.world, eids, this.objects[1], this.objects[2]);
 
     var brain = this;
 

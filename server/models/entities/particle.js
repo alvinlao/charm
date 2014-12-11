@@ -19,8 +19,6 @@ function Particle(world, eid, x, y, m, r) {
     // Mass
     var mass_data = body_def.massData;
     mass_data.mass = m;
-    mass_data.I = m;
-    mass_data.center = new b2d.b2Vec2(x, y);
 
     this.body = world.CreateBody(body_def);
     return this;
