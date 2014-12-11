@@ -12,51 +12,114 @@ function Tether(world, eids, body1, body2) {
 	this.body1 = body1;
 	this.body2 = body2;
 
-    var last_link = this.body1.body;
-    var last_anchor_point = this.body1.body.GetPosition();
-    var revolute_joint;
+// ceiling
+    var revolute_joint = new b2d.b2RevoluteJointDef();
+            // bodyDef = new b2d.b2BodyDef();
+            // bodyDef.position.x=8.5;
+            // bodyDef.position.y=0;
+            // bodyDef.userData={eid:-9}
+            // boxDef = new b2d.b2PolygonDef();
+            // boxDef.SetAsBox(2, 0.5);
+            // boxDef.density=0;
+            // boxDef.friction=0.5;
+            // boxDef.restitution=0.2;
+
+            link = this.body1.body;
+            // rope
+            for (var i = 1; i <= 10; i++) {
+                // rope segment
+                bodyDef = new b2d.b2BodyDef();
+                bodyDef.position.x=8.5;
+                bodyDef.position.y=i;
+                bodyDef.userData={eid:(-10*i)}
+                boxDef = new b2d.b2PolygonDef();
+                boxDef.SetAsBox(0.1, 0.5);
+                boxDef.density=100;
+                boxDef.friction=0.5;
+                boxDef.restitution=0.2;
+                body=world.CreateBody(bodyDef);
+                body.CreateShape(boxDef);
+                // joint
+                revolute_joint.Initialize(link, body, new b2d.b2Vec2(8.5, i-0.5));
+                world.CreateJoint(revolute_joint);
+                body.SetMassFromShapes();
+                // saving the reference of the last placed link
+                link=body;
+            }
+            // final body
+            revolute_joint.Initialize(link, this.body2.body, new b2d.b2Vec2(8.5, 10.5));
+            world.CreateJoint(revolute_joint);
+            body.SetMassFromShapes();
+
+// ceiling
+    //         bodyDef = new b2d.b2BodyDef();
+    //         bodyDef.position.x=10;
+    //         bodyDef.position.y=10;
+    //         bodyDef.userData = {eid:-100}
+    //         boxDef = new b2d.b2PolygonDef();
+    //         boxDef.SetAsBox(2, 0.5);
+    //         boxDef.density=0;
+    //         boxDef.friction=0.5;
+    //         boxDef.restitution=0.2;
+    //         sbody=world.CreateBody(bodyDef);
+    //         sbody.CreateShape(boxDef);
+    //         var last_link=sbody;
+    //         var last_anchor_point=sbody.GetPosition();
+
+    // // var last_link = this.body1.body;
+    // // var last_anchor_point = this.body1.body.GetPosition();
+    // var revolute_joint;
      
-    //height of rope elements, in metres ofcourse
-    var r_height = 1.1;
-    
-    var dv = this.body2.get_position().Copy();
-    dv.Subtract(this.body1.get_position());
-    var dist = dv.Length();
-    dv.Normalize();
-    dv.Multiply(dist/(2 * CONSTANTS.TETHER_NUM_NODES));
-    var u = this.body1.get_position().Copy();
+    // //height of rope elements, in metres ofcourse
+    // var r_height = 1.1;
+    // var dv = new b2d.b2Vec2(10,10)
+    // // var dv = this.body2.get_position().Copy();
+    // dv.Subtract(this.body1.get_position());
+    // var dist = dv.Length();
+    // dv.Normalize();
+    // dv.Multiply(dist/(2*CONSTANTS.TETHER_NUM_NODES));
+    // var u = this.body1.get_position().Copy();
 
-    //rope
-    for (var i = 1; i < CONSTANTS.TETHER_NUM_NODES; i++) 
-    {
-        revolute_joint = new b2d.b2RevoluteJointDef();
-    
-        // Mid point
-        u.Add(dv);
+    // //rope
+    // for (var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) 
+    // {
+    //     revolute_joint = new b2d.b2RevoluteJointDef();
 
-        var body = createBox(world, u.x, u.y, dv.Length(), r_height, CONSTANTS.TETHER_NODE_MASS, {eid: eids[i]});
+    //     // Mid point
+    //     u.Add(dv);
 
-        //revolute joint
-        revolute_joint.Initialize(last_link, body, last_anchor_point.Copy())
+    //     var body = createBox(world, u.x, u.y, dv.Length(), r_height, CONSTANTS.TETHER_NODE_MASS, {eid: eids[i]});
+
+    //     //revolute joint
+    //     revolute_joint.Initialize(last_link, body, last_anchor_point.Copy())
+    //     revolute_joint.enableLimit = true;
+    //     revolute_joint.m_collideConnected = false;
+
+    //     u.Add(dv);
+
+    //     // Next anchor location
+    //     last_anchor_point = u.Copy();
          
-         u.Add(dv);
+    //     //create the joint in world
+    //     var j =world.CreateJoint(revolute_joint);
+    //     j.SetLimits(-60, 60);
 
-        // Next anchor location
-        last_anchor_point = u;
-         
-        //create the joint in world
-        world.CreateJoint(revolute_joint);
-         
-        // saving the reference of the last placed link
-        last_link = body;
-    }
+    //     // saving the reference of the last placed link
+    //     last_link = body;
+    // }
 
-    //revolute joint
-    revolute_joint = new b2d.b2RevoluteJointDef();
-    revolute_joint.Initialize(last_link, this.body2.body, last_anchor_point.Copy())
-     
-    //create the joint in world
-    world.CreateJoint(revolute_joint);
+    // //revolute joint
+    // revolute_joint = new b2d.b2RevoluteJointDef();
+    // revolute_joint.Initialize(last_link, this.body2.body, last_anchor_point.Copy())
+    // revolute_joint.enableLimit = true;
+    // revolute_joint.m_collideConnected = false;
+    // revolute_joint.enableMotor = true;
+    // revolute_joint.maxMotorTorque = 20;
+    // revolute_joint.motorSpeed = 360 * Math.PI/180;
+
+    // //create the joint in world
+    // var j = world.CreateJoint(revolute_joint);
+    // j.SetLimits(-60, 60);
 
     // // Create internal nodes for rope
     // var dv = this.body2.get_position().Copy();
@@ -123,12 +186,15 @@ function createBox(world, x, y, width, height, mass, options)
     body_def.massData.mass = mass;
     
     var polygon_def = new b2d.b2PolygonDef();
-    polygon_def.restitution = 0.8;
+    polygon_def.restitution = 0.2;
+    polygon_def.density=100;
+    polygon_def.friction=0.5;
+    polygon_def.restitution=0.2;
     polygon_def.SetAsBox(width/2, height/2);
     
     var b = world.CreateBody(body_def);
     var f = b.CreateShape(polygon_def);
-     
+    b.SetMassFromShapes();
     return b;
 }
 
