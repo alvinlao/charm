@@ -74,7 +74,6 @@ Player.prototype.replicate = function(state) {
 	this.pressed = state.pressed;
 
 	if(this.dx != 0 || this.dy != 0) {
-		console.log("a direction!");
 		this.rotation = toDegrees(Math.atan2(this.dy, this.dx)) + 90;
 	}
 
