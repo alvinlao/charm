@@ -21,7 +21,7 @@ function Particle(world, eid, x, y, m, r) {
     shape_def.density = 1;
     shape_def.restitution = 0.8;
     shape_def.friction = 0.2;
-    this.body.CreateShape(shape_def);
+    // this.body.CreateShape(shape_def);
     return this;
 }
 

@@ -202,6 +202,8 @@ Brain.prototype.start = function(team, server) {
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
         eids.push(this.get_eid());
     }
+    var b2 = this.objects[1].get_position();
+    console.log('before b2: ' + b2.x + " " + b2.y);
     Tether(this.world, eids, this.objects[0], this.objects[1]);
     
 
