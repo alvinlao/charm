@@ -101,17 +101,17 @@ function prepare_game() {
     }
 }
 
-function game_over(state){
+function game_over(data){
     var won = true;
-    if(state.team_id == our_team_id){
+    if(data == our_team_id){
         won = false;
     }
 
     if(won){
-        $("#lobby_message").text("WINNER!");
+        $("#lobby_message").text("You Win!");
     }
     else{
-        $("#lobby_message").text("LOSER!");
+        $("#lobby_message").text("You Lose!");
     }
 
     /*
