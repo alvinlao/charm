@@ -16,8 +16,6 @@ Player.prototype.init_draw = function(state) {
 	//this.drawable = canvas.display.ellipse({x: this.x, y: this.y, radius:20, fill:"white"}).add();
 	//this.drawable.strokeColor = "white";
 
-	state.team = 1;
-
 	this.trail = canvas.display.image({
 		x: this.x,
 		y: this.y+24,
