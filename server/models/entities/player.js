@@ -10,7 +10,6 @@ function Player(world, eid, player_id, x, y, team) {
 	Particle.prototype.constructor.call(this, world, eid, x, y, CONSTANTS.PLAYER_MASS, CONSTANTS.PLAYER_RADIUS, CONSTANTS.TYPE_PLAYER);
     this.direction = new b2d.b2Vec2(0,0);
     this.team = team;
-    this.particle_type = CONSTANTS.TYPE_PLAYER;
     return this;
 }
 

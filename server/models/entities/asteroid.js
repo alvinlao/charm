@@ -7,7 +7,6 @@ Asteroid.prototype.constructor = Asteroid;
 
 function Asteroid(world, eid, x, y, r, active) {
     this.active = active;
-    this.particle_type = CONSTANTS.TYPE_ASTEROID;
     var params = {
         density: 12,
         restitution: 0.5,
