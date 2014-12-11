@@ -14,7 +14,8 @@ var world_state = {};
 
 var game_object_prototypes = {
     player:Player.prototype.constructor,
-    Asteroid:Asteroid.prototype.constructor
+    Asteroid:Asteroid.prototype.constructor,
+    tether_node:TetherNode.prototype.constructor
 };
 
 function replicate_state() {
@@ -57,7 +58,9 @@ function game_loop() {
 }
 
 function update_world_state(state) {
+    console.log(Object.keys(state).length);
     world_state = state;
+    console.log(Object.keys(world_state).length);
 }
 
 function reset_game() {
