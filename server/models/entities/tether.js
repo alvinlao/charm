@@ -13,35 +13,38 @@ function Tether(world, eids, body1, body2, team_id) {
 	this.body2 = body2;
 
     var revolute_joint = new b2d.b2RevoluteJointDef();
+    revolute_joint.enableLimit = true;
     link = this.body1.body;
     var v = this.body1.get_position().Copy(),
         x = v.x,
         y = v.y;
     v.Subtract(this.body2.get_position());
-    var d = v.Length()/(2 * CONSTANTS.TETHER_NUM_NODES);
+    var A = 20;
+    var d = (v.Length() - 2 * CONSTANTS.PLAYER_RADIUS - A)/(2 * CONSTANTS.TETHER_NUM_NODES);
     // rope
     for (var i = 1; i <= CONSTANTS.TETHER_NUM_NODES; i++) {
         // rope segment
         var bodyDef = new b2d.b2BodyDef();
-        bodyDef.position.x = x + (2 * i - 1) * d;
-        bodyDef.position.y = y;
+        bodyDef.position.x = x;
+        bodyDef.position.y = y + (2 * i - 1) * d + CONSTANTS.PLAYER_RADIUS + A;
         bodyDef.userData = { eid: eids[i-1], particle_type:CONSTANTS.TYPE_TETHER_NODE, team_id: team_id };
         boxDef = new b2d.b2PolygonDef();
-        boxDef.SetAsBox(0.1, d);
-        boxDef.density = 1;
-        boxDef.friction = 0.5;
-        boxDef.restitution = 0.2;
+        boxDef.SetAsBox(0.1, 0.9 * d);
+        boxDef.density = CONSTANTS.TETHER_NODE_DENSITY;
+        boxDef.friction = CONSTANTS.TETHER_NODE_FRICTION;
+        boxDef.restitution = CONSTANTS.TETHER_NODE_RESTITUTION;
         body = world.CreateBody(bodyDef);
         body.CreateShape(boxDef);
         // joint
-        revolute_joint.Initialize(link, body, new b2d.b2Vec2(x, y + 2 * (i - 1) * d));
-        world.CreateJoint(revolute_joint);
+        revolute_joint.Initialize(link, body, new b2d.b2Vec2(x, y + 2 * (i - 1) * d + CONSTANTS.PLAYER_RADIUS + A));
+        var j = world.CreateJoint(revolute_joint);
+        j.SetLimits(-60, 60);
         body.SetMassFromShapes();
         // saving the reference of the last placed link
         link = body;
     }
     // final body
-    revolute_joint.Initialize(link, this.body2.body, new b2d.b2Vec2(this.body2.get_position().x, y + 2 * (CONSTANTS.TETHER_NUM_NODES - 1) * d));
+    revolute_joint.Initialize(link, this.body2.body, new b2d.b2Vec2(this.body2.get_position().x, y + 2 * CONSTANTS.TETHER_NUM_NODES * d + CONSTANTS.PLAYER_RADIUS + A));
     world.CreateJoint(revolute_joint);
     body.SetMassFromShapes();
     return this;
