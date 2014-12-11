@@ -155,6 +155,9 @@ Brain.prototype.start = function(team, server) {
 
     this.init_world();
 
+    // to be used in callbacks
+    var brain = this;
+
     // Create player objects
     for(var i=0; i<team.length; i++){
         for(var j=0; j<team[i].length; j++){
@@ -200,26 +203,48 @@ Brain.prototype.start = function(team, server) {
     
     Tether(this.world, eids, this.objects[0], this.objects[1]);
 
+    // north wall
     Wall(this.world, -1, 0, 0, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 1, 1);
 
+    // west wall
     Wall(this.world, -1, 0, 0, 1, CONSTANTS.MAX_Y - CONSTANTS.MIN_Y - 1);
 
+    // south wall
     Wall(this.world, -1, -1, CONSTANTS.MAX_Y - CONSTANTS.MIN_Y - 2, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 1, 1);
 
+    // east wall
     Wall(this.world, -1, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 3, 0, 1, CONSTANTS.MAX_Y - CONSTANTS.MIN_Y - 1);
 
-    var brain = this;
+    // set contact listener for active asteroid collisions
+    var listener = new b2d.b2ContactListener();
+
+    listener.Add = function(point) {
+        var shape_one_data = point.shape1.GetBody().GetUserData(),
+            shape_two_data = point.shape2.GetBody().GetUserData();
+
+        if (shape_one_data["particle_type"] == CONSTANTS.TYPE_ASTEROID && shape_two_data["particle_type"] == CONSTANTS.TYPE_TETHER_NODE) {
+            if (brain.objects[shape_one_data["eid"]].active) brain.end_game();
+        } else if (shape_one_data["particle_type"] == CONSTANTS.TYPE_TETHER_NODE && shape_two_data["particle_type"] == CONSTANTS.TYPE_ASTEROID) {
+            if (brain.objects[shape_two_data["eid"]].active) brain.end_game();
+        }
+    }
+
+    this.world.SetContactListener(listener);
 
     this.world_state_broadcast_interval_id = setInterval(function () {
     	server.io.emit('world_state', brain.return_world_state(brain));
     }, 33);
 }
 
-Brain.prototype.return_world_state = function(brain) {
+Brain.prototype.end_game = function (losing_team) {
+    console.log("GAME ENDED");
+}
+
+Brain.prototype.return_world_state = function() {
 	var serialized_objects = {};
 
-	for (key in brain.objects) {
-		serialized_objects[brain.objects[key].eid] = brain.objects[key].serialize();
+	for (key in this.objects) {
+		serialized_objects[this.objects[key].eid] = this.objects[key].serialize();
 	}
 
     for (eid in this.tether_nodes) {
