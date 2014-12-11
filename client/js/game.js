@@ -81,12 +81,5 @@ function prepare_game() {
     socket = io();
     socket.on('world_state', update_world_state);
 
-    tether = canvas.display.line({
-        start: { x: 50, y: 50 },
-        end: { x: 400, y: 50 },
-        stroke: "4px #0aa",
-        cap: "round"
-    }).add();
-
     canvas.setLoop(game_loop).start();
 }
