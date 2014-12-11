@@ -16,14 +16,14 @@ function Particle(world, eid, x, y, m, r) {
     this.body = world.CreateBody(body_def);
     this.body.m_linearDamping = CONSTANTS.PLAYER_FRICTION;
 
-    /*
+    
     var shape_def = new b2d.b2CircleDef();
     shape_def.radius = r || CONSTANTS.EPSILON;
     shape_def.density = 1;
     shape_def.restitution = 0.8;
     shape_def.friction = 0.2;
     this.body.CreateShape(shape_def);
-    */
+    
     return this;
 }
 

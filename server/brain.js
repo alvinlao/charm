@@ -159,7 +159,6 @@ Brain.prototype.process_inputs = function() {
 }
 
 Brain.prototype.loop = function(that) {
-    if (this.world) console.log(this.world.GetContactList());
     that.step();
 }
 
@@ -240,7 +239,6 @@ Brain.prototype.return_world_state = function(brain) {
             serialized_objects[eid] = this.tether_nodes[eid];
         }
     }
-    console.log(serialized_objects)
 	return serialized_objects;
 }
 
