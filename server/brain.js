@@ -15,6 +15,8 @@ Brain.prototype.get_eid = function() {
 }
 
 Brain.prototype.init_world = function() {
+    b2d.b2Settings.b2_maxLinearVelocity = CONSTANTS.MAX_SPEED;
+    b2d.b2Settings.b2_maxLinearVelocitySquared = CONSTANTS.MAX_SPEED * CONSTANTS.MAX_SPEED;
     var worldAABB = new b2d.b2AABB(),
         gravity = new b2d.b2Vec2(0.0, 0.0),
         do_sleep = true;
