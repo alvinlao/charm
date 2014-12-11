@@ -281,6 +281,7 @@ Brain.prototype.end_game = function (losing_team) {
 
     this.game.state.state = 1; // STATES.LOBBY
     this.game.state.lobby_message = "Team " + losing_team + " has lost!";
+    this.game.stop();
 
     this.stop();
     this.server.io.emit('game_ended', losing_team);
