@@ -1,12 +1,12 @@
 var Particle = require('../entities/Particle');
 
-Player.prototype = Object.create(Particle);
+Player.prototype = Object.create(Particle.prototype);
 Player.prototype.constructor = Player;
 
-function Player(world, eid, player_id) {
+function Player(world, eid, player_id, x, y) {
 	this.player_id = player_id;
-
-	Particle.prototype.constructor.call(this, world, eid, 0, 0, 10);
+	Particle.prototype.constructor.call(this, world, eid, x, y, 10);
+    return this;
 }
 
 Player.prototype.control = function(state) {
@@ -45,10 +45,11 @@ Player.prototype.input = function(input_list) {
 }
 
 Player.prototype.serialize = function () {
+    var pos = this.get_position();
 	return {
 		entity_type: "player",
-		x : this.x,
-		y : this.y,
+		x : pos.x,
+		y : pos.y,
 		controller : this.player_id
 	}
 }

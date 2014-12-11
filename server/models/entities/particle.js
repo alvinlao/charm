@@ -2,7 +2,7 @@ var GameObject = require('../entities/gameobject')
 var CONSTANTS = require('../constants')
 var b2d = require('box2d')
 
-Particle.prototype = new GameObject();
+Particle.prototype = Object.create(GameObject.prototype);
 Particle.prototype.constructor = Particle;
 
 function Particle(world, eid, x, y, m, r) {
@@ -13,19 +13,16 @@ function Particle(world, eid, x, y, m, r) {
     props.restitution = 1.0;
     props.friction = 0;
     var body_def = new b2d.b2BodyDef(props);
-    body_def.userData = props;
+    body_def.userData = {circleShape: props, eid: eid};
     body_def.position.Set(x,y);
-    console.log(body_def);
     this.body = world.CreateBody(body_def);
     return this;
 }
 
 Particle.prototype.get_position = function() {
-    return this.body.m_position.Copy();
+    return this.body.GetPosition();
 }
 
-/* apply_force :: force : Vec2
- */
 Particle.prototype.apply_force = function(force) {
     this.body.ApplyForce(force);
     return this;

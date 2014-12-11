@@ -53,7 +53,7 @@ Brain.prototype.queue_inputs = function(data) {
 }
 
 Brain.prototype.process_inputs = function() {
-    for (var i = 0; i < this.inputs.length; i++) { 
+    for (var i = 0; i < this.inputs.length; i++) {
         var input_data = this.inputs[i];
         var eid = input_data.eid;
         var input = input_data.input;
@@ -65,12 +65,6 @@ Brain.prototype.process_inputs = function() {
     }
 
     this.inputs = [];
-}
-
-Brain.prototype.loop = function() {
-    for(var objectId in this.objects) {
-        this.objects[objectId].update()
-    }
 }
 
 Brain.prototype.start = function(team, server) {
@@ -88,6 +82,9 @@ Brain.prototype.start = function(team, server) {
             eid++;
         }
     }
+    this.objects[1] = new Player(this.world, 1,1, 100, 100);
+    this.objects[2] = new Player(this.world, 2,2, 600, 100);
+    //Tether(this.world, this.objects[1], this.objects[2]);
 
     this.world_state_broadcast_interval_id = setInterval(function () {
     	server.io.emit('world_state', brain.return_world_state());
