@@ -12,6 +12,8 @@ var player_id = server_player_id;
 var game_objects = {};
 var world_state = {};
 
+var loaded = false;
+
 var game_object_prototypes = {
     player:Player.prototype.constructor,
     Asteroid:Asteroid.prototype.constructor,
@@ -41,7 +43,6 @@ function replicate_state() {
 
 function game_loop() {
     replicate_state();
-
 
     var keys = Object.keys(game_objects);
     keys.forEach(function(eid){
@@ -75,18 +76,17 @@ function reset_game() {
 }
 
 function prepare_game() {
-    canvas = oCanvas.create({ canvas: "#game_canvas", background: "#232129" });
-    controls = new Controls(canvas);
-    world = new World();
-    socket = io();
-    socket.on('world_state', update_world_state);
+    if(!loaded) {
+        canvas = oCanvas.create({ canvas: "#game_canvas", background: "#232129" });
+        controls = new Controls(canvas);
+        world = new World();
+        socket = io();
+        socket.on('world_state', update_world_state);
 
-    tether = canvas.display.line({
-        start: { x: 50, y: 50 },
-        end: { x: 400, y: 50 },
-        stroke: "4px #0aa",
-        cap: "round"
-    }).add();
+        loaded = true;
 
-    canvas.setLoop(game_loop).start();
+        canvas.setLoop(game_loop).start();
+    } else {
+        console.log("ERROR: game loaded a second time!");
+    }
 }

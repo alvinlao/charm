@@ -148,7 +148,13 @@ Brain.prototype.process_inputs = function() {
         var force = new b2d.b2Vec2(input.x, input.y);
         force.Multiply(CONSTANTS.INPUT_MULTIPLIER);
         this.objects[eid].apply_force(force);
-        this.objects[eid].direction = input;
+
+        if(input.x != 0 || input.y != 0 || !this.objects[eid].direction) {
+            this.objects[eid].direction = input;
+            this.objects[eid].pressed = true;
+        } else {
+            this.objects[eid].pressed = false;
+        }
     }
 }
 
@@ -179,6 +185,7 @@ Brain.prototype.start = function(team, server) {
         while(true){
             var x_pos = Math.random() * CONSTANTS.MAX_X;
             var y_pos = Math.random() * CONSTANTS.MAX_Y;
+            var radius = Math.floor(Math.random() *  CONSTANTS.ASTEROID_RADIUS);
             
             var is_good = true;
             for(var j=0; j<previous_asteroids.length; j++){
@@ -192,19 +199,19 @@ Brain.prototype.start = function(team, server) {
             if(is_good){
                 previous_asteroids.push([x_pos, y_pos]);
                 var eid = this.get_eid();
-                this.objects[eid] = new Asteroid(this.world, eid, x_pos, y_pos);
+                this.objects[eid] = new Asteroid(this.world, eid, x_pos, y_pos, radius);
                 break;
             }
         }
     }
 
-    /*
     var eids = [];
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
         eids.push(this.get_eid());
     }
+    var b2 = this.objects[1].get_position();
+    console.log('before b2: ' + b2.x + " " + b2.y);
     Tether(this.world, eids, this.objects[0], this.objects[1]);
-    */
 
     Wall(this.world, -1, 0, 0, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 1, 1);
 
@@ -233,7 +240,7 @@ Brain.prototype.return_world_state = function(brain) {
             serialized_objects[eid] = this.tether_nodes[eid];
         }
     }
-
+    console.log(serialized_objects)
 	return serialized_objects;
 }
 
