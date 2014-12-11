@@ -4,10 +4,11 @@ var b2d = require('box2d')
 Player.prototype = Object.create(Particle.prototype);
 Player.prototype.constructor = Player;
 
-function Player(world, eid, player_id, x, y) {
+function Player(world, eid, player_id, x, y, team) {
 	this.player_id = player_id;
 	Particle.prototype.constructor.call(this, world, eid, x, y, 10);
     this.direction = new b2d.b2Vec2(0,0);
+    this.team = team;
     return this;
 }
 
@@ -54,6 +55,7 @@ Player.prototype.serialize = function () {
 		y : pos.y,
         vx: this.v.x,
         vy: this.v.y,
+        team: this.team,
         direction: this.direction,
 		controller : this.player_id
 	}
