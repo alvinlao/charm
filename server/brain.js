@@ -278,7 +278,7 @@ Brain.prototype.start = function(team, server, game) {
 
     this.world_state_broadcast_interval_id = setInterval(function () {
     	server.io.emit('world_state', brain.return_world_state(brain));
-    }, 33);
+    }, 100);
 }
 
 Brain.prototype.end_game = function (losing_team) {
