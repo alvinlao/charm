@@ -20,20 +20,6 @@ Asteroid.prototype.init_draw = function() {
 		}).add();
 
 	this.drawable.rotateTo(Math.random()*360);
-
-//	this.trail = canvas.display.image({
-//		x: this.x,
-//		y: this.y+24,
-//		origin: { x: "center", y: "center" },
-//		image: "assets/Asteroid_ship_trail.png",
-//		width: 37, height: 69}).add();
-
-//	this.drawable = canvas.display.image({
-//		x: this.x,
-//		y: this.y,
-//		origin: { x: "center", y: "center" },
-//		image: "assets/Asteroid_ship.png",
-//		width: 37, height: 43}).add();
 }
 
 Asteroid.prototype.draw = function() {

@@ -22,6 +22,7 @@ Brain.prototype.init_world = function() {
 
     this.world = new b2d.b2World(worldAABB, gravity, do_sleep);
     this.objects = {};
+    this.tether_nodes = {};
     this.actions = [];
 
     this.game_loop_interval_id = -1;
@@ -65,6 +66,14 @@ Brain.prototype.step = function() {
         var new_position = new b2d.b2Vec2(x1, y1);
         body_list.SetXForm(new_position, current_angle);
 
+        // Check for speeds
+        var current_velocity = body_list.GetLinearVelocity();
+        if(CONSTANTS.MAX_SPEED < current_velocity.Length()) {
+            current_velocity.Normalize();
+            current_velocity.Multiply(CONSTANTS.MAX_SPEED);
+            body_list.SetLinearVelocity(current_velocity);
+        }
+
         if (body_list.m_userData) {
             var eid = body_list.m_userData.eid;
             if(this.objects[eid]) {
@@ -73,6 +82,53 @@ Brain.prototype.step = function() {
         }
 
         body_list = body_list.m_next;
+    }
+
+    this.tether_nodes = {};
+    var joint_list = this.world.GetJointList();
+    while (joint_list != null) {
+        var lefteid = joint_list.m_node1.other.m_userData.eid;
+        var righteid = joint_list.m_node2.other.m_userData.eid;
+
+        var leftp = joint_list.m_node1.other.m_xf.position;
+        var rightp = joint_list.m_node2.other.m_xf.position;
+
+        var leftv = joint_list.m_node1.other.m_linearVelocity;
+        var rightv = joint_list.m_node2.other.m_linearVelocity;
+
+        var left = {
+            entity_type: 'tether_node',
+            eid: lefteid,
+            x: leftp.x,
+            y: leftp.y,
+            vx: leftv.x,
+            vy: leftv.y,
+            right: righteid,
+        }
+
+        var right = {
+            entity_type: 'tether_node',
+            eid: righteid,
+            x: rightp.x,
+            y: rightp.y,
+            vx: rightv.x,
+            vy: rightv.y,
+            left: lefteid,
+        }
+
+        if(lefteid in this.tether_nodes) {
+            this.tether_nodes[lefteid].right = righteid;
+        } else {
+            this.tether_nodes[lefteid] = left;
+        }
+
+        if(righteid in this.tether_nodes) {
+            this.tether_nodes[righteid].left = lefteid;
+        } else {
+            this.tether_nodes[righteid] = right;    
+        }
+
+        joint_list = joint_list.m_next;
     }
 }
 
@@ -108,8 +164,10 @@ Brain.prototype.start = function(team, server) {
     // Create player objects
     for(var i=0; i<team.length; i++){
         for(var j=0; j<team[i].length; j++){
-            var eid = this.get_eid();
-            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, 100+100*i, 100+100*j, i);
+            var eid = this.get_eid(),
+                x0 = 100 + j * (CONSTANTS.MAX_X/2 - 300),
+                y0 = 100 + i * (CONSTANTS.MAX_Y - 300);
+            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, x0, y0);
         }
     }
 
@@ -141,6 +199,12 @@ Brain.prototype.return_world_state = function(brain) {
 	for (key in brain.objects) {
 		serialized_objects[brain.objects[key].eid] = brain.objects[key].serialize();
 	}
+
+    for (eid in this.tether_nodes) {
+        if (!(eid in serialized_objects)) {
+            serialized_objects[eid] = this.tether_nodes[eid];
+        }
+    }
 
 	return serialized_objects;
 }
