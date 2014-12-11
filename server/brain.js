@@ -154,6 +154,7 @@ Brain.prototype.start = function(team, server) {
     this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL, this);
 
     this.init_world();
+    var previous_asteroids = [];
 
     // to be used in callbacks
     var brain = this;
@@ -164,17 +165,21 @@ Brain.prototype.start = function(team, server) {
             var eid = this.get_eid(),
                 x0 = 100 + j * (CONSTANTS.MAX_X/2 - 300),
                 y0 = 100 + i * (CONSTANTS.MAX_Y - 300);
+            previous_asteroids.push([x0,y0]);
             this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, x0, y0, i);
         }
     }
 
 
     // Create some asteroids
-    var previous_asteroids = [];
     for(var i=0; i<10; i++){
         while(true){
-            var x_pos = Math.random() * CONSTANTS.MAX_X;
-            var y_pos = Math.random() * CONSTANTS.MAX_Y;
+            var bound_x_min = 100;
+            var bound_x_max = CONSTANTS.MAX_X - 100;
+            var bound_y_min = 100;
+            var bound_y_max = CONSTANTS.MAX_Y - 100;
+            var x_pos = bound_x_min + Math.random() * (bound_x_max-bound_x_min);
+            var y_pos = bound_y_min + Math.random() * (bound_y_max-bound_y_min);
             var radius = CONSTANTS.ASTEROID_MIN_SIZE + Math.random() * (CONSTANTS.ASTEROID_MAX_SIZE - CONSTANTS.ASTEROID_MIN_SIZE);
 
             var is_good = true;
