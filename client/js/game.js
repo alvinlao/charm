@@ -101,9 +101,9 @@ function prepare_game() {
     }
 }
 
-function game_over(state){
+function game_over(losing_team){
     var won = true;
-    if(state.team_id == our_team_id){
+    if(losing_team == our_team_id){
         won = false;
     }
 
