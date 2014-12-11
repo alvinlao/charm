@@ -201,7 +201,7 @@ Brain.prototype.start = function(team, server) {
     }
     var b2 = this.objects[1].get_position();
     
-    Tether(this.world, eids, this.objects[0], this.objects[1]);
+    Tether(this.world, eids, this.objects[0], this.objects[1], 1);
 
     // north wall
     Wall(this.world, -1, 0, 0, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 1, 1);
@@ -223,9 +223,9 @@ Brain.prototype.start = function(team, server) {
             shape_two_data = point.shape2.GetBody().GetUserData();
 
         if (shape_one_data["particle_type"] == CONSTANTS.TYPE_ASTEROID && shape_two_data["particle_type"] == CONSTANTS.TYPE_TETHER_NODE) {
-            if (brain.objects[shape_one_data["eid"]].active) brain.end_game();
+            if (brain.objects[shape_one_data["eid"]].active) brain.end_game(shape_two_data["team_id"]);
         } else if (shape_one_data["particle_type"] == CONSTANTS.TYPE_TETHER_NODE && shape_two_data["particle_type"] == CONSTANTS.TYPE_ASTEROID) {
-            if (brain.objects[shape_two_data["eid"]].active) brain.end_game();
+            if (brain.objects[shape_two_data["eid"]].active) brain.end_game(shape_one_data["team_id"]);
         }
     }
 
@@ -237,7 +237,7 @@ Brain.prototype.start = function(team, server) {
 }
 
 Brain.prototype.end_game = function (losing_team) {
-    console.log("GAME ENDED");
+    console.log("GAME ENDED, team " + losing_team + " has lost!" );
 }
 
 Brain.prototype.return_world_state = function() {

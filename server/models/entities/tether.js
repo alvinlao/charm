@@ -6,7 +6,7 @@ var b2d = require('box2d');
 Tether.prototype = Object.create(GameObject.prototype);
 Tether.prototype.constructor = Tether;
 
-function Tether(world, eids, body1, body2) {
+function Tether(world, eids, body1, body2, team_id) {
 	GameObject.prototype.constructor.call(this);
 
 	this.body1 = body1;
@@ -34,7 +34,7 @@ function Tether(world, eids, body1, body2) {
         // Mid point
         u.Add(dv);
 
-        var body = createBox(world, u.x, u.y, dv.Length(), r_height, CONSTANTS.TETHER_NODE_MASS, {eid: eids[i]});
+        var body = createBox(world, u.x, u.y, dv.Length(), r_height, CONSTANTS.TETHER_NODE_MASS, {eid: eids[i], team_id: team_id});
 
         //revolute joint
         revolute_joint.Initialize(last_link, body, last_anchor_point.Copy())
