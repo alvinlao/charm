@@ -9,23 +9,6 @@ function Player(world, eid, player_id, x, y) {
     return this;
 }
 
-Player.prototype.control = function(state) {
-	//Particle.prototype.update.call(this);
-	//TODO; Change to force
-	if(controls.isControlDown(controls.key_map.up)) {
-		this.y -= 6;
-	}
-	if(controls.isControlDown(controls.key_map.down)) {
-		this.y += 6;
-	}
-	if(controls.isControlDown(controls.key_map.left)) {
-		this.x -= 6;
-	}
-	if(controls.isControlDown(controls.key_map.right)) {
-		this.x += 6;
-	}
-}
-
 Player.prototype.input = function(input_list) {
     for(var i=0; i<input_list.length; i++){
         var button = input_list[i];
