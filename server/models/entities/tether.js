@@ -39,6 +39,7 @@ function Tether(world, eids, body1, body2) {
     dv.Multiply(0.5);
     var anchor = this.body1.get_position().Copy();
     rjd1.Initialize(this.body1.body, this.internal_nodes[0].body, anchor);
+    rjd1.collideConnected = false;
     this.joints.push(world.CreateJoint(rjd1));
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES - 1; i++){
         var rjd = new b2d.b2RevoluteJointDef(),
@@ -50,6 +51,7 @@ function Tether(world, eids, body1, body2) {
         var anchor = a.get_position().Copy();
         anchor.Add(dv);
         rjd.Initialize(a.body, b.body, anchor);
+        rjd.collideConnected = false;
         this.joints.push(world.CreateJoint(rjd));
     }
     var rjd2 = new b2d.b2RevoluteJointDef(),
@@ -60,6 +62,7 @@ function Tether(world, eids, body1, body2) {
     var anchor = last_node.get_position().Copy();
     anchor.Add(dv);
     rjd2.Initialize(last_node.body, this.body2.body, anchor);
+    rjd2.collideConnected = false;
     this.joints.push(world.CreateJoint(rjd2));
 }
 
