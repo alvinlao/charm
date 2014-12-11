@@ -91,30 +91,16 @@ Brain.prototype.start = function(team, server) {
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
         eids.push(this.get_eid());
     }
-    Tether(this.world, eids, this.objects[1], this.objects[2]);
+    // Tether(this.world, eids, this.objects[1], this.objects[2]);
 
     var brain = this;
 
     this.world_state_broadcast_interval_id = setInterval(function () {
-    	server.io.emit('world_state', brain.return_world_state());
+    	server.io.emit('world_state', brain.return_world_state(brain));
     }, 33);
 }
 
 Brain.prototype.return_world_state = function() {
-    // Sync world and objects
-    // Linked List
-    var body_list = this.world.GetBodyList();
-    while (body_list != null) {
-        if (body_list.m_userData) {
-            var eid = body_list.m_userData.eid;
-            if(this.objects[eid]) {
-                this.objects[eid].sync();
-            }
-        }
-
-        body_list = body_list.m_next;
-    }
-
 	var serialized_objects = {};
 
 	for (key in this.objects) {

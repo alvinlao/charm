@@ -4,7 +4,7 @@ var CONSTANTS = Object.freeze({
     UPPER_X: 100.0,
     UPPER_Y: 100.0,
     TIMEDELTA: 1.0/60,
-    INPUT_MULTIPLIER: 2,
+    INPUT_MULTIPLIER: 1000,
 });
 
 module.exports = CONSTANTS;
