@@ -65,6 +65,14 @@ Brain.prototype.step = function() {
         var new_position = new b2d.b2Vec2(x1, y1);
         body_list.SetXForm(new_position, current_angle);
 
+        // Check for speeds
+        var current_velocity = body_list.GetLinearVelocity();
+        if(CONSTANTS.MAX_SPEED < current_velocity.Length()) {
+            current_velocity.Normalize();
+            current_velocity.Multiply(CONSTANTS.MAX_SPEED);
+            body_list.SetLinearVelocity(current_velocity);
+        }
+
         if (body_list.m_userData) {
             var eid = body_list.m_userData.eid;
             if(this.objects[eid]) {

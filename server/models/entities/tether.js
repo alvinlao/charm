@@ -28,10 +28,6 @@ function Tether(world, eids, body1, body2) {
         this.internal_nodes.push(internal_node);
     }
 
-    for(var i in this.internal_nodes) {
-        console.log(this.internal_nodes[i].get_position());
-    }
-
     // Model links with joints
     var rjd1 = new b2d.b2RevoluteJointDef();
     rjd1.Initialize(this.body1.body, this.internal_nodes[0].body, this.body1.get_position());
