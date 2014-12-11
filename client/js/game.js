@@ -91,7 +91,7 @@ function prepare_game() {
         particles = new VisualParticles();
         socket = io();
         socket.on('world_state', update_world_state);
-        socket.on('game_ended', game_over);
+        //socket.on('game_ended', game_over);
 
         loaded = true;
 

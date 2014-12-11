@@ -5,6 +5,7 @@ var Brain = require('../server/brain')
 var brain = new Brain();
 
 server.io.on('connection', function(socket) {
+    game.set_server(server);
 	console.log('Client has connected: ' + socket.id);
 
 	// Game connect
@@ -15,7 +16,7 @@ server.io.on('connection', function(socket) {
 		socket.emit('game_full', 'Game is full');
         return;
 	} else {
-		game.broadcast_game_state(server);
+		game.broadcast_game_state();
 	}
 
     // Send player info
@@ -28,13 +29,12 @@ server.io.on('connection', function(socket) {
 
 		// Broadcast lobby state
 		var lobby_state = game.get_lobby_state();
-		game.broadcast_game_state(server);
+		game.broadcast_game_state();
 
 		// Start game
 		if(game.is_ready()) {
 			console.log('Start game')
 			var teams = game.start();
-			game.broadcast_game_state(server);
 			brain.start(teams, server, game);
 		}
 	});
@@ -44,7 +44,6 @@ server.io.on('connection', function(socket) {
 
 		// Game disconnect
 		game.disconnect_player(socket);
-		game.broadcast_game_state(server);
 
         if(!game.is_running()) {
             brain.stop();

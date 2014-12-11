@@ -11,7 +11,7 @@ function Particle(world, eid, x, y, m, r, params, particle_type) {
     var body_def = new b2d.b2BodyDef();
     body_def.userData = {eid: eid, particle_type:particle_type};
     body_def.position.Set(x,y);
-    body_def.massData.mass = m;
+    //body_def.massData.mass = m;
 
     this.body = world.CreateBody(body_def);
     this.body.m_linearDamping = CONSTANTS.PLAYER_FRICTION;
@@ -19,11 +19,11 @@ function Particle(world, eid, x, y, m, r, params, particle_type) {
     var shape_def = new b2d.b2CircleDef();
     shape_def.radius = r || CONSTANTS.EPSILON;
     params = params || {};
-    shape_def.density = params.density || 1;
-    shape_def.restitution = params.restitution || 0.8;
+    shape_def.density = params.density || 3;
+    shape_def.restitution = params.restitution || 1;
     shape_def.friction = params.friction || 0.2;
     this.body.CreateShape(shape_def);
-
+    this.body.SetMassFromShapes();
     return this;
 }
 

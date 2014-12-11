@@ -1,7 +1,5 @@
+var CONSTANTS = require('../server/constants')
 var client_module = require('../server/client');
-
-var NUM_PLAYERS = 4;
-var NUM_TEAMS = 2;
 
 var STATES = Object.freeze({
 	LOBBY : 1,
@@ -24,10 +22,13 @@ var state = {
 	player_ready: player_ready,
 	get_lobby_state: get_lobby_state,
 	broadcast_game_state: broadcast_game_state,
+	set_server: set_server,
 }
 
+var server;
+
 function connect_player(socket) {
-	if(state.clients.length >= NUM_PLAYERS) {
+	if(state.clients.length >= CONSTANTS.NUM_PLAYERS) {
 		return false;
 	}
 
@@ -47,11 +48,15 @@ function disconnect_player(socket) {
 			if(state.state == STATES.IN_GAME) {
 				// Disconnect
 				state.lobby_message = "A player disconnected";
-				state.state = STATES.LOBBY;
+				stop();
 			}
 			return;
 		}
 	}
+}
+
+function set_server(s)  {
+	server = s;
 }
 
 function get_client(client_id) {
@@ -79,7 +84,7 @@ function is_ready() {
 			return false;
 	}
 
-	return state.clients.length >= NUM_PLAYERS && state.state == STATES.LOBBY;
+	return state.clients.length >= CONSTANTS.NUM_PLAYERS && state.state == STATES.LOBBY;
 }
 
 function is_running() {
@@ -89,7 +94,7 @@ function is_running() {
 function start() {
 	state.state = STATES.IN_GAME;
 	var teams = [];
-	for (var i = 0; i < NUM_TEAMS; ++i) {
+	for (var i = 0; i < CONSTANTS.NUM_TEAMS; ++i) {
 		teams.push([]);
 	}
 
@@ -98,14 +103,16 @@ function start() {
 		teams[client.team].push(client)
 	}
 
+	broadcast_game_state();
 	return teams;
 }
 
 function stop() {
 	state.state = STATES.LOBBY;
+	broadcast_game_state();
 }
 
-function broadcast_game_state(server) {
+function broadcast_game_state() {
 	var data = {state: state.state};
 
 	if(state.state == STATES.LOBBY) {
@@ -128,7 +135,7 @@ function get_team_id(player_id) {
 
 function get_lobby_state() {
 	var lobby_state = [];
-	for(var i = 0; i < NUM_PLAYERS; ++i) {
+	for(var i = 0; i < CONSTANTS.NUM_PLAYERS; ++i) {
 		lobby_state.push(false)
 	}
 	for(var i = 0; i < state.clients.length; i++) {
