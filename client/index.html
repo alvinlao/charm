@@ -70,9 +70,35 @@
 
 <!-- MAIN -->
 <script>
+    function preload(arrayOfImages, callback) {
+        $(arrayOfImages).each(function(){
+            $('<img/>')[0].src = this;
+        });
+        callback();
+    };
 	var server_player_id;
-
-	(function() {
+    preload([
+        'assets/astroid_1.png',
+        'assets/astroid_2.png',
+        'assets/astroid_3.png',
+        'assets/astroid_4.png',
+        'assets/dust_1.png',
+        'assets/dust_2.png',
+        'assets/dust_3.png',
+        'assets/nebula_1.png',
+        'assets/nebula_2.png',
+        'assets/planet_1.png',
+        'assets/planet_2.png',
+        'assets/planet_3.png',
+        'assets/planet_4.png',
+        'assets/planet_5.png',
+        'assets/planet_6.png',
+        'assets/planet_7.png',
+        'assets/ship_1.png',
+        'assets/ship_2.png',
+        'assets/ship_1_trail.png',
+        'assets/ship_2_trail.png'
+    ], function() {
 		var NUM_STARS = 100;
 		var MAX_RADIUS = 1.5;
 
@@ -87,7 +113,8 @@
 			var y = Math.random() * h;
 			lobby_canvas.display.ellipse({x: x, y: y, radius:r, fill:"white"}).add();
 		}
-	})();
+    });
+
 </script>
 <script src="js/client.js"></script>
 <script src="js/controls.js"></script>

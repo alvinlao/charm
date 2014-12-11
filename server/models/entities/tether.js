@@ -19,14 +19,13 @@ function Tether(world, eids, body1, body2, team_id) {
         x = v.x,
         y = v.y;
     v.Subtract(this.body2.get_position());
-    var A = 20;
-    var d = (v.Length() - 2 * CONSTANTS.PLAYER_RADIUS - A)/(2 * CONSTANTS.TETHER_NUM_NODES);
+    var d = (v.Length() - 2 * CONSTANTS.PLAYER_RADIUS - CONSTANTS.TETHER_FUDGE)/(2 * CONSTANTS.TETHER_NUM_NODES);
     // rope
     for (var i = 1; i <= CONSTANTS.TETHER_NUM_NODES; i++) {
         // rope segment
         var bodyDef = new b2d.b2BodyDef();
         bodyDef.position.x = x;
-        bodyDef.position.y = y + (2 * i - 1) * d + CONSTANTS.PLAYER_RADIUS + A;
+        bodyDef.position.y = y + (2 * i - 1) * d + CONSTANTS.PLAYER_RADIUS + CONSTANTS.TETHER_FUDGE;
         bodyDef.userData = { eid: eids[i-1], particle_type:CONSTANTS.TYPE_TETHER_NODE, team_id: team_id };
         boxDef = new b2d.b2PolygonDef();
         boxDef.SetAsBox(0.1, 0.9 * d);
@@ -36,7 +35,7 @@ function Tether(world, eids, body1, body2, team_id) {
         body = world.CreateBody(bodyDef);
         body.CreateShape(boxDef);
         // joint
-        revolute_joint.Initialize(link, body, new b2d.b2Vec2(x, y + 2 * (i - 1) * d + CONSTANTS.PLAYER_RADIUS + A));
+        revolute_joint.Initialize(link, body, new b2d.b2Vec2(x, y + 2 * (i - 1) * d + CONSTANTS.PLAYER_RADIUS + CONSTANTS.TETHER_FUDGE));
         var j = world.CreateJoint(revolute_joint);
         j.SetLimits(-60, 60);
         body.SetMassFromShapes();
@@ -44,7 +43,7 @@ function Tether(world, eids, body1, body2, team_id) {
         link = body;
     }
     // final body
-    revolute_joint.Initialize(link, this.body2.body, new b2d.b2Vec2(this.body2.get_position().x, y + 2 * CONSTANTS.TETHER_NUM_NODES * d + CONSTANTS.PLAYER_RADIUS + A));
+    revolute_joint.Initialize(link, this.body2.body, new b2d.b2Vec2(this.body2.get_position().x, y + 2 * CONSTANTS.TETHER_NUM_NODES * d + CONSTANTS.PLAYER_RADIUS + CONSTANTS.TETHER_FUDGE));
     world.CreateJoint(revolute_joint);
     body.SetMassFromShapes();
     return this;

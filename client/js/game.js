@@ -91,7 +91,7 @@ function prepare_game() {
         particles = new VisualParticles();
         socket = io();
         socket.on('world_state', update_world_state);
-        //socket.on('game_ended', game_over);
+        socket.on('game_ended', game_over);
 
         loaded = true;
 
@@ -101,12 +101,20 @@ function prepare_game() {
     }
 }
 
-function game_over(state){
+function game_over(data){
     var won = true;
-    if(state.team_id == our_team_id){
+    if(data == our_team_id){
         won = false;
     }
 
+    if(won){
+        $("#lobby_message").text("You Win!");
+    }
+    else{
+        $("#lobby_message").text("You Lose!");
+    }
+
+    /*
     if(won){
         $("#end_game_container").css("visibility","visible");
     }
@@ -114,5 +122,6 @@ function game_over(state){
         $("#end_game_container").css("visibility","visible");
         $("#end_game").text("LOSER!").css("color","red").css("border-color","red");
     }
+    */
 }
 

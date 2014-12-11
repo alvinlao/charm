@@ -42,6 +42,7 @@ Player.prototype.control = function(state) {
 	var ody = this.dy;
 	this.dx = 0;
 	this.dy = 0;
+    this.brake = false;
 
 	if(controls.isControlDown(controls.key_map.up)) {
 		this.dy -= 1;
@@ -55,6 +56,9 @@ Player.prototype.control = function(state) {
 	if(controls.isControlDown(controls.key_map.right)) {
 		this.dx += 1;
 	}
+    if(controls.isControlDown(controls.key_map.space)) {
+        this.brake = true;
+    }
 	if(this.dx != 0 && this.dy != 0) {
 		this.dx *= 0.7071;
 		this.dy *= 0.7071;
@@ -65,7 +69,7 @@ Player.prototype.control = function(state) {
 	}
 
 	if(this.dx != odx || this.dy != ody) {
-	    socket.emit("inputs", {eid:this.eid, input:{x:this.dx, y:this.dy}});
+	    socket.emit("inputs", {eid:this.eid, input:{x:this.dx, y:this.dy, brake:this.brake}});
     }
 }
 
