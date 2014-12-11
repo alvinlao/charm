@@ -197,13 +197,13 @@ Brain.prototype.start = function(team, server) {
         }
     }
 
-    /*
+    
     var eids = [];
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
         eids.push(this.get_eid());
     }
     Tether(this.world, eids, this.objects[0], this.objects[1]);
-    */
+    
 
     var brain = this;
 

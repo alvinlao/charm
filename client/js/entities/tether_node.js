@@ -2,7 +2,7 @@ var ship_assets = ["assets/ship_1.png", "assets/ship_2.png"]
 var ship_trail_assets = ["assets/ship_1_trail.png", "assets/ship_2_trail.png"]
 
 TetherNode.prototype = Object.create(Particle.prototype);
-TetherNode.prototype.constructor = Player;
+TetherNode.prototype.constructor = TetherNode;
 
 function TetherNode(eid, state) {
 	Particle.prototype.constructor.call(this, eid, state);
@@ -15,6 +15,31 @@ function TetherNode(eid, state) {
 
 TetherNode.prototype.init_draw = function(state) {
 	this.drawable = canvas.display.ellipse({x: this.x, y: this.y, radius:8, fill:"white"}).add();
+
+	this.left_drawable = null;
+	this.right_drawable = null;
+
+	if(this.left in world_state) {
+		if(world_state[this.left].entity_type == "player") {
+			console.log("Found left side");
+			this.left_drawable = canvas.display.line({
+		        start: { x: world_state[this.left].x , y: world_state[this.left].y },
+		        end: { x: this.x, y: this.y },
+		        stroke: "4px #0aa",
+		        cap: "round"
+    		}).add();
+		}
+	}
+
+	if(this.right in world_state) {
+		console.log("Found right side");
+		this.right_drawable = canvas.display.line({
+			        start: { x: this.x , y: this.y },
+			        end: { x: world_state[this.right].x, y: world_state[this.right].y },
+			        stroke: "4px #0aa",
+			        cap: "round"
+	    		}).add();
+	}
 	//this.drawable.strokeColor = "white";
 
 	/*this.trail = canvas.display.image({
