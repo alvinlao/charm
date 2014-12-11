@@ -266,7 +266,7 @@ Brain.prototype.start = function(team, server, game) {
 
             asteroid_entity.active = false;
             asteroid_entity.team_id = null;
-        } else if (shape_one_data["particle_type"] == CONSTANTS.TYPE_WALL && shape_two_data == CONSTANTS.TYPE_ASTEROID) {
+        } else if (shape_one_data["particle_type"] == CONSTANTS.TYPE_WALL && shape_two_data["particle_type"] == CONSTANTS.TYPE_ASTEROID) {
             var asteroid_entity = brain.objects[shape_two_data["eid"]];
 
             asteroid_entity.active = false;
