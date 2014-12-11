@@ -178,6 +178,7 @@ Brain.prototype.start = function(team, server) {
         while(true){
             var x_pos = Math.random() * CONSTANTS.MAX_X;
             var y_pos = Math.random() * CONSTANTS.MAX_Y;
+            var radius = Math.floor(Math.random() *  CONSTANTS.ASTEROID_RADIUS);
             
             var is_good = true;
             for(var j=0; j<previous_asteroids.length; j++){
@@ -191,13 +192,12 @@ Brain.prototype.start = function(team, server) {
             if(is_good){
                 previous_asteroids.push([x_pos, y_pos]);
                 var eid = this.get_eid();
-                this.objects[eid] = new Asteroid(this.world, eid, x_pos, y_pos);
+                this.objects[eid] = new Asteroid(this.world, eid, x_pos, y_pos, radius);
                 break;
             }
         }
     }
 
-    
     var eids = [];
     for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
         eids.push(this.get_eid());
@@ -205,7 +205,6 @@ Brain.prototype.start = function(team, server) {
     var b2 = this.objects[1].get_position();
     console.log('before b2: ' + b2.x + " " + b2.y);
     Tether(this.world, eids, this.objects[0], this.objects[1]);
-    
 
     var brain = this;
 
