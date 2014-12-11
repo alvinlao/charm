@@ -154,6 +154,10 @@ Brain.prototype.start = function(team, server) {
     this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL, this);
 
     this.init_world();
+    var previous_asteroids = [];
+
+    // to be used in callbacks
+    var brain = this;
 
     // Create player objects
     for(var i=0; i<team.length; i++){
@@ -161,24 +165,28 @@ Brain.prototype.start = function(team, server) {
             var eid = this.get_eid(),
                 x0 = 100 + j * (CONSTANTS.MAX_X/2 - 300),
                 y0 = 100 + i * (CONSTANTS.MAX_Y - 300);
+            previous_asteroids.push([x0,y0]);
             this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, x0, y0, i);
         }
     }
 
 
     // Create some asteroids
-    var previous_asteroids = [];
     for(var i=0; i<10; i++){
         while(true){
-            var x_pos = Math.random() * CONSTANTS.MAX_X;
-            var y_pos = Math.random() * CONSTANTS.MAX_Y;
-            var radius = Math.floor(Math.random() *  CONSTANTS.ASTEROID_RADIUS);
+            var bound_x_min = 100;
+            var bound_x_max = CONSTANTS.MAX_X - 100;
+            var bound_y_min = 100;
+            var bound_y_max = CONSTANTS.MAX_Y - 100;
+            var x_pos = bound_x_min + Math.random() * (bound_x_max-bound_x_min);
+            var y_pos = bound_y_min + Math.random() * (bound_y_max-bound_y_min);
+            var radius = CONSTANTS.ASTEROID_MIN_SIZE + Math.random() * (CONSTANTS.ASTEROID_MAX_SIZE - CONSTANTS.ASTEROID_MIN_SIZE);
 
             var is_good = true;
             for(var j=0; j<previous_asteroids.length; j++){
                 var prev_asteroid = previous_asteroids[j];
                 var dist_squared = prev_asteroid[0]*prev_asteroid[0] + prev_asteroid[1]*prev_asteroid[1];
-                if(dist_squared < 2000){
+                if(dist_squared < 9000){
                     is_good = false;
                     break;
                 }
@@ -186,7 +194,7 @@ Brain.prototype.start = function(team, server) {
             if(is_good){
                 previous_asteroids.push([x_pos, y_pos]);
                 var eid = this.get_eid();
-                this.objects[eid] = new Asteroid(this.world, eid, x_pos, y_pos, radius);
+                this.objects[eid] = new Asteroid(this.world, eid, x_pos, y_pos, radius, false);
                 break;
             }
         }
@@ -198,28 +206,52 @@ Brain.prototype.start = function(team, server) {
     }
     var b2 = this.objects[1].get_position();
     
-    Tether(this.world, eids, this.objects[0], this.objects[1]);
+    Tether(this.world, eids, this.objects[0], this.objects[1], 1);
 
+    // north wall
     Wall(this.world, -1, 0, 0, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 1, 1);
 
+    // west wall
     Wall(this.world, -1, 0, 0, 1, CONSTANTS.MAX_Y - CONSTANTS.MIN_Y - 1);
 
+    // south wall
     Wall(this.world, -1, -1, CONSTANTS.MAX_Y - CONSTANTS.MIN_Y - 2, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 1, 1);
 
+    // east wall
     Wall(this.world, -1, CONSTANTS.MAX_X - CONSTANTS.MIN_X - 3, 0, 1, CONSTANTS.MAX_Y - CONSTANTS.MIN_Y - 1);
 
-    var brain = this;
+    // set contact listener for active asteroid collisions
+    var listener = new b2d.b2ContactListener();
+
+    listener.Add = function(point) {
+        var shape_one_data = point.shape1.GetBody().GetUserData(),
+            shape_two_data = point.shape2.GetBody().GetUserData();
+
+        if (shape_one_data["particle_type"] == CONSTANTS.TYPE_ASTEROID && shape_two_data["particle_type"] == CONSTANTS.TYPE_TETHER_NODE) {
+            if (brain.objects[shape_one_data["eid"]].active) brain.end_game(shape_two_data["team_id"]);
+        } else if (shape_one_data["particle_type"] == CONSTANTS.TYPE_TETHER_NODE && shape_two_data["particle_type"] == CONSTANTS.TYPE_ASTEROID) {
+            if (brain.objects[shape_two_data["eid"]].active) brain.end_game(shape_one_data["team_id"]);
+        }
+    }
+
+    this.world.SetContactListener(listener);
 
     this.world_state_broadcast_interval_id = setInterval(function () {
     	server.io.emit('world_state', brain.return_world_state(brain));
     }, 33);
 }
 
-Brain.prototype.return_world_state = function(brain) {
+Brain.prototype.end_game = function (losing_team) {
+    console.log("GAME ENDED, team " + losing_team + " has lost!" );
+    this.stop();
+    server.io.emit('game_ended', losing_team);
+}
+
+Brain.prototype.return_world_state = function() {
 	var serialized_objects = {};
 
-	for (key in brain.objects) {
-		serialized_objects[brain.objects[key].eid] = brain.objects[key].serialize();
+	for (key in this.objects) {
+		serialized_objects[this.objects[key].eid] = this.objects[key].serialize();
 	}
 
     for (eid in this.tether_nodes) {
@@ -231,8 +263,8 @@ Brain.prototype.return_world_state = function(brain) {
 }
 
 Brain.prototype.stop = function() {
-    clearInterval(this.game_loop_interval_id);
-    clearInterval(this.world_state_broadcast_interval_id);
+    this.game_loop_interval_id = clearInterval(this.game_loop_interval_id);
+    this.world_state_broadcast_interval_id = clearInterval(this.world_state_broadcast_interval_id);
 }
 
 module.exports = Brain;

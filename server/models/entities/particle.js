@@ -5,11 +5,11 @@ var b2d = require('box2d')
 Particle.prototype = Object.create(GameObject.prototype);
 Particle.prototype.constructor = Particle;
 
-function Particle(world, eid, x, y, m, r, params) {
+function Particle(world, eid, x, y, m, r, params, particle_type) {
 	GameObject.prototype.constructor.call(this, eid);
 
     var body_def = new b2d.b2BodyDef();
-    body_def.userData = {eid: eid};
+    body_def.userData = {eid: eid, particle_type:particle_type};
     body_def.position.Set(x,y);
     body_def.massData.mass = m;
 
