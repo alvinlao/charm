@@ -26,7 +26,6 @@ Brain.prototype.init_world = function() {
 
     // List of inputs from players
     this.inputs = [];
-    return this;
 }
 
 Brain.prototype.add_body = function(id, body_def) {
@@ -49,6 +48,7 @@ Brain.prototype.set_interval = function(loop, loopInterval){
 }
 
 Brain.prototype.queue_inputs = function(data) {
+
     this.inputs.push(data);
 }
 
@@ -76,7 +76,7 @@ Brain.prototype.loop = function() {
 Brain.prototype.start = function(team, server) {
     this.game_loop_interval_id = setInterval(this.loop, CONSTANTS.LOOP_INTERVAL);
 
-    var brain = this.init_world();
+    this.init_world();
 
     // Create player objects
     var eid = 1;
@@ -88,6 +88,8 @@ Brain.prototype.start = function(team, server) {
             eid++;
         }
     }
+
+    var brain = this;
 
     this.world_state_broadcast_interval_id = setInterval(function () {
     	server.io.emit('world_state', brain.return_world_state());
