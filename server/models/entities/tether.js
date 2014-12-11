@@ -6,7 +6,9 @@ var b2d = require('box2d');
 Tether.prototype = Object.create(GameObject.prototype);
 Tether.prototype.constructor = Tether;
 
-function Tether(world, body1, body2) {
+/* eids :: [eid]
+ */
+function Tether(world, eids, body1, body2) {
 	GameObject.prototype.constructor.call(this);
 
 	this.body1 = body1;
@@ -23,7 +25,7 @@ function Tether(world, body1, body2) {
         var v = dv.Copy();
         v.Multiply(i);
         u.Add(v);
-        var internal_node = new Particle(world, -1, u.x, u.y, CONSTANTS.TETHER_NODE_MASS, CONSTANTS.TETHER_NODE_RADIUS);
+        var internal_node = new Particle(world, eids[i], u.x, u.y, CONSTANTS.TETHER_NODE_MASS, CONSTANTS.TETHER_NODE_RADIUS);
         this.internal_nodes.push(internal_node);
     }
 
@@ -42,6 +44,10 @@ function Tether(world, body1, body2) {
         last_internal_node = this.internal_nodes[CONSTANTS.TETHER_NUM_NODES - 1];
     rjd2.Initialize(last_internal_node.body, this.body2.body, last_internal_node.get_position());
     this.joints.push(world.CreateJoint(rjd2));
+}
+
+Tether.prototype.sync = function() {
+    console.log("Tether is syncing!");
 }
 
 module.exports = Tether;

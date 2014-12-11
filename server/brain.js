@@ -8,6 +8,12 @@ var b2d = require("box2d")
 function Brain() {
 }
 
+Brain.prototype.get_eid = function() {
+    var eid = this.eid;
+    this.eid += 1;
+    return eid;
+}
+
 Brain.prototype.init_world = function() {
     var worldAABB = new b2d.b2AABB(),
         gravity = new b2d.b2Vec2(0.0, 0.0),
@@ -66,14 +72,17 @@ Brain.prototype.start = function(team, server) {
     // Create player objects
     for(var i=0; i<team.length; i++){
         for(var j=0; j<team[i].length; j++){
-            this.objects[this.eid] = new Player(this.world, this.eid, team[i][j].player_id, 100, 100);
-            this.eid++;
+            var eid = this.get_eid();
+            this.objects[eid] = new Player(this.world, eid, team[i][j].player_id, 100, 100);
         }
     }
-    this.objects[5] = new Player(this.world, 5,1, 100, 100);
-    this.objects[6] = new Player(this.world, 6,2, 600, 100);
-    Tether(this.world, this.objects[1], this.objects[2]);
-    //Tether(this.world, this.objects[1], this.objects[2]);
+    this.objects[this.get_eid()] = new Player(this.world, 5,1, 100, 100);
+    this.objects[this.get_eid()] = new Player(this.world, 6,2, 600, 100);
+    var eids = [];
+    for(var i = 0; i < CONSTANTS.TETHER_NUM_NODES; i++) {
+        eids.push(this.get_eid());
+    }
+    Tether(this.world, eids, this.objects[1], this.objects[2]);
 
     var brain = this;
 
@@ -89,7 +98,9 @@ Brain.prototype.return_world_state = function(brain) {
     while (body_list != null) {
         if (body_list.m_userData) {
             var eid = body_list.m_userData.eid;
-            brain.objects[eid].sync();  
+            if(brain.objects[eid]) {
+                brain.objects[eid].sync();
+            }
         }
 
         body_list = body_list.m_next;
