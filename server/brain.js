@@ -173,11 +173,28 @@ Brain.prototype.start = function(team, server) {
 
 
     // Create some asteroids
+    var previous_asteroids = [];
     for(var i=0; i<10; i++){
-        var x_pos = Math.random() * 500;
-        var y_pos = Math.random() * 500;
-        var eid = this.get_eid();
-        this.objects[eid] = new Asteroid(this.world, eid, x_pos, y_pos);
+        while(true){
+            var x_pos = Math.random() * CONSTANTS.MAX_X;
+            var y_pos = Math.random() * CONSTANTS.MAX_Y;
+            
+            var is_good = true;
+            for(var j=0; j<previous_asteroids.length; j++){
+                var prev_asteroid = previous_asteroids[j];
+                var dist_squared = prev_asteroid[0]*prev_asteroid[0] + prev_asteroid[1]*prev_asteroid[1];
+                if(dist_squared < 2000){
+                    is_good = false;
+                    break;
+                }
+            }
+            if(is_good){
+                previous_asteroids.push([x_pos, y_pos]);
+                var eid = this.get_eid();
+                this.objects[eid] = new Asteroid(this.world, eid, x_pos, y_pos);
+                break;
+            }
+        }
     }
 
     /*
