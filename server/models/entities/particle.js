@@ -21,6 +21,7 @@ function Particle(world, eid, x, y, m, r) {
     mass_data.mass = m;
 
     this.body = world.CreateBody(body_def);
+    this.body.m_linearDamping = CONSTANTS.PLAYER_FRICTION;
     return this;
 }
 
