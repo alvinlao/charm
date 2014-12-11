@@ -4,7 +4,7 @@ var STATES = Object.freeze({
 });
 
 var state = STATES.LOBBY;
-var socket;
+var socket = io();
 
 function hide_all() {
   $('#lobby').hide();
@@ -78,9 +78,7 @@ function update_game(data) {
   reset_game();
 }
 
-$(function() {
-  socket = io();
-
+document.onready = function() {
   change_state(STATES.LOBBY);
 
   socket.on('game_state_update', function(data) {
@@ -90,8 +88,9 @@ $(function() {
 
   socket.on('player_info', function(id) {
     server_player_id = id;
-  })
+  });
 
+  $(".player_button").unbind( "click" );
   $(".player_button").click(function () {
     this.innerHTML = "LOADING...";
     player_id = (this.id == "player_one" ? 1 : (this.id == "player_two" ? 2 : (this.id == "player_three" ? 3 : 4)));
@@ -99,6 +98,7 @@ $(function() {
     $(this).attr('disabled','disabled');
   });
 
+  $(".instant_join").unbind( "click" );
   $(".instant_join").click(function () {
     change_state(STATES.GAME);
   });
@@ -111,4 +111,4 @@ $(function() {
       throw "error!"
     }
   });
-})
+}

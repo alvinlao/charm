@@ -83,7 +83,5 @@ function prepare_game() {
         cap: "round"
     }).add();
 
-    console.log("player id: " + server_player_id);
-
     canvas.setLoop(game_loop).start();
 }
