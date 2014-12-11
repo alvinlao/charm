@@ -16,6 +16,8 @@ Player.prototype.init_draw = function(state) {
 	//this.drawable = canvas.display.ellipse({x: this.x, y: this.y, radius:20, fill:"white"}).add();
 	//this.drawable.strokeColor = "white";
 
+	console.log(state.team);
+
 	this.trail = canvas.display.image({
 		x: this.x,
 		y: this.y+24,
@@ -29,11 +31,6 @@ Player.prototype.init_draw = function(state) {
 		origin: { x: "center", y: "center" },
 		image: ship_assets[state.team],
 		width: 25, height: 25}).add();
-}
-
-Player.prototype.emitState = function(socket) {
-	var state = {x: this.x, y: this.y, vx: this.vx, vy: this.vy, playerId: this.id};
-  	socket.emit("player_state", state);
 }
 
 Player.prototype.control = function(state) {
@@ -68,8 +65,6 @@ Player.prototype.control = function(state) {
 	}
 
 	if(this.dx != odx || this.dy != ody) {
-		console.log(JSON.stringify({eid:this.eid, input:{x:this.dx, y:this.dy}}));
-
 	    socket.emit("inputs", {eid:this.eid, input:{x:this.dx, y:this.dy}});
     }
 }
@@ -87,8 +82,11 @@ Player.prototype.replicate = function(state) {
 		this.rotation = toDegrees(Math.atan2(this.dy, this.dx)) + 90;
 	}
 
-	this.x = state.x;
-	this.y = state.y;
+	//this.x = state.x;
+	//this.y = state.y;
+
+	this.x = 200;
+	this.y = 200;
 
 }
 
@@ -110,6 +108,7 @@ Player.prototype.draw = function() {
 
 Player.prototype.destroy = function() {
 	this.drawable.remove();
+	this.trail.remove();
 }
 
 
