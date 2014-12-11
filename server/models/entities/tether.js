@@ -31,7 +31,7 @@ function Tether(world, eids, body1, body2, team_id) {
         bodyDef.position.x = x + (2 * i - 1) * d;
         bodyDef.position.y = y;
         console.log("x: " + bodyDef.position.x + " y: " + bodyDef.position.y);
-        bodyDef.userData = { eid:(-10*i) };
+        bodyDef.userData = { eid:(-10*i), particle_type:CONSTANTS.TYPE_TETHER_NODE, team_id: team_id };
         boxDef = new b2d.b2PolygonDef();
         boxDef.SetAsBox(d, 0.1);
         boxDef.density = 1;

@@ -7,6 +7,7 @@ Asteroid.prototype.constructor = Asteroid;
 
 function Asteroid(world, eid, x, y, r, active) {
     this.active = active;
+    this.team_id = null;
     var params = {
         density: 12,
         restitution: 0.5,
@@ -27,6 +28,7 @@ Asteroid.prototype.serialize = function () {
 		y : pos.y,
         r : this.r,
         active: this.active,
+        team: this.team_id,
         velocity: this.get_velocity()
 
 	}
