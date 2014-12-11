@@ -24,7 +24,7 @@ Asteroid.prototype.init_draw = function() {
 
 Asteroid.prototype.draw = function() {
 	Particle.prototype.draw.call(this);
-    this.drawable.scale(this.r/80, this.r/80);
+    this.drawable.scale(this.r/20, this.r/20);
 	this.drawable.moveTo(this.x, this.y);
 }
 

@@ -7,7 +7,12 @@ Asteroid.prototype.constructor = Asteroid;
 
 function Asteroid(world, eid, x, y, r) {
     this.active = false;
-	Particle.prototype.constructor.call(this, world, eid, x, y, CONSTANTS.ASTEROID_MASS, r);
+    var params = {
+        density: 12,
+        restitution: 0.5,
+        friction: 0.9
+    };
+	Particle.prototype.constructor.call(this, world, eid, x, y, CONSTANTS.ASTEROID_MASS, r, params);
     var velocity_vector = new b2d.b2Vec2(Math.random()*10, Math.random()*10);
     this.body.SetLinearVelocity(velocity_vector);
     this.r = r;

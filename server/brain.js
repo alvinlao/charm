@@ -15,6 +15,8 @@ Brain.prototype.get_eid = function() {
 }
 
 Brain.prototype.init_world = function() {
+    b2d.b2Settings.b2_maxLinearVelocity = CONSTANTS.MAX_SPEED;
+    b2d.b2Settings.b2_maxLinearVelocitySquared = CONSTANTS.MAX_SPEED * CONSTANTS.MAX_SPEED;
     var worldAABB = new b2d.b2AABB(),
         gravity = new b2d.b2Vec2(0.0, 0.0),
         do_sleep = true;
@@ -67,13 +69,6 @@ Brain.prototype.step = function() {
         // var new_position = new b2d.b2Vec2(x1, y1);
         // body_list.SetXForm(new_position, current_angle);
 
-        // Check for speeds
-        var current_velocity = body_list.GetLinearVelocity();
-        if(CONSTANTS.MAX_SPEED < current_velocity.Length()) {
-            current_velocity.Normalize();
-            current_velocity.Multiply(CONSTANTS.MAX_SPEED);
-            body_list.SetLinearVelocity(current_velocity);
-        }
 
         if (body_list.m_userData) {
             var eid = body_list.m_userData.eid;
@@ -178,7 +173,7 @@ Brain.prototype.start = function(team, server) {
             var x_pos = Math.random() * CONSTANTS.MAX_X;
             var y_pos = Math.random() * CONSTANTS.MAX_Y;
             var radius = Math.floor(Math.random() *  CONSTANTS.ASTEROID_RADIUS);
-            
+
             var is_good = true;
             for(var j=0; j<previous_asteroids.length; j++){
                 var prev_asteroid = previous_asteroids[j];
