@@ -96,6 +96,7 @@ Brain.prototype.process_inputs = function() {
 }
 
 Brain.prototype.loop = function(that) {
+    if (this.world) console.log(this.world.GetContactList());
     that.step();
 }
 
@@ -141,7 +142,6 @@ Brain.prototype.return_world_state = function(brain) {
 		serialized_objects[brain.objects[key].eid] = brain.objects[key].serialize();
 	}
 
-    // console.log(serialized_objects)
 	return serialized_objects;
 }
 
