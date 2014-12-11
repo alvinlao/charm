@@ -2,7 +2,7 @@ var CONSTANTS = Object.freeze({
     MIN_X: 0,
     MIN_Y: 0,
     MAX_X: 1000,
-    MAX_Y: 800,
+    MAX_Y: 600,
     TIMEDELTA: 1.0/60,
     INPUT_MULTIPLIER: 100,
     EPSILON: 1e-60,

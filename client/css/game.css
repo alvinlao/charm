@@ -49,3 +49,8 @@ html, body {
     height: 50px; 
     margin: 5px;
 }
+
+#game, #game_canvas {
+    text-align: center;
+    margin: 0 auto 0 auto;
+}
