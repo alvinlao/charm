@@ -8,3 +8,9 @@ It’s a four player game, with two teams. The players are each controlling an a
 - luckytoilet - Bai Li
 - Kevin Pan
 - Alvin Lao
+
+Play it at http://tether-game.herokuapp.com/
+
+![](http://i.imgur.com/1qk0qFf.png)
+![](http://i.imgur.com/Zgpr5My.png)
+![](http://i.imgur.com/vSLCJ3K.png)
